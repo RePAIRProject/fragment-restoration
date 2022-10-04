@@ -7,10 +7,8 @@ Image enhancement for:
 
 
 Application of the following methods for fresco fragment restoration:
-```diff
 - Histogram equalization, 
 - gamma correction, 
 - balanced contrast enhancement technique (BCET), 
-- Contrast limited adaptive histogram equalization (CLAHE)
+- Contrast limited adaptive histogram equalization (CLAHE) : https://towardsdatascience.com/clahe-and-thresholding-in-python-3bf690303e40 
 - ICA 
-```
