@@ -52,10 +52,10 @@ Training log, metrics, related code and  random visual results are in the folder
 
 Moving forward, several avenues can be explored to further improve the model's performance:
 
-Fine-tuning and Transfer Learning: Exploring the possibility of utilizing pre-trained models on large-scale datasets, such as ImageNet, and fine-tuning them specifically for the motif-based semantic segmentation task. This can leverage the pre-trained model's learned features and improve the model's ability to capture motif patterns.
+Fine-tuning and Transfer Learning
 
-Hyperparameter Tuning: Conducting a systematic search for optimal hyperparameters, such as learning rate, batch size, and optimizer settings. Hyperparameter tuning can help fine-tune the model's training process and potentially improve its performance.
+Hyperparameter Tuning
 
 Model Ensembling: Considering ensembling multiple versions of the simplified UNet model. Each model can be trained with different initialization weights or random seeds, resulting in diverse predictions. Combining the predictions from multiple models can help reduce noise and improve overall segmentation accuracy.
 
-Class-Specific Optimization: Analyzing the performance of the simplified UNet architecture on each motif class individually. Identify specific challenges or weaknesses for each class and explore class-specific optimization techniques. This may include adjusting loss weights, class-specific data augmentation, or modifying the model architecture to address specific class characteristics.
+class-specific data augmentation
