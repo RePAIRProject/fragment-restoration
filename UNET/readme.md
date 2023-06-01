@@ -58,4 +58,4 @@ Hyperparameter Tuning
 
 Model Ensembling: Considering ensembling multiple versions of the simplified UNet model. Each model can be trained with different initialization weights or random seeds, resulting in diverse predictions. Combining the predictions from multiple models can help reduce noise and improve overall segmentation accuracy.
 
-class-specific data augmentation
+Class-specific data augmentation
