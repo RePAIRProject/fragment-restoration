@@ -35,6 +35,14 @@ In an attempt to improve the performance, the UNet architecture was simplified a
 
 Training log, metrics, related code and  random visual results are in the folder "Model_to_detect_3_class_background_pattern_foreground_simplifiedUNET".
 
+**Separate Category for Most Frequent Motif Class**
+
+An improvement was attempted by introducing a separate category for the most frequent motif class, resulting in four main categories: background, motif class 4, other motif classes (excluding class 4), and foreground. This modification led to a mean Intersection over Union (meanIOU) of about 45% after training the model for a reasonable number of epochs.
+
+**Extended Training**
+
+Continuing from the previous approach, the same model was further trained for an extended period, reaching approximately 60% meanIOU after 150 epochs. This improvement indicates that the model continued to learn and refine its segmentation capabilities with prolonged training.
+
 **Next Steps**
 
 Moving forward, several avenues can be explored to further improve the model's performance:
@@ -46,5 +54,3 @@ Hyperparameter Tuning: Conducting a systematic search for optimal hyperparameter
 Model Ensembling: Considering ensembling multiple versions of the simplified UNet model. Each model can be trained with different initialization weights or random seeds, resulting in diverse predictions. Combining the predictions from multiple models can help reduce noise and improve overall segmentation accuracy.
 
 Class-Specific Optimization: Analyzing the performance of the simplified UNet architecture on each motif class individually. Identify specific challenges or weaknesses for each class and explore class-specific optimization techniques. This may include adjusting loss weights, class-specific data augmentation, or modifying the model architecture to address specific class characteristics.
-
-By continuing to iterate and experiment with these approaches, the model's performance can be further enhanced, allowing for more accurate motif-based semantic segmentation in a variety of applications.
