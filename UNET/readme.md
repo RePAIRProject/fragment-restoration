@@ -39,7 +39,7 @@ Training log, metrics, related code and  random visual results are in the folder
 
 An improvement was attempted by introducing a separate category for the most frequent motif class, resulting in four main categories: background, motif class 4, other motif classes (excluding class 4), and foreground. This modification led to a mean Intersection over Union (meanIOU) of about 45% after training the model for a reasonable number of epochs.
 
-Training log, metrics, related code and  random visual results are in the folder "MModel_to_detect_4_classes_50epoch".
+Training log, metrics, related code and visual results for all the test images are in the folder "MModel_to_detect_4_classes_50epoch".
 
 **Extended Training**
 
