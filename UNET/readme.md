@@ -39,11 +39,16 @@ Training log, metrics, related code and  random visual results are in the folder
 
 An improvement was attempted by introducing a separate category for the most frequent motif class, resulting in four main categories: background, motif class 4, other motif classes (excluding class 4), and foreground. This modification led to a mean Intersection over Union (meanIOU) of about 45% after training the model for a reasonable number of epochs.
 
+Training log, metrics, related code and  random visual results are in the folder "MModel_to_detect_4_classes_50epoch".
+
 **Extended Training**
 
-Continuing from the previous approach, the same model was further trained for an extended period, reaching approximately 60% meanIOU after 150 epochs. This improvement indicates that the model continued to learn and refine its segmentation capabilities with prolonged training.
+Continuing from the previous approach, the same model was further trained for an extended period, reaching approximately 55% meanIOU after 150 epochs. This improvement indicates that the model continued to learn and refine its segmentation capabilities with prolonged training.
 
-**Next Steps**
+Training log, metrics, related code and  random visual results are in the folder "MModel_to_detect_4_classes_150epoch".
+
+
+**Next Steps to improve model performance**
 
 Moving forward, several avenues can be explored to further improve the model's performance:
 
