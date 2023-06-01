@@ -5,27 +5,34 @@ This part of project focuses on the task of motif-based semantic segmentation us
 **Dataset**
 
 The project uses a custom dataset consisting of images with motif patterns. Each image is accompanied by a ground truth mask where each motif class is labeled with a unique value. The dataset contains a variety of motif classes and a significant imbalance among them.
-The Unet_prep.ipynb file contains the code on how this dataset was created. 
+The Unet_prep.ipynb file contains the code on how this dataset was created.
+
+The link to dataset:
+
 https://drive.google.com/file/d/1EOuKdiiX1Dkfe9GmJTTr45FOUhQ0iU2D/view?usp=share_link
 
 **Initial Approach**
 
 Initially, a UNet architecture was trained with each motif class treated separately. However, this approach did not yield satisfactory results, likely due to the class imbalance and complex relationships between motifs.
+
 Related notebook of this step is UNET.ipynb.
 
 **Binary Semantic Segmentation**
 
 To address the challenges posed by the motif classes, a binary semantic segmentation approach was adopted. The task was simplified to differentiate between the background and foreground. This approach achieved promising results with a Mean IoU of 99%, indicating accurate segmentation of mforeground from the background.
+
 Training log, metrics, related code and  random visual results are in the folder "Model_to_detect_only_background_and_foreground".
 
 **Integration of Pattern Motif Class**
 
 To expand the model's capability, a new class for pattern motifs was introduced. The revised model now had three classes: background, pattern motifs, and foreground. However, the standard UNet architecture with this multi-class setup did not perform well.
+
 Training log, metrics, related code and  random visual results are in the folder "Model_to_detect_3_class_background_pattern_foreground".
 
 **Simplified UNet Architecture**
 
 In an attempt to improve the performance, the UNet architecture was simplified and the number of layers and parameters were reduced. This simplified architecture showed promising results, achieving an Mean IoU of over 80% within the first 50 epochs of training.
+
 Training log, metrics, related code and  random visual results are in the folder "Model_to_detect_3_class_background_pattern_foreground_simplifiedUNET".
 
 **Next Steps**
