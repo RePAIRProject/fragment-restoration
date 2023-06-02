@@ -26,3 +26,9 @@ The implementation of this approach in our code:
 
 The metrics result of this approach:
 ![Metrics](https://github.com/RePAIRProject/fragment-restoration/blob/main/UNET/Model_to_detect_3_classes_simplified_HSV_Contrast/Metrics.png)
+
+My suggestions on why the contrast enhancement step did not lead to a noticeable improvement in performance:
+
+Noisy Contrast Enhancement: The method used for contrast enhancement is introducing noise or distorting the information in the image rather than highlighting the important features. This could indicate that this is not a good fit for this particular type of data.
+
+Redundancy in Information: The HSV color space already separates color information (Hue and Saturation) from intensity (Value), so contrast enhancement might be mostly affecting the Value channel. If the model was already effectively learning from the color channels, then improving the contrast in the Value channel can not add much additional useful information.
