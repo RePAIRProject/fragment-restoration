@@ -25,4 +25,4 @@ The implementation of this approach in our code:
       return image
 
 The metrics result of this approach:
-
+![Metrics](https://github.com/RePAIRProject/fragment-restoration/blob/main/UNET/Model_to_detect_3_classes_simplified_HSV_Contrast/Metrics.png)
