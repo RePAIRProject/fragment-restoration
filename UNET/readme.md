@@ -48,14 +48,33 @@ Continuing from the previous approach, the same model was further trained for an
 Training log, metrics, related code and  random visual results are in the folder "MModel_to_detect_4_classes_150epoch".
 
 
-**Next Steps to improve model performance**
+***Model Experiments with differant colour spaces***
 
-Moving forward, several avenues can be explored to further improve the model's performance:
+I experimented with different color spaces for our image input, transforming the original RGB images to HSV, Lab, and YCrCB. I trained the model on images using each of these color spaces individually, and also with a combination of these color spaces. The corresponding models can be found in the following folders:
 
-Fine-tuning and Transfer Learning
+Model_to_detect_3_classes_simplified_HSV: Model trained using images transformed from RGB to HSV.
+Model_to_detect_3_classes_simplified_Lab: Model trained using images transformed from RGB to Lab.
+Model_to_detect_3_classes_simplified_YCrCB: Model trained using images transformed from RGB to YCrCB.
 
-Hyperparameter Tuning
+Additionally, I trained models using input images that combined multiple color spaces. Each of these combined color spaces model are found in the following folders:
 
-Model Ensembling: Considering ensembling multiple versions of the simplified UNet model. Each model can be trained with different initialization weights or random seeds, resulting in diverse predictions. Combining the predictions from multiple models can help reduce noise and improve overall segmentation accuracy.
+Model_to_detect_3_classes_simplified_RGB_HSV_Lab_combined: Model trained using images with a combined 9-channel input (3 channels for RGB, 3 for HSV, and 3 for Lab).
+Model_to_detect_3_classes_simplified_RGB_HSV_Lab_YCrBC_combined: Model trained using images with a combined 12-channel input (3 channels for RGB, 3 for HSV, 3 for Lab, and 3 for YCrBC).
 
-Class-specific data augmentation
+**Results**
+
+In my evaluation, the models trained with combined color spaces and the model trained with only HSV channels achieved similar performances in the first 50 epochs, with mean IoU scores close to 90%. However, the HSV-only model demonstrated slightly better metrics, indicating that the added complexity of the additional color channels may not provide significant benefits.
+
+The addition of more color channels increases both the memory requirement and the training time of the models. Therefore, considering the trade-off between performance and computational efficiency, the model with only HSV color space appears to be the most promising candidate for further improvement.
+
+**Next Steps**
+
+Based on findings, I propose the following steps for further enhancing our image segmentation model:
+
+    Contrast Enhancement: In the referenced paper, the authors used contrast enhancement during the pre-processing of images. This step could be valuable, as it appears that our current model struggles with low-contrast colors.
+
+    Black Marks Removal: During evaluation, we found that our model sometimes detects black marks. We can improve the model's performance by testing on images where these black marks have been removed and inpainted.
+
+    Extended Training: The training curves for our current best-performing model suggest that it is still learning. Training the model for a larger number of epochs could result in better metrics.
+
+    Hyperparameter Tuning: As with any machine learning model, further improvements may be achieved through more extensive hyperparameter tuning.
