@@ -71,10 +71,10 @@ The addition of more color channels increases both the memory requirement and th
 
 Based on findings, I propose the following steps for further enhancing our image segmentation model:
 
-    Contrast Enhancement: In the referenced paper, the authors used contrast enhancement during the pre-processing of images. This step could be valuable, as it appears that our current model struggles with low-contrast colors.
+Contrast Enhancement: In the referenced paper, the authors used contrast enhancement during the pre-processing of images. This step could be valuable, as it appears that our current model struggles with low-contrast colors.
 
-    Black Marks Removal: During evaluation, we found that our model sometimes detects black marks. We can improve the model's performance by testing on images where these black marks have been removed and inpainted.
+Black Marks Removal: During evaluation, we found that our model sometimes detects black marks. We can improve the model's performance by testing on images where these black marks have been removed and inpainted.
 
-    Extended Training: The training curves for our current best-performing model suggest that it is still learning. Training the model for a larger number of epochs could result in better metrics.
+Extended Training: The training curves for our current best-performing model suggest that it is still learning. Training the model for a larger number of epochs could result in better metrics.
 
-    Hyperparameter Tuning: As with any machine learning model, further improvements may be achieved through more extensive hyperparameter tuning.
+Hyperparameter Tuning: As with any machine learning model, further improvements may be achieved through more extensive hyperparameter tuning.
