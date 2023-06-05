@@ -71,7 +71,7 @@ The addition of more color channels increases both the memory requirement and th
 
 Based on findings, I propose the following steps for further enhancing our image segmentation model:
 
-Contrast Enhancement: In the referenced paper, the authors used contrast enhancement during the pre-processing of images. This step could be valuable, as it appears that our current model struggles with low-contrast colors.
+Contrast Enhancement: In the referenced paper, the authors used contrast enhancement during the pre-processing of images. This step could be valuable, as it appears that our current model struggles with low-contrast colors. **(Resulsts uploaded here https://github.com/RePAIRProject/fragment-restoration/tree/main/UNET/Model_to_detect_3_classes_simplified_HSV_Contrast)**
 
 Black Marks Removal: During evaluation, we found that our model sometimes detects black marks. We can improve the model's performance by testing on images where these black marks have been removed and inpainted.
 
