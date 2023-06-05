@@ -75,4 +75,4 @@ Contrast Enhancement: In the referenced paper, the authors used contrast enhance
 
 Black Marks Removal: During evaluation, we found that our model sometimes detects black marks. We can improve the model's performance by testing on images where these black marks have been removed and inpainted.
 
-Extended Training: The training curves for our current best-performing model suggest that it is still learning. Training the model for a larger number of epochs could result in better metrics.
+Extended Training: The training curves for our current best-performing model suggest that it is still learning. Training the model for a larger number of epochs could result in better metrics.  **(Results uploaded here https://github.com/RePAIRProject/fragment-restoration/tree/main/UNET/Model_to_detect_3_classes_simplified_HSV_150epoch)**
