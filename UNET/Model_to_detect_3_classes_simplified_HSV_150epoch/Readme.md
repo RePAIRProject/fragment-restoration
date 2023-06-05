@@ -6,3 +6,5 @@ Metrics of this model in the first 68 epochs:
 *The training stopped due to early stopping with patience of 10.
 
 Moreovr, predictions of this model over all test images are in the zip file.
+
+**So far this approach is the best one, reaching exactly 90% meanIOU.**
