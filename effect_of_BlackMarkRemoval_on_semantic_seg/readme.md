@@ -3,6 +3,7 @@ In this experiment, we choose 5 images semantic segmentation network could not i
 Then we apply Black mark detection using YOLO on them, 
 later we apply our inpainting method, 
 and we get semantic segmentation network's prediction on these new "black marks removed" images.
+Although, numerical results (meanIOU) remains more or less the same. Visually we can see a more appealing result in cleaned fragments.
 
 Below we plot the images before and after this method:
 
