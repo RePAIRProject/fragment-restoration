@@ -5,9 +5,9 @@ import cv2
 import numpy as np 
 # Model
 model = torch.hub.load('ultralytics/yolov5', 'custom', path='/home/lucap/code/fragment-restoration/Yolov5_Black_Mark_Detection/Yolo_best_model_pretrained_best_weights.pt')
-images_folder = '/media/lucap/big_data/datasets/repair/puzzle2D/motif_segmentation/images_cropped'
-output_folder = '/media/lucap/big_data/datasets/repair/puzzle2D/motif_segmentation/black_mark_region_cropped'
-vis_folder = '/media/lucap/big_data/datasets/repair/puzzle2D/motif_segmentation/black_mark_visualization_cropped'
+images_folder = '/media/lucap/big_data/datasets/repair/puzzle2D/motif_segmentation/images'
+output_folder = '/media/lucap/big_data/datasets/repair/puzzle2D/motif_segmentation/black_mark_region'
+vis_folder = '/media/lucap/big_data/datasets/repair/puzzle2D/motif_segmentation/black_mark_visualization'
 os.makedirs(output_folder, exist_ok=True)
 os.makedirs(vis_folder, exist_ok=True)
 
@@ -30,7 +30,7 @@ for img in os.listdir(images_folder):
 
         # red rectangles for visualization
         cv2.rectangle(imgcv, (np.round(xmin.item()).astype(int), np.round(ymin.item()).astype(int)), \
-            (np.round(xmax.item()).astype(int), np.round(ymax.item()).astype(int)), (0, 0, 255))
+            (np.round(xmax.item()).astype(int), np.round(ymax.item()).astype(int)), (0, 0, 255), 3)
     
     cv2.imwrite(os.path.join(output_folder, img), bm_detection)
     cv2.imwrite(os.path.join(vis_folder, img), imgcv)
