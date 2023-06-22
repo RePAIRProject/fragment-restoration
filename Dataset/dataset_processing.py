@@ -32,12 +32,30 @@ def visualize_segmentation_mask(mask,n_classes):
     plt.colorbar(ticks=range(n_classes))
     plt.show()
 
-
 def remap_mask(mask, mapping):
     remapped_mask = np.zeros_like(mask)
     for old_class, new_class in mapping.items():
         remapped_mask[mask == old_class] = new_class
     return remapped_mask
+
+def crop_image(img, mask, image_name):
+    binary_mask = mask > 0
+    rows = np.any(binary_mask, axis=1)
+    cols = np.any(binary_mask, axis=0)
+
+    # check if there are any foreground objects
+    if not np.any(rows) or not np.any(cols):
+        print(f"No foreground objects found in the image: {image_name}")
+        return img, mask
+
+    y_min, y_max = np.where(rows)[0][[0, -1]]
+    x_min, x_max = np.where(cols)[0][[0, -1]]
+
+    cropped_img = img[y_min:y_max, x_min:x_max]
+    cropped_mask = mask[y_min:y_max, x_min:x_max]
+
+    return cropped_img, cropped_mask
+
 
 def export_segments_ai():
 
@@ -235,61 +253,6 @@ def refine_masks(input_masks,output_masks,fg_masks):
         m_file_path = os.path.join(output_masks, mfile)
         cv2.imwrite(m_file_path, combined_mask)
 
-def plot_ds_statistics():
-    import matplotlib.pyplot as plt
-    import seaborn as sns
-
-    # Pie chart for number of images starting with "Decor1" and "Decor2"
-    labels = ['Decor1', 'Decor2']
-    sizes = [decor1_images, decor2_images]
-
-    fig1, ax1 = plt.subplots()
-    wedges, texts, autotexts = ax1.pie(sizes, labels=labels,
-                                       autopct=lambda p: '{:.1f}%\n({:.0f})'.format(p, (p / 100) * sum(sizes)),
-                                       startangle=90)
-    ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-    plt.title('Images from "Decor1" and "Decor2"')
-    plt.setp(autotexts, size=8, weight='bold')
-    plt.savefig('images_decor1_decor2_pie_chart.png')
-    plt.show()
-
-    # Bar plot for number of images containing each pixel value
-    pixel_values = list(pixel_value_counts.keys())
-    counts = list(pixel_value_counts.values())
-
-    fig2, ax2 = plt.subplots()
-    colors = sns.color_palette("husl", len(pixel_values))
-    ax2.bar(pixel_values, counts, color=colors)
-    plt.title('Distribution of image count over the different pixel classes')
-    plt.ylabel('Image count per class')
-    plt.xlabel('Pixel Class Labels')
-    plt.xticks(pixel_values)
-
-    # Add the legend
-    legend_labels = {
-        1: "(1) red_spiral_pattern",
-        2: "(2) flower_blue",
-        3: "(3) thin_straight_red_lins",
-        4: "(4) animal_blue_bird",
-        5: "(5) curved_green_line",
-        6: "(6) red_dot",
-        7: "(7) horse",
-        8: "(8) flower_red",
-        9: "(9) animal_yellow_bird",
-        10: "(10) thick_straight_red_line",
-        11: "(11) yd_big_flower",
-        12: "(12) yd_small_flower"
-    }
-
-    # Create custom handles for the legend, skipping pixel value 0
-    handles = [
-        plt.Rectangle((0, 0), 1, 1, color=colors[np.where(np.array(pixel_values) == pv)[0][0]], label=legend_labels[pv])
-        for pv in pixel_values if pv in legend_labels
-    ]
-    ax2.legend(handles=handles, title='Motif categories', loc='best')
-
-    plt.savefig('images_pixel_values_bar_plot_with_colored_legend.png')
-    plt.show()
 #----------------------------------------------------
 # Export repositories from segments.ai
 #export_segments_ai()
@@ -301,17 +264,43 @@ def plot_ds_statistics():
 
 #----------------------------------------------------
 # Merge exported repositories into images_from_segments and masks_from_segments folders
-segments_images_path = '/Dataset/segments_images'
-segments_masks_path = '/Dataset/segments_masks'
-merge_segments_folders(segments_images_path,segments_masks_path)
+#segments_images_path = '/Dataset/segments_images'
+#segments_masks_path = '/Dataset/segments_masks'
+#merge_segments_folders(segments_images_path,segments_masks_path)
 
 #----------------------------------------------------
 # Create foreground masks for the fragment region, and save them into fg folder. Assign 0 to the background of all images
-#images_folder = '/home/sinem/PycharmProjects/fragment-restoration/Dataset/images/'
+images_folder = '/home/sinem/PycharmProjects/fragment-restoration/Dataset/images/'
 fg_folder = '/home/sinem/PycharmProjects/fragment-restoration/Dataset/fg/'
 #create_fg(segments_images_path,images_folder,fg_folder)
 
 #----------------------------------------------------
 # Refine masks
 output_masks = '/home/sinem/PycharmProjects/fragment-restoration/Dataset/masks/'
-refine_masks(segments_masks_path,output_masks,fg_folder)
+#refine_masks(segments_masks_path,output_masks,fg_folder)
+
+#----------------------------------------------------
+# Crop images and masks
+cropped_masks = '/home/sinem/PycharmProjects/fragment-restoration/Dataset/masks_cropped/'
+cropped_images = '/home/sinem/PycharmProjects/fragment-restoration/Dataset/images_cropped/'
+
+os.makedirs(cropped_masks, exist_ok=True)
+os.makedirs(cropped_images, exist_ok=True)
+
+mask_files = os.listdir(output_masks)
+img_files = os.listdir(images_folder)
+
+for imfile in img_files:
+
+    im_file_path = os.path.join(images_folder, imfile)
+    m_file_path = os.path.join(output_masks, f"{imfile[:-4]}_label_ground-truth_semantic.png")
+
+    img = np.array(cv2.imread(im_file_path))
+    mask = np.array(cv2.imread(m_file_path))
+
+    cropped_img, cropped_mask = crop_image(img, mask, imfile)
+
+    cv2.imwrite(os.path.join(cropped_images, imfile), cropped_img)
+
+    cv2.imwrite(os.path.join(cropped_masks, f"{imfile[:-4]}_label_ground-truth_semantic.png"), cropped_mask)
+
