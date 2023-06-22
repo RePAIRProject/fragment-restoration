@@ -12,3 +12,9 @@ Application of the following methods for fresco fragment restoration:
 - balanced contrast enhancement technique (BCET), 
 - Contrast limited adaptive histogram equalization (CLAHE) : https://towardsdatascience.com/clahe-and-thresholding-in-python-3bf690303e40 
 - ICA 
+
+
+## WIP: Detecting black marks
+
+The script `detect_black_marks.py` detect the black marks on the images (with the resolution of the input image) and saves as output binary masks (white filled boxes) and visualization (red rectangles).
+It requires the pretrained to work (please change paths).
