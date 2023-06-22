@@ -3,11 +3,13 @@ import pdb
 import os
 import cv2 
 import numpy as np 
+
 # Model
 model = torch.hub.load('ultralytics/yolov5', 'custom', path='/home/lucap/code/fragment-restoration/Yolov5_Black_Mark_Detection/Yolo_best_model_pretrained_best_weights.pt')
-images_folder = '/media/lucap/big_data/datasets/repair/puzzle2D/motif_segmentation/images'
-output_folder = '/media/lucap/big_data/datasets/repair/puzzle2D/motif_segmentation/black_mark_region'
-vis_folder = '/media/lucap/big_data/datasets/repair/puzzle2D/motif_segmentation/black_mark_visualization'
+img_folder_name = 'corrected_images_cropped'
+images_folder = f'/media/lucap/big_data/datasets/repair/puzzle2D/motif_segmentation/{img_folder_name}'
+output_folder = f'/media/lucap/big_data/datasets/repair/puzzle2D/motif_segmentation/black_mark_for_{img_folder_name}'
+vis_folder = f'/media/lucap/big_data/datasets/repair/puzzle2D/motif_segmentation/black_mark_visualization_for_{img_folder_name}'
 os.makedirs(output_folder, exist_ok=True)
 os.makedirs(vis_folder, exist_ok=True)
 
