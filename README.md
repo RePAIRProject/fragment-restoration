@@ -14,9 +14,9 @@ Application of the following methods for fresco fragment restoration:
 - ICA 
 
 
-# MoFFF (Motif on Fresco Fragment F?)
+# MoFF (Motif on Fresco Fragment )
 
-The `MoFFF` dataset is prepared by the `prepare_MoFFF.py` script and contains at the moment 3 folders:
+The `MoFF` dataset is prepared by the `prepare_MoFF.py` script and contains at the moment 3 folders:
 - `RGB`: original (without any black mark removal) color images
 - `segmap3c`: segmentation maps with 3 classes (background, foreground, motif)
 - `segmap14c`: segmentation maps with 14 classes (background, foreground, motif1, motif2, ecc.. there are 12 motifs)
