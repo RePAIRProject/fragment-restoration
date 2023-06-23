@@ -12,6 +12,7 @@ import pdb
 from tensorflow.keras import layers
 import random 
 import json 
+from sklearn.utils.class_weight import compute_class_weight
 
 # train_masks[train_masks == 15] = 2
 # val_masks[val_masks == 15] = 2
@@ -131,20 +132,62 @@ def load_masks_from_folder(folder_path, size=256):
     
     return images_array
 
+
+
+
+def consistent_random_augmentation(image, seed):
+    tfk_rotate = tf.keras.layers.RandomRotation(
+        0.2,
+        fill_mode='reflect',
+        interpolation='bilinear', 
+        seed=42)
+    # Apply random flip horizontally
+    image = tf.image.random_flip_left_right(image, seed=seed)
+    # Apply random flip vertically
+    image = tf.image.random_flip_up_down(image, seed=seed)
+    image = tfk_rotate(image)
+    # image = tf.image.random_brightness(image, max_delta=0.3, seed=seed)
+    # image = tf.image.random_hue(
+    #     image, max_delta=0.3, seed=seed
+    # )
+    # image = tf.image.random_contrast(image, 0.2, 0.5, seed=seed)
+    # crop_size = 196
+    # cropped_img = tf.image.random_crop(
+    #     value=image[:,:,:3], size = [crop_size, crop_size, 3], seed=seed, name=None
+    # )
+    # image = tf.image.resize_with_crop_or_pad(
+    #     cropped_img, image.shape[0], image.shape[1]
+    # )
+
+    return image
+
+def create_class_weight_map(weight_dict, masks):
+    weight_map = np.zeros(masks.shape)
+    for class_idx, weight in weight_dict.items():
+        weight_map[masks == class_idx] = weight
+
+    return weight_map
+
+
+
 def main():
 
     ## Parameters 
     IMG_SIZE = 256 
-    EPOCHS = 10
+    EPOCHS = 150
     BATCH_SIZE = 32
-    AUGMENT = False
-    COLOR_SPACE = 'RGB'
+    AUGMENT = True
+    COLOR_SPACE = 'HSV'
+    CLASSES = 14
+    LEARNING_RATE = 0.0001
     par = {
         'img':IMG_SIZE,
         'epochs':EPOCHS,
         'batch_size':BATCH_SIZE,
         'augment':AUGMENT,
         'color_space':COLOR_SPACE,
+        'classes':CLASSES,
+        'learning_rate':LEARNING_RATE
     }
 
     root_folder_MoFF = '/media/lucap/big_data/datasets/repair/puzzle2D/motif_segmentation/MoFF/'
@@ -152,34 +195,47 @@ def main():
     train_images = load_images(os.path.join(root_folder_MoFF, 'train.txt'), rgb_folder_MoFF, size=IMG_SIZE, color_space=COLOR_SPACE)
     valid_images = load_images(os.path.join(root_folder_MoFF, 'validation.txt'), rgb_folder_MoFF, size=IMG_SIZE, color_space=COLOR_SPACE)
     #test_images = load_images(os.path.join(root_folder_MoFF, 'test.txt'), rgb_folder_MoFF, size=IMG_SIZE)
-    masks_folder_MoFF = os.path.join(root_folder_MoFF, 'segmap3c')
+    masks_folder_MoFF = os.path.join(root_folder_MoFF, f'segmap{str(CLASSES)}c')
     train_masks = load_masks(os.path.join(root_folder_MoFF, 'train.txt'), masks_folder_MoFF, size=IMG_SIZE)
     valid_masks = load_masks(os.path.join(root_folder_MoFF, 'validation.txt'), masks_folder_MoFF, size=IMG_SIZE)
     #test_masks = load_masks(os.path.join(root_folder_MoFF, 'test.txt'), masks_folder_MoFF, size=IMG_SIZE)
 
-    train_masks_one_hot = to_categorical(train_masks, num_classes=3)
-    valid_masks_one_hot = to_categorical(valid_masks, num_classes=3)
+    train_masks_one_hot = to_categorical(train_masks, num_classes=CLASSES)
+    valid_masks_one_hot = to_categorical(valid_masks, num_classes=CLASSES)
     #pdb.set_trace()
-    optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)    
+    optimizer = tf.keras.optimizers.Adam(learning_rate=LEARNING_RATE)    
     num_classes = train_masks.shape[-1]
-    model = simplified_unet_model()
+    model = simplified_unet_model(num_classes=CLASSES)
+    
+
+    # Compute the class weights for the original data
+    unique_classes, counts = np.unique(train_masks, return_counts=True)
+    class_weights = compute_class_weight('balanced', classes=unique_classes, y=train_masks.ravel())
+    class_weight_dict = dict(zip(unique_classes, class_weights))
+    train_masks_weight_map = create_class_weight_map(class_weight_dict, train_masks)
 
     # Create a tf.data pipeline
-    train_dataset = tf.data.Dataset.from_tensor_slices((train_images, train_masks_one_hot))
+    train_dataset = tf.data.Dataset.from_tensor_slices((train_images, train_masks_one_hot, train_masks_weight_map))
     train_dataset = train_dataset.batch(BATCH_SIZE)
-
+    
     val_dataset = tf.data.Dataset.from_tensor_slices((valid_images, valid_masks_one_hot))
     val_dataset = val_dataset.batch(BATCH_SIZE)#.map(lambda x, y: (resize(x), resize(y)))
 
-    if AUGMENT:
-        data_augmentation = tf.keras.Sequential([
-            layers.Resizing(IMG_SIZE, IMG_SIZE),
-            layers.RandomFlip("horizontal_and_vertical"),
-            layers.RandomRotation(0.2),
-        ])
-        train_dataset.map(lambda x, y: (data_augmentation(x), data_augmentation(y)))
+    #print(class_weight_dict)
+    #pdb.set_trace()
 
-    output_dir = f'run_{str(random.random())[2:]}'
+    augment_text = ''
+    if AUGMENT:
+        augment_text = "augmented"
+        # data_augmentation = tf.keras.Sequential([
+        #     layers.Resizing(IMG_SIZE, IMG_SIZE),
+        #     layers.RandomFlip("horizontal_and_vertical"),
+        #     layers.RandomRotation(0.2),
+        # ])
+        train_dataset.map(lambda x, y, z: (consistent_random_augmentation(x, seed=42), consistent_random_augmentation(y, seed=42), z))
+
+    run_name = f'/run{str(random.random())[2:]}_{CLASSES}classes_{EPOCHS}epochs_{augment_text}_{COLOR_SPACE}'
+    output_dir = f"runs/{run_name}"
     os.makedirs(output_dir, exist_ok=True)
     with open(os.path.join(output_dir, 'parameters.json'), 'w') as jp:
         json.dump(par, jp, indent=3)
@@ -191,7 +247,7 @@ def main():
 
     checkpoint = ModelCheckpoint(f'{output_dir}/best_unet_model_da.h5', monitor='loss', save_best_only=True, verbose=1)
     early_stopping = EarlyStopping(monitor='loss', patience=10, verbose=1)
-    csv_logger = CSVLogger('training_log.csv')
+    csv_logger = CSVLogger(f'{output_dir}/training_log.csv')
 
     # Train the model
     history = model.fit(
@@ -204,10 +260,10 @@ def main():
     # history = model.fit(
     #     x=train_images,
     #     y=train_masks_one_hot,
-    #     # sample_weight=train_masks_weight_map,
-    #     batch_size=32,
-    #     epochs=1,
-    #     # validation_data=(val_images, val_masks_one_hot),
+    #     sample_weight=train_masks_weight_map,
+    #     batch_size=BATCH_SIZE,
+    #     epochs=EPOCHS,
+    #     validation_data=(valid_images, valid_masks_one_hot),
     #     callbacks=[checkpoint, early_stopping, csv_logger]
     # )
 
@@ -215,7 +271,7 @@ def main():
     plt.figure(figsize=(12, 4))
     plt.subplot(1, 2, 1)
     plt.plot(history.history['loss'], label='Training Loss')
-    #plt.plot(history.history['val_loss'], label='Validation Loss')
+    plt.plot(history.history['val_loss'], label='Validation Loss')
     plt.xlabel('Epoch')
     plt.ylabel('Loss')
     plt.legend()
@@ -224,7 +280,7 @@ def main():
     # Plot the training and validation mean IoU
     plt.subplot(1, 2, 2)
     plt.plot(history.history['custom_mean_io_u'], label='Training MeanIoU')
-    #plt.plot(history.history['val_custom_mean_io_u_1'], label='Validation MeanIoU')
+    plt.plot(history.history['val_custom_mean_io_u'], label='Validation MeanIoU')
     plt.xlabel('Epoch')
     plt.ylabel('MeanIoU')
     plt.legend()
@@ -234,16 +290,23 @@ def main():
     plt.savefig(f'{output_dir}/metrics.png', dpi=300, bbox_inches='tight')
     #pdb.set_trace()
 
+    with open(os.path.join(output_dir, 'history.json'), 'w') as jp:
+        json.dump(history.history, jp, indent=3)
+
     plt.figure(figsize=(32,24))
     plt.subplot(241)
     plt.imshow(cv2.cvtColor((train_images[0,:,:,:]*255).astype(np.uint8), cv2.COLOR_BGR2RGB))
     plt.subplot(242)
     plt.title('Ground Truth')
-    plt.imshow(train_masks_one_hot[0,:,:,:])
+    if len(train_masks.shape) == 3:
+        plt.imshow(train_masks[0,:,:])
+    elif len(train_masks.shape) == 4:
+        plt.imshow(train_masks[0,:,:,:])
     plt.subplot(243)
     plt.title('Predictions (values)')
     pred = model.predict(np.expand_dims(train_images[0,:,:,:], axis=0), batch_size=1)[0,:,:,:]
-    plt.imshow(pred)
+    if CLASSES == 3:
+        plt.imshow(pred)
     plt.subplot(244)
     plt.title('Predictions (labels)')
     pred_labels = tf.argmax(pred, axis=-1)
@@ -252,11 +315,15 @@ def main():
     plt.imshow(cv2.cvtColor((train_images[100,:,:,:]*255).astype(np.uint8), cv2.COLOR_BGR2RGB))
     plt.subplot(246)
     plt.title('Ground Truth')
-    plt.imshow(train_masks_one_hot[100,:,:,:])
+    if len(train_masks.shape) == 3:
+        plt.imshow(train_masks[100,:,:])
+    elif len(train_masks.shape) == 4:
+        plt.imshow(train_masks[100,:,:,:])
     plt.subplot(247)
     plt.title('Predictions (values)')
     pred = model.predict(np.expand_dims(train_images[100,:,:,:], axis=0), batch_size=1)[0,:,:,:]
-    plt.imshow(pred)
+    if CLASSES == 3:
+        plt.imshow(pred)
     plt.subplot(248)
     plt.title('Predictions (labels)')
     pred_labels = tf.argmax(pred, axis=-1)
@@ -268,11 +335,15 @@ def main():
     plt.imshow(cv2.cvtColor((train_images[50,:,:,:]*255).astype(np.uint8), cv2.COLOR_BGR2RGB))
     plt.subplot(242)
     plt.title('Ground Truth')
-    plt.imshow(train_masks_one_hot[50,:,:,:])
+    if len(train_masks.shape) == 3:
+        plt.imshow(train_masks[50,:,:])
+    elif len(train_masks.shape) == 4:
+        plt.imshow(train_masks[50,:,:,:])
     plt.subplot(243)
     plt.title('Predictions (values)')
     pred = model.predict(np.expand_dims(train_images[50,:,:,:], axis=0), batch_size=1)[0,:,:,:]
-    plt.imshow(pred)
+    if CLASSES == 3:
+        plt.imshow(pred)
     plt.subplot(244)
     plt.title('Predictions (labels)')
     pred_labels = tf.argmax(pred, axis=-1)
@@ -281,17 +352,32 @@ def main():
     plt.imshow(cv2.cvtColor((train_images[250,:,:,:]*255).astype(np.uint8), cv2.COLOR_BGR2RGB))
     plt.subplot(246)
     plt.title('Ground Truth')
-    plt.imshow(train_masks_one_hot[250,:,:,:])
+    if len(train_masks.shape) == 3:
+        plt.imshow(train_masks[250,:,:])
+    elif len(train_masks.shape) == 4:
+        plt.imshow(train_masks[250,:,:,:])
     plt.subplot(247)
     plt.title('Predictions (values)')
     pred = model.predict(np.expand_dims(train_images[250,:,:,:], axis=0), batch_size=1)[0,:,:,:]
-    plt.imshow(pred)
+    if CLASSES == 3:
+        plt.imshow(pred)
     plt.subplot(248)
     plt.title('Predictions (labels)')
     pred_labels = tf.argmax(pred, axis=-1)
     plt.imshow(pred_labels)
     plt.savefig(f'{output_dir}/prediction_50_250.png', dpi=300, bbox_inches='tight')
     #pdb.set_trace()
+
+    print("#" * 50)
+    print("RESULTS FOR")
+    print(run_name)
+    print("\nLAST")
+    print(f"Train Accuracy: {history.history['custom_mean_io_u'][-1]:.03f}")
+    print(f"Val Accuracy: {history.history['val_custom_mean_io_u'][-1]:.03f}")
+
+    print("BEST")
+    print(f"Train Accuracy: {np.max(history.history['custom_mean_io_u']):.03f}")
+    print(f"Val Accuracy: {np.max(history.history['val_custom_mean_io_u']):.03f}")
 
 if __name__ == "__main__":
     main()
