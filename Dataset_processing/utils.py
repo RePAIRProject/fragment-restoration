@@ -94,12 +94,12 @@ def export_segments_ai(v_release):
 def merge_segments_folders(images_output_path, masks_output_path, v_release):
     # Merge all masks from 3 different folders into the same folder
     folder_paths = [
-        os.path.join('/home/sinem/PycharmProjects/fragment-restoration/Dataset/segments/UNIVE_decor2/', v_release),
+        os.path.join('/Dataset/segments/UNIVE_decor2/', v_release),
         os.path.join(
-            '/home/sinem/PycharmProjects/fragment-restoration/Dataset/segments/lucap_repair_fragments_patterns/',
+            '/Dataset/segments/lucap_repair_fragments_patterns/',
             v_release),
         os.path.join(
-            '/home/sinem/PycharmProjects/fragment-restoration/Dataset/segments/sinemaslan_repair_fragments_patterns-clone/',
+            '/Dataset/segments/sinemaslan_repair_fragments_patterns-clone/',
             v_release)]
 
     os.makedirs(images_output_path, exist_ok=True)

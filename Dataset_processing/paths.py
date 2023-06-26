@@ -2,8 +2,8 @@
 
 
 # original input images after exporting from segments.ai and merging three repositories into single file for segments_masks and segments_images
-segments_images_path = '/home/sinem/PycharmProjects/fragment-restoration/Dataset/segments_images'
-segments_masks_path = '/home/sinem/PycharmProjects/fragment-restoration/Dataset/segments_masks'
+segments_images_path = '/Dataset/segments_images'
+segments_masks_path = '/Dataset/segments_masks'
 
 # foreground, images and masks folder  after processing the segments_images and segments_masks
 fg_folder = '/home/sinem/PycharmProjects/fragment-restoration/Dataset/fg/'
