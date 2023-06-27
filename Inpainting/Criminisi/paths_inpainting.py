@@ -22,3 +22,6 @@ bm_cropped_imgs = '/home/sinem/PycharmProjects/fragment-restoration/Dataset/BOFF
 
 images_wh = '/home/sinem/PycharmProjects/fragment-restoration/Dataset/images_WhiteBG'
 masked_bm = '/home/sinem/PycharmProjects/fragment-restoration/Dataset/BOFF/black_mark_region_masked_with_fg'
+
+images_inpainted = '/home/sinem/PycharmProjects/fragment-restoration/Results/inpainting_criminisi/images_bm_inpainted_ps11'
+images_inpainted_cropped = '/home/sinem/PycharmProjects/fragment-restoration/Results/inpainting_criminisi/images_bm_inpainted_ps11_cropped/'
