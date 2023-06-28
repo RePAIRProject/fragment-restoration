@@ -4,8 +4,6 @@ Image enhancement for:
 1) fresco motif classification , 
 2) puzzle solving
 
-
-
 Application of the following methods for fresco fragment restoration:
 - Histogram equalization, 
 - gamma correction, 
