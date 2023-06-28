@@ -135,21 +135,23 @@ def load_masks_from_folder(folder_path, size=256):
 
 
 
-def consistent_random_augmentation(image, seed):
-    tfk_rotate = tf.keras.layers.RandomRotation(
+def consistent_random_augmentation(image, geometric, color, seed):
+    if geometric:
+        tfk_rotate = tf.keras.layers.RandomRotation(
         0.2,
         fill_mode='reflect',
         interpolation='bilinear', 
         seed=42)
-    # Apply random flip horizontally
-    image = tf.image.random_flip_left_right(image, seed=seed)
-    # Apply random flip vertically
-    image = tf.image.random_flip_up_down(image, seed=seed)
-    image = tfk_rotate(image)
-    # image = tf.image.random_brightness(image, max_delta=0.3, seed=seed)
-    # image = tf.image.random_hue(
-    #     image, max_delta=0.3, seed=seed
-    # )
+        # Apply random flip horizontally
+        image = tf.image.random_flip_left_right(image, seed=seed)
+        # Apply random flip vertically
+        image = tf.image.random_flip_up_down(image, seed=seed)
+        image = tfk_rotate(image)
+    if color:
+        image = tf.image.random_brightness(image, max_delta=0.3, seed=seed)
+        image = tf.image.random_hue(
+            image, max_delta=0.3, seed=seed
+        )
     # image = tf.image.random_contrast(image, 0.2, 0.5, seed=seed)
     # crop_size = 196
     # cropped_img = tf.image.random_crop(
@@ -168,6 +170,14 @@ def create_class_weight_map(weight_dict, masks):
 
     return weight_map
 
+# not the best idea to declare it here but I don't know how to pass it to the scheduler as parameter
+SCHEDULER_EPOCHS_STEP = 25
+
+def scheduler(epoch, lr):
+  if epoch < SCHEDULER_EPOCHS_STEP:
+    return lr
+  else:
+    return lr * tf.math.exp(-0.1)
 
 
 def main():
@@ -177,21 +187,28 @@ def main():
     EPOCHS = 150
     BATCH_SIZE = 32
     AUGMENT = True
+    aug_geometric = True
+    aug_color = False
     COLOR_SPACE = 'HSV'
-    CLASSES = 14
-    LEARNING_RATE = 0.0001
+    CLASSES = 3
+    LEARNING_RATE = 0.001
+    #SCHEDULER_EPOCHS_STEP = 25
     par = {
         'img':IMG_SIZE,
         'epochs':EPOCHS,
         'batch_size':BATCH_SIZE,
         'augment':AUGMENT,
+        'augment_geom':aug_geometric,
+        'augment_color':aug_color,
         'color_space':COLOR_SPACE,
         'classes':CLASSES,
-        'learning_rate':LEARNING_RATE
+        'learning_rate':LEARNING_RATE,
+        'scheduler_step':SCHEDULER_EPOCHS_STEP
     }
 
     root_folder_MoFF = '/media/lucap/big_data/datasets/repair/puzzle2D/motif_segmentation/MoFF/'
-    rgb_folder_MoFF = os.path.join(root_folder_MoFF, 'RGB')
+    images_name = 'RGB_inpainted'
+    rgb_folder_MoFF = os.path.join(root_folder_MoFF, images_name)
     train_images = load_images(os.path.join(root_folder_MoFF, 'train.txt'), rgb_folder_MoFF, size=IMG_SIZE, color_space=COLOR_SPACE)
     valid_images = load_images(os.path.join(root_folder_MoFF, 'validation.txt'), rgb_folder_MoFF, size=IMG_SIZE, color_space=COLOR_SPACE)
     #test_images = load_images(os.path.join(root_folder_MoFF, 'test.txt'), rgb_folder_MoFF, size=IMG_SIZE)
@@ -221,20 +238,12 @@ def main():
     val_dataset = tf.data.Dataset.from_tensor_slices((valid_images, valid_masks_one_hot))
     val_dataset = val_dataset.batch(BATCH_SIZE)#.map(lambda x, y: (resize(x), resize(y)))
 
-    #print(class_weight_dict)
-    #pdb.set_trace()
-
     augment_text = ''
     if AUGMENT:
         augment_text = "augmented"
-        # data_augmentation = tf.keras.Sequential([
-        #     layers.Resizing(IMG_SIZE, IMG_SIZE),
-        #     layers.RandomFlip("horizontal_and_vertical"),
-        #     layers.RandomRotation(0.2),
-        # ])
-        train_dataset.map(lambda x, y, z: (consistent_random_augmentation(x, seed=42), consistent_random_augmentation(y, seed=42), z))
+        train_dataset.map(lambda x, y, z: (consistent_random_augmentation(x, aug_geometric, aug_color, seed=42), consistent_random_augmentation(y, aug_geometric, aug_color, seed=42), z))
 
-    run_name = f'/run{str(random.random())[2:]}_{CLASSES}classes_{EPOCHS}epochs_{augment_text}_{COLOR_SPACE}'
+    run_name = f'/run{str(random.random())[2:]}_{images_name}_images_{CLASSES}classes_{EPOCHS}epochs_{augment_text}_lr{LEARNING_RATE}_{COLOR_SPACE}'
     output_dir = f"runs/{run_name}"
     os.makedirs(output_dir, exist_ok=True)
     with open(os.path.join(output_dir, 'parameters.json'), 'w') as jp:
@@ -246,15 +255,17 @@ def main():
                 metrics=[CustomMeanIoU(num_classes)])
 
     checkpoint = ModelCheckpoint(f'{output_dir}/best_unet_model_da.h5', monitor='loss', save_best_only=True, verbose=1)
-    early_stopping = EarlyStopping(monitor='loss', patience=10, verbose=1)
+    early_stopping = EarlyStopping(monitor='loss', patience=5, verbose=1)
     csv_logger = CSVLogger(f'{output_dir}/training_log.csv')
+
+    lr_sched = tf.keras.callbacks.LearningRateScheduler(scheduler)
 
     # Train the model
     history = model.fit(
         train_dataset,
         validation_data=val_dataset,
         epochs=EPOCHS,
-        callbacks=[checkpoint, early_stopping, csv_logger]
+        callbacks=[checkpoint, early_stopping, csv_logger, lr_sched]
     )
 
     # history = model.fit(
@@ -288,10 +299,17 @@ def main():
 
     # Save the plot
     plt.savefig(f'{output_dir}/metrics.png', dpi=300, bbox_inches='tight')
-    #pdb.set_trace()
+    pdb.set_trace()
 
+    history_dict = {
+        'loss': history.history['loss'],
+        'val_loss': history.history['val_loss'],
+        'custom_mean_io_u': history.history['custom_mean_io_u'],
+        'val_custom_mean_io_u': history.history['val_custom_mean_io_u'],
+        'lr': np.array(history.history['lr']).astype(float).tolist()
+    }
     with open(os.path.join(output_dir, 'history.json'), 'w') as jp:
-        json.dump(history.history, jp, indent=3)
+        json.dump(history_dict, jp, indent=3)
 
     plt.figure(figsize=(32,24))
     plt.subplot(241)
@@ -370,7 +388,7 @@ def main():
 
     print("#" * 50)
     print("RESULTS FOR")
-    print(run_name)
+    print(run_name[1:])
     print("\nLAST")
     print(f"Train Accuracy: {history.history['custom_mean_io_u'][-1]:.03f}")
     print(f"Val Accuracy: {history.history['val_custom_mean_io_u'][-1]:.03f}")

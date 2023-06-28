@@ -118,7 +118,7 @@ def main(args):
     CLASSES = parameters["classes"]
 
     root_folder_MoFF = '/media/lucap/big_data/datasets/repair/puzzle2D/motif_segmentation/MoFF/'
-    rgb_folder_MoFF = os.path.join(root_folder_MoFF, 'RGB')
+    rgb_folder_MoFF = os.path.join(root_folder_MoFF, 'RGB_inpainted')
     # train_images = load_images(os.path.join(root_folder_MoFF, 'train.txt'), rgb_folder_MoFF, size=IMG_SIZE, color_space=COLOR_SPACE)
     valid_images = load_images(os.path.join(root_folder_MoFF, 'validation.txt'), rgb_folder_MoFF, size=IMG_SIZE, color_space='HSV') #parameters["color_space"])
     test_images = load_images(os.path.join(root_folder_MoFF, 'test.txt'), rgb_folder_MoFF, size=IMG_SIZE, color_space='HSV')
