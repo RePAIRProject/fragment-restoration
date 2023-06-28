@@ -84,7 +84,7 @@ def load_images(img_list_path, folder, size=256, color_space='BGR'):
         imgcv_resized = cv2.resize(imgcv, (size, size))
         imgcv_resized = imgcv_resized / 255.0
         images_array[j, :, :, :] = imgcv_resized
-    return images_array
+    return images_array, img_list
 
 def load_masks(img_list_path, folder, size=256):
 
@@ -118,13 +118,16 @@ def main(args):
     CLASSES = parameters["classes"]
 
     root_folder_MoFF = '/media/lucap/big_data/datasets/repair/puzzle2D/motif_segmentation/MoFF/'
-    rgb_folder_MoFF = os.path.join(root_folder_MoFF, 'RGB_inpainted')
+    rgb_folder_name = 'RGB'
+    if 'inpainted' in args.f:
+        rgb_folder_name += '_inpainted'
+    rgb_folder_MoFF = os.path.join(root_folder_MoFF, rgb_folder_name)
     # train_images = load_images(os.path.join(root_folder_MoFF, 'train.txt'), rgb_folder_MoFF, size=IMG_SIZE, color_space=COLOR_SPACE)
-    valid_images = load_images(os.path.join(root_folder_MoFF, 'validation.txt'), rgb_folder_MoFF, size=IMG_SIZE, color_space='HSV') #parameters["color_space"])
-    test_images = load_images(os.path.join(root_folder_MoFF, 'test.txt'), rgb_folder_MoFF, size=IMG_SIZE, color_space='HSV')
+    # valid_images = load_images(os.path.join(root_folder_MoFF, 'validation.txt'), rgb_folder_MoFF, size=IMG_SIZE, color_space='HSV') #parameters["color_space"])
+    test_images, img_list = load_images(os.path.join(root_folder_MoFF, 'test.txt'), rgb_folder_MoFF, size=IMG_SIZE, color_space='HSV')
     masks_folder_MoFF = os.path.join(root_folder_MoFF, f'segmap{str(CLASSES)}c')
     # train_masks = load_masks(os.path.join(root_folder_MoFF, 'train.txt'), masks_folder_MoFF, size=IMG_SIZE)
-    valid_masks = load_masks(os.path.join(root_folder_MoFF, 'validation.txt'), masks_folder_MoFF, size=IMG_SIZE)
+    # valid_masks = load_masks(os.path.join(root_folder_MoFF, 'validation.txt'), masks_folder_MoFF, size=IMG_SIZE)
     test_masks = load_masks(os.path.join(root_folder_MoFF, 'test.txt'), masks_folder_MoFF, size=IMG_SIZE)
     
     augment_text = ''
@@ -159,10 +162,13 @@ def main(args):
         plt.imshow(pred_labels)
         plt.axis('off')
         #plt.show()
-        plt.savefig(os.path.join(output_dir, f"image_{j}.png"), dpi=300, bbox_inches='tight')
+        plt.savefig(os.path.join(output_dir, f"vis_{img_list[j]}"), dpi=300, bbox_inches='tight')
         plt.close()
         #pdb.set_trace()
 
+        cv2.imwrite(os.path.join(output_dir, img_list[j]), pred_labels.numpy())
+        cv2.imwrite(os.path.join(output_dir, f"1class_{img_list[j]}"), (pred_labels.numpy() > 1)*255)
+        plt.imsave(os.path.join(output_dir, f"{img_list[j]}_plt.png"), pred_labels)
     #pdb.set_trace()
 
 if __name__ == "__main__":

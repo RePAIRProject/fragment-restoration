@@ -138,10 +138,7 @@ def load_masks_from_folder(folder_path, size=256):
 def consistent_random_augmentation(image, geometric, color, seed):
     if geometric:
         tfk_rotate = tf.keras.layers.RandomRotation(
-        0.2,
-        fill_mode='reflect',
-        interpolation='bilinear', 
-        seed=42)
+        0.2, fill_mode='reflect', interpolation='bilinear', seed=42)
         # Apply random flip horizontally
         image = tf.image.random_flip_left_right(image, seed=seed)
         # Apply random flip vertically
@@ -183,9 +180,9 @@ def scheduler(epoch, lr):
 def main():
 
     ## Parameters 
-    IMG_SIZE = 256 
-    EPOCHS = 150
-    BATCH_SIZE = 32
+    IMG_SIZE = 512 
+    EPOCHS = 100
+    BATCH_SIZE = 16
     AUGMENT = True
     aug_geometric = True
     aug_color = False
@@ -222,7 +219,7 @@ def main():
     #pdb.set_trace()
     optimizer = tf.keras.optimizers.Adam(learning_rate=LEARNING_RATE)    
     num_classes = train_masks.shape[-1]
-    model = simplified_unet_model(num_classes=CLASSES)
+    model = simplified_unet_model(input_size=(IMG_SIZE, IMG_SIZE, 3), num_classes=CLASSES)
     
 
     # Compute the class weights for the original data
@@ -255,7 +252,7 @@ def main():
                 metrics=[CustomMeanIoU(num_classes)])
 
     checkpoint = ModelCheckpoint(f'{output_dir}/best_unet_model_da.h5', monitor='loss', save_best_only=True, verbose=1)
-    early_stopping = EarlyStopping(monitor='loss', patience=5, verbose=1)
+    early_stopping = EarlyStopping(monitor='val_loss', patience=10, verbose=1)
     csv_logger = CSVLogger(f'{output_dir}/training_log.csv')
 
     lr_sched = tf.keras.callbacks.LearningRateScheduler(scheduler)
