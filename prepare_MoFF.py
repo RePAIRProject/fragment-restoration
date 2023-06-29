@@ -9,8 +9,6 @@ import random
 def write_shape_to_file(path, list_of_shapes):
 
     f = open(path, "w")
-
-
     for shape in list_of_shapes:
 
         f.write(f"{shape[0]}")
@@ -120,15 +118,15 @@ def main():
                 # y /= h 
                 # hc /= h 
             
-            # cv2.rectangle(img, (x, y), (x+wcnt, y+hcnt), (0, 0, 255), 5)
-            # plt.subplot(121)
-            # plt.title(f"x: {x}, y: {y}, w: {wcnt}, h: {hcnt}")
-            # plt.imshow(img) 
-            # plt.subplot(122)
-            # plt.title(f"x: {xc}, y: {yc}, w: {wc}, h: {hc}")
-            # plt.imshow(cv_motif)
-            # plt.show()
-            # pdb.set_trace() #np.savetxt(os.path.join(output_yolo, f'RPf_{img_id}.txt'), annotations, fmt="%d %f:3f %d %d %d")
+                # cv2.rectangle(img, (x, y), (x+wcnt, y+hcnt), (0, 0, 255), 5)
+                # plt.subplot(121)
+                # plt.title(f"x: {x}, y: {y}, w: {wcnt}, h: {hcnt}")
+                # plt.imshow(img) 
+                # plt.subplot(122)
+                # plt.title(f"x: {xc}, y: {yc}, w: {wc}, h: {hc}")
+                # plt.imshow(cv_motif)
+                # plt.show()
+                # pdb.set_trace() #np.savetxt(os.path.join(output_yolo, f'RPf_{img_id}.txt'), annotations, fmt="%d %f:3f %d %d %d")
                 annotations_motif.append([motif_label, xc, yc, wc, hc])
         if len(single_annotations) > 0:
             np.savetxt(os.path.join(output_yolo_bc, f'RPf_{img_id}.txt'), single_annotations, fmt="%d %.3f %.3f %.3f %.3f")

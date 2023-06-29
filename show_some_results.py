@@ -2,9 +2,6 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dropout, concatenate, UpSampling2D
 from tensorflow.keras.metrics import MeanIoU
-# from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping, CSVLogger
-# from tensorflow.keras.utils import to_categorical
-# from PIL import Image
 import os
 import cv2 
 import numpy as np 

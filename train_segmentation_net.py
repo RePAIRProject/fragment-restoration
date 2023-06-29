@@ -53,6 +53,58 @@ def simplified_unet_model(input_size=(256, 256, 3), num_classes = 3):
     model = tf.keras.Model(inputs=inputs, outputs=outputs)
     return model
 
+def classic_unet_model(input_size=(512, 512, 3), num_classes = 3):
+    inputs = tf.keras.Input(input_size)
+    
+    # Encoder (contracting) path
+    c1 = Conv2D(32, (3, 3), activation='relu', padding='same')(inputs)
+    c1 = Conv2D(32, (3, 3), activation='relu', padding='same')(c1)
+    p1 = MaxPooling2D((2, 2))(c1)
+    
+    c2 = Conv2D(64, (3, 3), activation='relu', padding='same')(p1)
+    c2 = Conv2D(64, (3, 3), activation='relu', padding='same')(c2)
+    p2 = MaxPooling2D((2, 2))(c2)
+
+    c3 = Conv2D(128, (3, 3), activation='relu', padding='same')(p2)
+    c3 = Conv2D(128, (3, 3), activation='relu', padding='same')(c3)
+    p3 = MaxPooling2D((2, 2))(c3)
+    
+    c4 = Conv2D(256, (3, 3), activation='relu', padding='same')(p3)
+    c4 = Conv2D(256, (3, 3), activation='relu', padding='same')(c4)
+    p4 = MaxPooling2D((2, 2))(c4)
+    
+    # Bottleneck
+    c5 = Conv2D(128, (3, 3), activation='relu', padding='same')(p4)
+    c5 = Conv2D(128, (3, 3), activation='relu', padding='same')(c5)
+
+    # Decoder (expanding) path
+    u6 = UpSampling2D((2, 2))(c5)
+    u6 = concatenate([u6, c4])
+    c6 = Conv2D(256, (3, 3), activation='relu', padding='same')(u6)
+    c6 = Conv2D(256, (3, 3), activation='relu', padding='same')(c6)
+    
+    u7 = UpSampling2D((2, 2))(c6)
+    u7 = concatenate([u7, c3])
+    c7 = Conv2D(128, (3, 3), activation='relu', padding='same')(u7)
+    c7 = Conv2D(128, (3, 3), activation='relu', padding='same')(c7)
+    
+    u8 = UpSampling2D((2, 2))(c7)
+    u8 = concatenate([u8, c2])
+    c8 = Conv2D(64, (3, 3), activation='relu', padding='same')(u8)
+    c8 = Conv2D(64, (3, 3), activation='relu', padding='same')(c8)
+    
+    u9 = UpSampling2D((2, 2))(c8)
+    u9 = concatenate([u9, c1])
+    c9 = Conv2D(32, (3, 3), activation='relu', padding='same')(u9)
+    c9 = Conv2D(32, (3, 3), activation='relu', padding='same')(c9)
+
+    # Output layer
+    outputs = Conv2D(num_classes, (1, 1), activation='softmax')(c9)
+
+    # Create the U-Net model
+    model = tf.keras.Model(inputs=inputs, outputs=outputs)
+    return model
+
 class CustomMeanIoU(MeanIoU):
     def __init__(self, num_classes):
         super().__init__(num_classes=num_classes)
@@ -181,7 +233,7 @@ def main():
 
     ## Parameters 
     IMG_SIZE = 512 
-    EPOCHS = 100
+    EPOCHS = 200
     BATCH_SIZE = 16
     AUGMENT = True
     aug_geometric = True
@@ -189,6 +241,7 @@ def main():
     COLOR_SPACE = 'HSV'
     CLASSES = 3
     LEARNING_RATE = 0.001
+    MODEL = 'classic'
     #SCHEDULER_EPOCHS_STEP = 25
     par = {
         'img':IMG_SIZE,
@@ -200,11 +253,12 @@ def main():
         'color_space':COLOR_SPACE,
         'classes':CLASSES,
         'learning_rate':LEARNING_RATE,
-        'scheduler_step':SCHEDULER_EPOCHS_STEP
+        'scheduler_step':SCHEDULER_EPOCHS_STEP,
+        'model':MODEL
     }
 
     root_folder_MoFF = '/media/lucap/big_data/datasets/repair/puzzle2D/motif_segmentation/MoFF/'
-    images_name = 'RGB_inpainted'
+    images_name = 'RGB'
     rgb_folder_MoFF = os.path.join(root_folder_MoFF, images_name)
     train_images = load_images(os.path.join(root_folder_MoFF, 'train.txt'), rgb_folder_MoFF, size=IMG_SIZE, color_space=COLOR_SPACE)
     valid_images = load_images(os.path.join(root_folder_MoFF, 'validation.txt'), rgb_folder_MoFF, size=IMG_SIZE, color_space=COLOR_SPACE)
@@ -213,14 +267,15 @@ def main():
     train_masks = load_masks(os.path.join(root_folder_MoFF, 'train.txt'), masks_folder_MoFF, size=IMG_SIZE)
     valid_masks = load_masks(os.path.join(root_folder_MoFF, 'validation.txt'), masks_folder_MoFF, size=IMG_SIZE)
     #test_masks = load_masks(os.path.join(root_folder_MoFF, 'test.txt'), masks_folder_MoFF, size=IMG_SIZE)
+    if MODEL == 'simplified':
+        model = simplified_unet_model(input_size=(IMG_SIZE, IMG_SIZE, 3), num_classes=CLASSES)
+    elif MODEL == 'classic':
+        model = classic_unet_model(input_size=(IMG_SIZE, IMG_SIZE, 3), num_classes=CLASSES)
+    else:
+        model = classic_unet_model(input_size=(IMG_SIZE, IMG_SIZE, 3), num_classes=CLASSES)
 
     train_masks_one_hot = to_categorical(train_masks, num_classes=CLASSES)
     valid_masks_one_hot = to_categorical(valid_masks, num_classes=CLASSES)
-    #pdb.set_trace()
-    optimizer = tf.keras.optimizers.Adam(learning_rate=LEARNING_RATE)    
-    num_classes = train_masks.shape[-1]
-    model = simplified_unet_model(input_size=(IMG_SIZE, IMG_SIZE, 3), num_classes=CLASSES)
-    
 
     # Compute the class weights for the original data
     unique_classes, counts = np.unique(train_masks, return_counts=True)
@@ -228,28 +283,32 @@ def main():
     class_weight_dict = dict(zip(unique_classes, class_weights))
     train_masks_weight_map = create_class_weight_map(class_weight_dict, train_masks)
 
+    #train_masks_one_hot = to_categorical(train_masks, num_classes=3)
+
     # Create a tf.data pipeline
     train_dataset = tf.data.Dataset.from_tensor_slices((train_images, train_masks_one_hot, train_masks_weight_map))
-    train_dataset = train_dataset.batch(BATCH_SIZE)
+    train_dataset = train_dataset.batch(BATCH_SIZE).prefetch(BATCH_SIZE)
     
     val_dataset = tf.data.Dataset.from_tensor_slices((valid_images, valid_masks_one_hot))
-    val_dataset = val_dataset.batch(BATCH_SIZE)#.map(lambda x, y: (resize(x), resize(y)))
+    val_dataset = val_dataset.batch(BATCH_SIZE).prefetch(BATCH_SIZE)#.map(lambda x, y: (resize(x), resize(y)))
 
     augment_text = ''
     if AUGMENT:
         augment_text = "augmented"
         train_dataset.map(lambda x, y, z: (consistent_random_augmentation(x, aug_geometric, aug_color, seed=42), consistent_random_augmentation(y, aug_geometric, aug_color, seed=42), z))
 
-    run_name = f'/run{str(random.random())[2:]}_{images_name}_images_{CLASSES}classes_{EPOCHS}epochs_{augment_text}_lr{LEARNING_RATE}_{COLOR_SPACE}'
+    run_name = f'/run{str(random.random())[2:]}_{MODEL}UNET_{images_name}_images{IMG_SIZE}x{IMG_SIZE}_{CLASSES}classes_{EPOCHS}epochs_{augment_text}_lr{LEARNING_RATE}_{COLOR_SPACE}'
     output_dir = f"runs/{run_name}"
     os.makedirs(output_dir, exist_ok=True)
     with open(os.path.join(output_dir, 'parameters.json'), 'w') as jp:
         json.dump(par, jp, indent=3)
+    
+    optimizer = tf.keras.optimizers.Adam(learning_rate=LEARNING_RATE)        
 
     # Compile the model
     model.compile(optimizer=optimizer,
                 loss='categorical_crossentropy',
-                metrics=[CustomMeanIoU(num_classes)])
+                metrics=[CustomMeanIoU(num_classes=CLASSES)])
 
     checkpoint = ModelCheckpoint(f'{output_dir}/best_unet_model_da.h5', monitor='loss', save_best_only=True, verbose=1)
     early_stopping = EarlyStopping(monitor='val_loss', patience=10, verbose=1)

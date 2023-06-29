@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Model
-model_name = 'train_box_per_motif_300epochs'
+model_name = 'train_single_annotations_300_epochs'
 model = torch.hub.load('ultralytics/yolov5', 'custom', path=f'/home/lucap/code/yolov5/runs/train/{model_name}/weights/best.pt')
 
 images_folder = '/media/lucap/big_data/datasets/repair/puzzle2D/motif_segmentation/MoFF/yolo_dataset_shapes/test/images'
