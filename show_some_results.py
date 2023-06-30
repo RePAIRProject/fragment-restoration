@@ -33,7 +33,7 @@ def main(args):
 
     if args.i != 'test_set':
         name = args.i.split('/')[-1]
-    output_dir = os.path.join(run_folder, f'results_{parameters['model']}_UNET_{IMG_SIZE}x{IMG_SIZE}_{name}')
+    output_dir = os.path.join(run_folder, f'results_{parameters["model"]}_UNET_{IMG_SIZE}x{IMG_SIZE}_{name}')
     os.makedirs(output_dir, exist_ok=True)
 
     root_folder_MoFF = '/media/lucap/big_data/datasets/repair/puzzle2D/motif_segmentation/MoFF/'
