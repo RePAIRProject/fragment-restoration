@@ -10,6 +10,8 @@ Reulsts on the MoFF (v1, old) dataset
 | UNet | Simplified | 0.908 | 0.889 | `v1` | 150 | HSV | Geom | 0.0001 |
 | UNet | Simplified | 0.920 | 0.894 | `v2` | 150 | HSV | Geom | 0.001+`scheduler` |
 | UNet | Simplified | 0.917 | 0.901 | `v2`+inpainted | 150 | HSV | Geom | 0.001+`scheduler` |
+| UNet | Simplified | 0.936 | 0.929 | `v2`(512px) | 150 | HSV | Geom | 0.001+`scheduler` |
+
 
 ## 14 Classes 
 | Backbone | Model | Train IoU | Val IoU | Dataset | Epochs | Color | D. Aug. | LR |

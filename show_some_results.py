@@ -10,122 +10,47 @@ from tensorflow.keras import layers
 import random 
 import json 
 import argparse 
-
-def simplified_unet_model(input_size=(256, 256, 3), num_classes = 3):
-    inputs = tf.keras.Input(input_size)
-    
-    # Encoder (contracting) path
-    c1 = Conv2D(32, (3, 3), activation='relu', padding='same')(inputs)
-    c1 = Conv2D(32, (3, 3), activation='relu', padding='same')(c1)
-    p1 = MaxPooling2D((2, 2))(c1)
-    
-    c2 = Conv2D(64, (3, 3), activation='relu', padding='same')(p1)
-    c2 = Conv2D(64, (3, 3), activation='relu', padding='same')(c2)
-    p2 = MaxPooling2D((2, 2))(c2)
-    
-    # Bottleneck
-    c5 = Conv2D(128, (3, 3), activation='relu', padding='same')(p2)
-    c5 = Conv2D(128, (3, 3), activation='relu', padding='same')(c5)
-    
-    u8 = UpSampling2D((2, 2))(c5)
-    u8 = concatenate([u8, c2])
-    c8 = Conv2D(64, (3, 3), activation='relu', padding='same')(u8)
-    c8 = Conv2D(64, (3, 3), activation='relu', padding='same')(c8)
-    
-    u9 = UpSampling2D((2, 2))(c8)
-    u9 = concatenate([u9, c1])
-    c9 = Conv2D(32, (3, 3), activation='relu', padding='same')(u9)
-    c9 = Conv2D(32, (3, 3), activation='relu', padding='same')(c9)
-
-    # Output layer
-    outputs = Conv2D(num_classes, (1, 1), activation='softmax')(c9)
-
-    # Create the U-Net model
-    model = tf.keras.Model(inputs=inputs, outputs=outputs)
-    return model
-
-class CustomMeanIoU(MeanIoU):
-    def __init__(self, num_classes, **kwargs):
-        super().__init__(num_classes=num_classes, **kwargs)
-
-    def update_state(self, y_true, y_pred, sample_weight=None):
-        y_true = tf.argmax(y_true, axis=-1)
-        y_pred = tf.argmax(y_pred, axis=-1)
-        return super().update_state(y_true, y_pred, sample_weight)
-    
-def iou_loss(y_true, y_pred):
-    def f_score(y_true, y_pred, beta=1):
-        smooth = 1e-15
-        y_true = tf.reshape(y_true, [-1])
-        y_pred = tf.reshape(y_pred, [-1])
-        
-        true_positive = tf.reduce_sum(y_true * y_pred)
-        false_positive = tf.reduce_sum(y_pred) - true_positive
-        false_negative = tf.reduce_sum(y_true) - true_positive
-
-        return (1 + beta**2) * true_positive + smooth / ((1 + beta**2) * true_positive + beta**2 * false_negative + false_positive + smooth)
-
-    return 1 - f_score(y_true, y_pred)
-
-def load_images(img_list_path, folder, size=256, color_space='BGR'):
-    
-    img_list = np.loadtxt(img_list_path, dtype='str')
-    images_array = np.zeros((len(img_list), size, size, 3))
-    for j, img_name in enumerate(img_list):
-        img_path = os.path.join(folder, img_name)
-        imgcv = cv2.imread(img_path)
-        if color_space == 'RGB':
-            imgcv = cv2.cvtColor(imgcv, cv2.COLOR_BGR2RGB)
-        elif color_space == 'HSV':
-            imgcv = cv2.cvtColor(imgcv, cv2.COLOR_BGR2HSV)
-        imgcv_resized = cv2.resize(imgcv, (size, size))
-        imgcv_resized = imgcv_resized / 255.0
-        images_array[j, :, :, :] = imgcv_resized
-    return images_array, img_list
-
-def load_masks(img_list_path, folder, size=256):
-
-    img_list = np.loadtxt(img_list_path, dtype='str')
-    images_array = np.zeros((len(img_list), size, size))
-    for j, img_name in enumerate(img_list):
-        img_path = os.path.join(folder, img_name)
-        imgcv = cv2.imread(img_path, 0)
-        imgcv_resized = cv2.resize(imgcv, (size, size))
-        images_array[j, :, :] = imgcv_resized
-    return images_array
+from unet import simplified_unet_model, classic_unet_model, CustomMeanIoU
+from utils import load_images, load_masks
 
 def main(args):
 
     run_folder = f'runs/{args.f}'
-    model = simplified_unet_model()
-    #pdb.set_trace()
-    custom_objects = {"CustomMeanIoU": CustomMeanIoU}
-    with tf.keras.utils.custom_object_scope(custom_objects):
-        model = tf.keras.saving.load_model(os.path.join(run_folder, 'best_unet_model_da.h5'))
-        #        'UNET/Model_to_detect_3_classes_simplified_HSV_150epoch/Model_to_detect_3_classes_simplified_HSV_150epoch.h5')
-        
-        #
-    output_dir = os.path.join(run_folder, 'results_test_set')
-    os.makedirs(output_dir, exist_ok=True)
 
     with open(os.path.join(run_folder, 'parameters.json'), 'r') as parj:
         parameters = json.load(parj)
     
     IMG_SIZE = parameters['img'] 
     CLASSES = parameters["classes"]
+    if parameters['model'] == 'simplified':
+        model = simplified_unet_model(input_size=(IMG_SIZE, IMG_SIZE, 3))
+    else:
+        model = classic_unet_model(input_size=(IMG_SIZE, IMG_SIZE, 3))
+
+    custom_objects = {"CustomMeanIoU": CustomMeanIoU}
+    with tf.keras.utils.custom_object_scope(custom_objects):
+        model = tf.keras.saving.load_model(os.path.join(run_folder, 'best_unet_model_da.h5'))
+
+    if args.i != 'test_set':
+        name = args.i.split('/')[-1]
+    output_dir = os.path.join(run_folder, f'results_{parameters['model']}_UNET_{IMG_SIZE}x{IMG_SIZE}_{name}')
+    os.makedirs(output_dir, exist_ok=True)
 
     root_folder_MoFF = '/media/lucap/big_data/datasets/repair/puzzle2D/motif_segmentation/MoFF/'
     rgb_folder_name = 'RGB'
     if 'inpainted' in args.f:
         rgb_folder_name += '_inpainted'
-    rgb_folder_MoFF = os.path.join(root_folder_MoFF, rgb_folder_name)
-    # train_images = load_images(os.path.join(root_folder_MoFF, 'train.txt'), rgb_folder_MoFF, size=IMG_SIZE, color_space=COLOR_SPACE)
-    # valid_images = load_images(os.path.join(root_folder_MoFF, 'validation.txt'), rgb_folder_MoFF, size=IMG_SIZE, color_space='HSV') #parameters["color_space"])
-    test_images, img_list = load_images(os.path.join(root_folder_MoFF, 'test.txt'), rgb_folder_MoFF, size=IMG_SIZE, color_space='HSV')
-    masks_folder_MoFF = os.path.join(root_folder_MoFF, f'segmap{str(CLASSES)}c')
-    # train_masks = load_masks(os.path.join(root_folder_MoFF, 'train.txt'), masks_folder_MoFF, size=IMG_SIZE)
-    # valid_masks = load_masks(os.path.join(root_folder_MoFF, 'validation.txt'), masks_folder_MoFF, size=IMG_SIZE)
-    test_masks = load_masks(os.path.join(root_folder_MoFF, 'test.txt'), masks_folder_MoFF, size=IMG_SIZE)
+    
+    if args.i != 'test_set':
+        custom_folder = args.i
+        test_images, img_list = load_images(folder=custom_folder, size=IMG_SIZE, color_space='HSV')
+        custom_folder_masks = args.m 
+        test_masks = load_masks(folder=custom_folder_masks, size=IMG_SIZE)
+    else:
+        rgb_folder_MoFF = os.path.join(root_folder_MoFF, rgb_folder_name)
+        test_images, img_list = load_images(folder=rgb_folder_MoFF, img_list_path=os.path.join(root_folder_MoFF, 'test.txt'), size=IMG_SIZE, color_space='HSV')
+        masks_folder_MoFF = os.path.join(root_folder_MoFF, f'segmap{str(CLASSES)}c')
+        test_masks = load_masks(folder=masks_folder_MoFF, img_list_path=os.path.join(root_folder_MoFF, 'test.txt'), size=IMG_SIZE)
     
     augment_text = ''
     if parameters['augment']:
@@ -172,5 +97,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='Show results for a trained model')
     parser.add_argument('-f', type=str, default='', help='folder with everything (model, weights, results)')
+    parser.add_argument('-i', type=str, default='test_set', help='custom input images folder (if you do not want to use the test set, which will be the default)')
+    parser.add_argument('-m', type=str, default='test_set', help='custom input images folder (if you do not want to use the test set, which will be the default)')
     args = parser.parse_args()
     main(args)
