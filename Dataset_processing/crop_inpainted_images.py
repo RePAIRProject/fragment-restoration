@@ -4,7 +4,7 @@ import numpy as np
 import cv2
 import sys
 
-from Inpainting.Criminisi import paths_inpainting as paths
+from black_mark_removal.inpainting_Criminisi import paths_inpainting as paths
 
 
 os.makedirs(paths.images_inpainted_cropped, exist_ok=True)
