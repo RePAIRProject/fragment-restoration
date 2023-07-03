@@ -1,4 +1,4 @@
-# [UNIVE Thesis] Aref 
+<!--- #[UNIVE Thesis] Aref 
 
 Image enhancement for:
 1) fresco motif classification , 
@@ -9,7 +9,7 @@ Application of the following methods for fresco fragment restoration:
 - gamma correction, 
 - balanced contrast enhancement technique (BCET), 
 - Contrast limited adaptive histogram equalization (CLAHE) : https://towardsdatascience.com/clahe-and-thresholding-in-python-3bf690303e40 
-- ICA 
+- ICA ---> 
 
 
 # MoFF (Motif on Fresco Fragment )
