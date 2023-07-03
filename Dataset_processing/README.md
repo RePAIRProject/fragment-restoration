@@ -31,4 +31,5 @@ Dataset is created following the stages below:
 - Final images and masks folders are added into Teams/wp3/files/Motif_Segmentation
 
 
-**You can change the path definitions in paths.py for input / output files. To perform each operation uncomment it in dataset_processing.py**
+**The path definitions can be updated in paths.py for input / output files** 
+**_dataset_processing.py_ performs operations mentioned above**

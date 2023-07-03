@@ -18,3 +18,8 @@ cropped_fgs = '/home/sinem/PycharmProjects/fragment-restoration/Dataset/fg_cropp
 # black mark regions:
 bm_imgs = '/home/sinem/PycharmProjects/fragment-restoration/Dataset/black_mark_region/'
 bm_cropped_imgs = '/home/sinem/PycharmProjects/fragment-restoration/Dataset/black_mark_region_cropped/'
+
+# foreground, images and masks folder  after processing the segments_images and segments_masks
+fg_folder_matings = '/home/sinem/PycharmProjects/fragment-restoration/Dataset_mating/fg/'
+images_folder_matings = '/home/sinem/PycharmProjects/fragment-restoration/Dataset_mating/images/'
+masks_folder_matings = '/home/sinem/PycharmProjects/fragment-restoration/Dataset_mating/masks/'
