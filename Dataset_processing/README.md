@@ -7,6 +7,9 @@ in this dataset has pixel-level segmentation annotations. This dataset can be us
 and classification tasks for fractured fresco fragments. 
 
 
+- **The path definitions can be updated in paths.py for input / output files** 
+- **_dataset_processing.py_ performs operations mentioned below**
+
 Dataset is created following the stages below:
 
 - Three repositories were already created in [Segments.ai](Segments.ai) for pixel-wise annotations, namely, _lucap_repair_fragments_patterns_ , _sinemaslan_repair_fragments_patterns-clone_ , _UNIVE_decor2_. Segmentation masks and segmented input images are exported into Dataset/segments folder (check export_segments_ai function in dataset_processing).
@@ -31,4 +34,5 @@ Dataset is created following the stages below:
 - Final images and masks folders are added into Teams/wp3/files/Motif_Segmentation
 
 
-**You can change the path definitions in paths.py for input / output files. To perform each operation uncomment it in dataset_processing.py**
+
+
