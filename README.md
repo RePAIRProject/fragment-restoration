@@ -18,7 +18,7 @@ The `MoFF` dataset is prepared by the `prepare_MoFF.py` script and contains at t
 - `RGB`: original (without any black mark removal) color images
 - `segmap3c`: segmentation maps with 3 classes (background, foreground, motif)
 - `segmap14c`: segmentation maps with 14 classes (background, foreground, motif1, motif2, ecc.. there are 12 motifs)
-Images are cropped, but not resized.
+Images are cropped, but not resized.s
 
 The train, validation and test split are contained in `.txt` files in the root folder.
 
@@ -32,7 +32,7 @@ To run the training, use the script `train_segmentation_net.py`, which needs no 
 ```bash
 python train_segmentation_net.py
 ```
-Everything is inside there, at the beginning of the `main(args):` function there are the parameters (yes, they could be moved to a parameter file, it would be great!) and afterwards you see the dataset folder (`root_folder_MoFF = ..`) which is also hardcoded at the moment. This also assume you have the MoFF folder in your local pc and the subfolders and train/test split txt files. Check the `prepare_MoFF.py` in case.
+Everything is inside there, at the beginning of the `main(arg):` function there are the parameters (yes, they could be moved to a parameter file, it would be great!) and afterwards you see the dataset folder (`root_folder_MoFF = ..`) which is also hardcoded at the moment. This also assume you have the MoFF folder in your local pc and the subfolders and train/test split txt files. Check the `prepare_MoFF.py` in case.
 
 The training saves the results in single run subfolders (created) under the `runs` folder. The name has some random number and the parameters appended and inside you find model, graphics, sample predictions and parameters. The name of the run folder is printed on the terminal and can be copied to quickly use it for running inference.
 

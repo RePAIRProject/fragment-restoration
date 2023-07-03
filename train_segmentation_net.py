@@ -68,9 +68,10 @@ def main():
     aug_geometric = True
     aug_color = False
     COLOR_SPACE = 'HSV'
-    CLASSES = 3
+    CLASSES = 14
     LEARNING_RATE = 0.001
     MODEL = 'classic'
+    INPAINTED = False
     #SCHEDULER_EPOCHS_STEP = 25
     par = {
         'img':IMG_SIZE,
@@ -83,18 +84,21 @@ def main():
         'classes':CLASSES,
         'learning_rate':LEARNING_RATE,
         'scheduler_step':SCHEDULER_EPOCHS_STEP,
-        'model':MODEL
+        'model':MODEL,
+        'inpainted':INPAINTED
     }
 
     root_folder_MoFF = '/media/lucap/big_data/datasets/repair/puzzle2D/motif_segmentation/MoFF/'
     images_name = 'RGB'
+    if INPAINTED:
+        images_name += '_inpainted'
     rgb_folder_MoFF = os.path.join(root_folder_MoFF, images_name)
-    train_images = load_images(os.path.join(root_folder_MoFF, 'train.txt'), rgb_folder_MoFF, size=IMG_SIZE, color_space=COLOR_SPACE)
-    valid_images = load_images(os.path.join(root_folder_MoFF, 'validation.txt'), rgb_folder_MoFF, size=IMG_SIZE, color_space=COLOR_SPACE)
-    #test_images = load_images(os.path.join(root_folder_MoFF, 'test.txt'), rgb_folder_MoFF, size=IMG_SIZE)
+    train_images, train_images_list = load_images(folder=rgb_folder_MoFF, img_list_path=os.path.join(root_folder_MoFF, 'train.txt'), size=IMG_SIZE, color_space=COLOR_SPACE)
+    valid_images, valid_images_list = load_images(folder=rgb_folder_MoFF, img_list_path=os.path.join(root_folder_MoFF, 'validation.txt'), size=IMG_SIZE, color_space=COLOR_SPACE)
+    #test_images = load_images(folder=rgb_folder_MoFF, img_list_path=os.path.join(root_folder_MoFF, 'test.txt'), size=IMG_SIZE)
     masks_folder_MoFF = os.path.join(root_folder_MoFF, f'segmap{str(CLASSES)}c')
-    train_masks = load_masks(os.path.join(root_folder_MoFF, 'train.txt'), masks_folder_MoFF, size=IMG_SIZE)
-    valid_masks = load_masks(os.path.join(root_folder_MoFF, 'validation.txt'), masks_folder_MoFF, size=IMG_SIZE)
+    train_masks = load_masks(folder=masks_folder_MoFF, img_list_path=os.path.join(root_folder_MoFF, 'train.txt'), size=IMG_SIZE)
+    valid_masks = load_masks(folder=masks_folder_MoFF, img_list_path=os.path.join(root_folder_MoFF, 'validation.txt'), size=IMG_SIZE)
     #test_masks = load_masks(os.path.join(root_folder_MoFF, 'test.txt'), masks_folder_MoFF, size=IMG_SIZE)
     if MODEL == 'simplified':
         model = simplified_unet_model(input_size=(IMG_SIZE, IMG_SIZE, 3), num_classes=CLASSES)
