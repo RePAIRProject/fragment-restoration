@@ -1,28 +1,35 @@
 # Semantic Segmentation
 
-Reulsts on the MoFF (v1, old) dataset
+Reulsts on the MoFF dataset
 
-## 3 Classes
-| Backbone | Model | Train IoU | Val IoU | Dataset | Epochs | Color | D. Aug. | LR |
-|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|
-| UNet | Simplified | 0.886 | 0.866 | `v1` | 150 | RGB | Geom & Color | 0.0001 |
-| UNet | Simplified | 0.911 | 0.889 | `v1` | 150 | HSV | No | 0.0001 |
-| UNet | Simplified | 0.908 | 0.889 | `v1` | 150 | HSV | Geom | 0.0001 |
-| UNet | Simplified | 0.920 | 0.894 | `v2` | 150 | HSV | Geom | 0.001+`scheduler` |
-| UNet | Simplified | 0.917 | 0.901 | `v2`+inpainted | 150 | HSV | Geom | 0.001+`scheduler` |
-| UNet | Simplified | 0.936 | 0.929 | `v2`(512px) | 150 | HSV | Geom | 0.001+`scheduler` |
+## UNET: 3 Classes
+| Backbone | Model | Images | Train IoU | Val IoU | Color | D. Aug. | Image Size |
+|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|
+| UNet | Simplified | Original | 0.9198 | 0.8933 | HSV | Geom | 256 |
+| UNet | Simplified | Inpainted | - | - | HSV | Geom | 256 |
+| UNet | Classic | Original | 0.9357 | 0.9291 | HSV | Geom | 512 |
+| UNet | Classic | Inpainted | 0.8858 | 0.9057 | HSV | Geom | 512 |
+	
 
+## UNET: 14 Classes 
+| Backbone | Model | Images | Train IoU | Val IoU | Color | D. Aug. | Image Size |
+|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|
+| UNet | Simplified | Original | 0.2925 | 0.29 | HSV | Geom  | 256 |
+| UNet | Simplified | Inpainted | - | - | HSV | Geom  | 256 |
+| UNet | Classic | Original | 0.356 | 0.3057 | HSV | Geom  | 512 |
+| UNet | Classic | Inpainted | - | - | HSV | Geom  | 512 |
 
-## 14 Classes 
-| Backbone | Model | Train IoU | Val IoU | Dataset | Epochs | Color | D. Aug. | LR |
-|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|
-| UNet | Simplified | 0.292 | 0.290 | `v1` | 150 | HSV | Geom  | 0.0001 |
-| UNet | Simplified | 0.345 | 0.309 | `v1` | 150 | HSV | Geom  | 0.001+`scheduler` |
-| Yolov8 | Segmentation | - | 0.688 | `v2` | 100 | RGB | - | - |
+## Yolo: Bounding box (12 classes)
 
-# Bounding box (12 classes)
-| Model | Precision | Recall | Dataset | Epochs |
+| Model | Precision | Recall | mAP50 | Annotations | 
 |:-------:|:-------:|:-------:|:-------:|:-------:|
-| Yolov5 | ~0.8 | ~0.8 | single annotations | 300 | 
-| Yolov5 | 0.793 | 0.66 | box per motif | 300 | 
+| Yolov5 | 0.84264 | 0.81682 | 0.84042 | single annotations 
+| Yolov5 | 0.73498 | 0.69932 | 0.77455 | box per motif |  
+| Yolov8 | 0.764 | 0.768 | 0.827 | polygon masks |
+
+## Yolo: Pixel-wise Segmentation Masks (12 classes)
+
+| Model | Precision | Recall | mAP50 | Annotations | 
+|:-------:|:-------:|:-------:|:-------:|:-------:|
+| Yolov8 | 0.744 | 0.815 | 0.825 | polygon masks |
 

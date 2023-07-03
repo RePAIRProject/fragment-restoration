@@ -1,32 +1,26 @@
-# [UNIVE Thesis] Aref 
-
-Image enhancement for:
-1) fresco motif classification , 
-2) puzzle solving
-
-Application of the following methods for fresco fragment restoration:
-- Histogram equalization, 
-- gamma correction, 
-- balanced contrast enhancement technique (BCET), 
-- Contrast limited adaptive histogram equalization (CLAHE) : https://towardsdatascience.com/clahe-and-thresholding-in-python-3bf690303e40 
-- ICA 
-
-
 # MoFF (Motif on Fresco Fragment )
 
-The `MoFF` dataset is prepared by the `prepare_MoFF.py` script and contains at the moment 3 folders:
+The `MoFF` dataset is prepared by the `prepare_MoFF.py` script, it is uploaded in Teams and contains at the moment several folders:
 - `RGB`: original (without any black mark removal) color images
+- `RGB_inpained`: inpainted color images
 - `segmap3c`: segmentation maps with 3 classes (background, foreground, motif)
 - `segmap14c`: segmentation maps with 14 classes (background, foreground, motif1, motif2, ecc.. there are 12 motifs)
-Images are cropped, but not resized.s
+- `motifs`: only motifs (all other pixels are deleted), created from ground truth
+- `annotations_boxes_components`: yolo-style annotations with one box for each component of any motif 
+- `annotations_boxes_motif`: yolo-style annotations with one box for motif 
+- `annotations_shpae`: yolo-v8seg-style annotations (polygons) 
+- `yolo_dataset_boxes`: full yolo dataset (images are duplicated, yes) for training for bounding box detection
+- `yolo_dataset_shapes`: full yolo dataset (images are duplicated, yes) for training for segmentation (use yolo-v8)
 
-The train, validation and test split are contained in `.txt` files in the root folder.
+Images are cropped, but not resized.
 
-# How to use the scripts
+The train, validation and test split are contained in `.txt` files in the root folder. They are list of file names, the files have always the same names inside each folder! This helps to keep consistency, and test set is the same across different trainings (unet, yolo).
+
+# Motif Segmentation
 
 Not everything is fully cleaned and polished, but it should be understandable and usable.
 
-### Training UNet
+## Training UNet
 
 To run the training, use the script `train_segmentation_net.py`, which needs no additional parameters and can be run as:
 ```bash
@@ -36,7 +30,7 @@ Everything is inside there, at the beginning of the `main(arg):` function there 
 
 The training saves the results in single run subfolders (created) under the `runs` folder. The name has some random number and the parameters appended and inside you find model, graphics, sample predictions and parameters. The name of the run folder is printed on the terminal and can be copied to quickly use it for running inference.
 
-### Inference with UNet
+## Inference with UNet
 
 To run inference, there is another script called `show_some_results.py`. This requires some parameters, usually the run folder is enough. It can be passed with the `-f` parameter, so an example launch would be:
 ```bash
@@ -49,9 +43,37 @@ python show_some_results.py -f run16885392688472511_classicUNET_RGB_images512x51
 ```
 This will run on `images_cropped` and `masks_cropped` folders and save the results in `results_images_cropped` within the subfolder of the run of the training (the one gave with `-f`)/
 
+**NOTE** This does not actually save any numerical results on the test set. I started to create a `performance_unet.py` for that, but `iou` (from `iou_loss(y_true, y_pred)` in `unet.py` returns negative ious! I do not have enough time to debug it, sorry!)
+
+## Training Yolo
+
+Please refer to the official Yolo documentation:
+- [Yolov5 for detection](https://docs.ultralytics.com/yolov5/) (of course you could update to yolov8 for detection, but the models were trained using yolov5 at the moment)
+- [Yolov8 for segmentation](https://docs.ultralytics.com/tasks/segment/)
+
+Example train for detection (yolov5-like):
+```bash
+python train.py --batch 32 --epochs 300 --data data/repair_motif_boxes.yaml --weights yolov5s.pt 
+```
+Example run for segmentation (yolov8-style, yolo CLI):
+```bash
+yolo segment train data=data/repair_motif_seg.yaml epochs=200 batch=32 imgsz=512  
+```
 
 ## Detecting and converting Yolo outputs
 
+##### If you just want to get some results quickly, you can use the yolo commands for inference
+Example run for detection (yolov5-like):
+```bash
+python detect.py --weights '/..path../Yolo_best_model_pretrained_best_weights.pt' --source '/..path../images_folder'
+```
+Example run for segmentation (yolov8-style, yolo CLI):
+```bash
+yolo segment predict model=path/to/best.pt source='image or image folder'
+```
+
+
+##### If you want to get white bounding boxes (to use the detection for downstream tasks):
 The script `detect_black_marks.py` detect the black marks on the images (with the resolution of the input image) and saves as output binary masks (white filled boxes) and visualization (red rectangles).
 It requires the pretrained to work (please change paths).
 
@@ -60,3 +82,6 @@ The same (more or less) is valid for `detect_bbox_motif.py`, it creates the whit
 There is a third script `get_segm_yolo.py` which is slightly different, it converts the output of the yolo segmentation (so yolov8) and it requires other stuff (I used it inside the yolo repo actually, but I copied here in case it's needed). 
 
 Also inside `yolo_prep` folder there is a script for preparation and the data config file for training yolo. Not perfect, but it should help.
+
+##### Validating Yolo
+A nice way to get results on validation set is to use `evaluate_yolo_detection.py` (changing folder name) or call the yolo CLI `yolo segment val model=path/to/best.pt  # val custom model`.
