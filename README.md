@@ -81,7 +81,7 @@ The same (more or less) is valid for `detect_bbox_motif.py`, it creates the whit
 
 There is a third script `get_segm_yolo.py` which is slightly different, it converts the output of the yolo segmentation (so yolov8) and it requires other stuff (I used it inside the yolo repo actually, but I copied here in case it's needed). 
 
-Also inside `yolo_prep` folder there is a script for preparation and the data config file for training yolo. Not perfect, but it should help.
+Also inside `yolo_processing` folder there is a script for preparation and the data config file for training yolo (`prepare_dataset_yolo.py`). Not perfect, but it should help.
 
 ##### Validating Yolo
 A nice way to get results on validation set is to use `evaluate_yolo_detection.py` (changing folder name) or call the yolo CLI `yolo segment val model=path/to/best.pt  # val custom model`.
