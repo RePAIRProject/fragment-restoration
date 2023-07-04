@@ -24,3 +24,10 @@ bm_cropped_imgs = '/home/sinem/PycharmProjects/fragment-restoration/BoFF/Dataset
 fg_folder_matings = '/home/sinem/PycharmProjects/fragment-restoration/Dataset_mating/fg/'
 images_folder_matings = '/home/sinem/PycharmProjects/fragment-restoration/Dataset_mating/images/'
 masks_folder_matings = '/home/sinem/PycharmProjects/fragment-restoration/Dataset_mating/masks/'
+
+# Masked rgb images (motif info with clean - white colored fragment background)
+motifs_rgb = '/home/sinem/PycharmProjects/fragment-restoration/Dataset/MoFF/motifs/'
+motifs_rgb_cropped = '/home/sinem/PycharmProjects/fragment-restoration/Dataset/MoFF/motifs_cropped/'
+
+cleaned_fragments = '/home/sinem/PycharmProjects/fragment-restoration/Dataset/MoFF/images_cleaned_intact/'
+cleaned_fragments_cropped = '/home/sinem/PycharmProjects/fragment-restoration/Dataset/MoFF/images_cleaned_intact_cropped/'
