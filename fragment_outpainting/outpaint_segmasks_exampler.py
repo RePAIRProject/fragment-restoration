@@ -22,8 +22,7 @@ criminisi_ps = 15
 pix_outpaint = 15
 
 # Outputs:
-path_outpainted_gt_seg = os.path.join(conf.outpainted_gt_masks_criminisi)
-os.makedirs(path_outpainted_gt_seg, exist_ok=True)
+os.makedirs(conf.outpainted_gt_masks_criminisi, exist_ok=True)
 
 masks_list = glob.glob(os.path.join(conf.masks_folder, conf.repair_group))
 
@@ -68,8 +67,8 @@ for mask_path in masks_list:
     axes[0].imshow(img_rgb)
     axes[1].imshow(outpainted_rgb)
     plt.show()
-    plt.savefig(os.path.join(path_outpainted_gt_seg,f"{img_name}_vis.png"))
-    plt.imsave(os.path.join(path_outpainted_gt_seg,f"{img_name}.png"), outpainted_rgb)
+    plt.savefig(os.path.join(conf.outpainted_gt_masks_criminisi,f"{img_name}_vis.png"))
+    plt.imsave(os.path.join(conf.outpainted_gt_masks_criminisi,f"{img_name}.png"), outpainted_rgb)
 
     # axes[0].set_title(f"num {img}")
 
