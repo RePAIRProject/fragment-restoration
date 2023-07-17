@@ -33,6 +33,8 @@ def main(args):
 
     if args.i != 'test_set':
         name = args.i.split('/')[-1]
+    else:
+        name = 'test_set'
     output_dir = os.path.join(run_folder, f'results_{parameters["model"]}_UNET_{IMG_SIZE}x{IMG_SIZE}_{name}')
     os.makedirs(output_dir, exist_ok=True)
 

@@ -11,8 +11,9 @@ model_name = 'training_yolo_shapes_512'
 model = YOLO(f'/home/lucap/code/yolov5/runs/segment/{model_name}/weights/best.pt') 
 #pdb.set_trace()
 images_folder = '/media/lucap/big_data/datasets/repair/puzzle2D/motif_segmentation/mating_set/images_cropped'
+images_folder = "/media/lucap/big_data/datasets/repair/cds/query/Decor1_Decor2_singleView/classic"
 # '/media/lucap/big_data/datasets/repair/puzzle2D/motif_segmentation/MoFF/yolo_dataset_shapes/test/images'
-output_folder = f'/media/lucap/big_data/datasets/repair/puzzle2D/motif_segmentation/mating_set/segmentation_results_{model_name}'
+output_folder = f'/media/lucap/big_data/datasets/repair/puzzle2D/motif_segmentation/segmentation_results_cds_query_classic_{model_name}'
 #vis_folder = f'/media/lucap/big_data/datasets/repair/puzzle2D/motif_segmentation/black_mark_visualization_for_{img_folder_name}'
 os.makedirs(output_folder, exist_ok=True)
 #os.makedirs(vis_folder, exist_ok=True)

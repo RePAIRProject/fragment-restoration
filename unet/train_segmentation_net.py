@@ -68,11 +68,11 @@ def main():
     aug_geometric = True
     aug_color = False
     COLOR_SPACE = 'HSV'
-    CLASSES = 14
+    CLASSES = 3
     LEARNING_RATE = 0.001
-    MODEL = 'classic'
+    MODEL = 'simplified'
     INPAINTED = False
-    #SCHEDULER_EPOCHS_STEP = 25
+    # SCHEDULER_EPOCHS_STEP = 25
     par = {
         'img':IMG_SIZE,
         'epochs':EPOCHS,
