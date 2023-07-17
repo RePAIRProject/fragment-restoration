@@ -1,6 +1,8 @@
 # MoFF (Motif on Fresco Fragment )
 
-The `MoFF` dataset is prepared by the `prepare_MoFF.py` script, it is uploaded in Teams and contains at the moment several folders:
+For the motif segmentation and black mark detection operations, first the MoFF dataset is prepared as presented here. It basically gets the dataset generated in `Dataset_processing` folder and generates the following folders in output.  
+
+The `MoFF` dataset is prepared by the `prepare_MoFF.py` script, it is uploaded in Teams/WP3/Files/Motif_segmentation/ and contains at the moment several folders:
 - `RGB`: original (without any black mark removal) color images
 - `RGB_inpained`: inpainted color images
 - `segmap3c`: segmentation maps with 3 classes (background, foreground, motif)
