@@ -63,15 +63,15 @@ def main():
     ## Parameters 
     IMG_SIZE = 512 
     EPOCHS = 200
-    BATCH_SIZE = 16
+    BATCH_SIZE = 8
     AUGMENT = True
     aug_geometric = True
     aug_color = False
     COLOR_SPACE = 'HSV'
-    CLASSES = 3
+    CLASSES = 13
     LEARNING_RATE = 0.001
-    MODEL = 'simplified'
-    INPAINTED = False
+    MODEL = 'classic'
+    INPAINTED = True
     # SCHEDULER_EPOCHS_STEP = 25
     par = {
         'img':IMG_SIZE,
@@ -115,7 +115,6 @@ def main():
     class_weights = compute_class_weight('balanced', classes=unique_classes, y=train_masks.ravel())
     class_weight_dict = dict(zip(unique_classes, class_weights))
     train_masks_weight_map = create_class_weight_map(class_weight_dict, train_masks)
-
     #train_masks_one_hot = to_categorical(train_masks, num_classes=3)
 
     # Create a tf.data pipeline

@@ -9,18 +9,26 @@ moff_folder = '/media/lucap/big_data/datasets/repair/puzzle2D/motif_segmentation
 
 dset_boxes = {}
 only_motifs = False 
+inpainted = True
 if only_motifs:
     dset_boxes['images_folder'] = os.path.join(moff_folder, 'motifs')
 else:
-    dset_boxes['images_folder'] = os.path.join(moff_folder, 'RGB')
+    if inpainted is True:
+        dset_boxes['images_folder'] = os.path.join(moff_folder, 'RGB_inpainted')
+    else:
+        dset_boxes['images_folder'] = os.path.join(moff_folder, 'RGB')
 dset_boxes['annotations_folder'] = os.path.join(moff_folder, 'annotations_boxes_motif')
 
 dset_shapes = {}
 only_motifs = False 
+inpainted = False
 if only_motifs:
     dset_shapes['images_folder'] = os.path.join(moff_folder, 'motifs')
 else:
-    dset_shapes['images_folder'] = os.path.join(moff_folder, 'RGB')
+    if inpainted is True:
+        dset_shapes['images_folder'] = os.path.join(moff_folder, 'RGB_inpainted')
+    else:
+        dset_shapes['images_folder'] = os.path.join(moff_folder, 'RGB')
 dset_shapes['annotations_folder'] = os.path.join(moff_folder, 'annotations_shape')
 
 train_set_files = np.loadtxt(os.path.join(moff_folder, 'train.txt'), dtype="str")
@@ -28,10 +36,15 @@ valid_set_files = np.loadtxt(os.path.join(moff_folder, 'validation.txt'), dtype=
 test_set_files = np.loadtxt(os.path.join(moff_folder, 'test.txt'), dtype="str")
 
 ### BOXES
-
-dset_boxes['output_dataset'] = os.path.join(moff_folder, 'yolo_dataset_boxes')
+if inpainted is True:
+    dset_boxes['output_dataset'] = os.path.join(moff_folder, 'yolo_inpainted_dataset_boxes')
+else:
+    dset_boxes['output_dataset'] = os.path.join(moff_folder, 'yolo_dataset_boxes')
 os.makedirs(dset_boxes['output_dataset'], exist_ok=True)
-dset_shapes['output_dataset'] = os.path.join(moff_folder, 'yolo_dataset_shapes')
+if inpainted is True:
+    dset_shapes['output_dataset'] = os.path.join(moff_folder, 'yolo_inpainted_dataset_shapes')
+else:
+    dset_shapes['output_dataset'] = os.path.join(moff_folder, 'yolo_dataset_shapes')
 os.makedirs(dset_boxes['output_dataset'], exist_ok=True)
 
 for dset in [dset_boxes, dset_shapes]:
