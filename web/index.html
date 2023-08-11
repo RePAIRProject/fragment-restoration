@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <!-- Meta tags for social media banners, these should be filled in appropriatly as they are your "business card" -->
+  <!-- Replace the content tag with appropriate information -->
+  <meta name="description" content="Reassembling Broken Objects using Breaking Curves, A. Alagrami, L. Palmieri, S. Aslan, M. Pelillo and S. Vascon (3DVR2023)">
+  <meta property="og:title" content="Reassembling Broken Objects | Unive | 3DVR2023"/>
+  <meta property="og:description" content="Reassembling Broken Objects using Breaking Curves, A. Alagrami, L. Palmieri, S. Aslan, M. Pelillo and S. Vascon (3DVR2023)"/>
+  <meta property="og:url" content="https://repairproject.github.io/AAFR_web/"/>
+  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X630-->
+  <meta property="og:image" content="static/images/pipeline.jpg" />
+  <meta property="og:image:width" content="1200"/>
+  <meta property="og:image:height" content="630"/>
+
+
+  <meta name="twitter:title" content="Reassembling Broken Objects | Unive | 3DVR2023">
+  <meta name="twitter:description" content="Reassembling Broken Objects using Breaking Curves, A. Alagrami, L. Palmieri, S. Aslan, M. Pelillo and S. Vascon (3DVR2023)">
+  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X600-->
+  <meta name="twitter:image" content="static/images/pipeline.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- Keywords for your paper to be indexed by-->
+  <meta name="keywords" content="repair, 3d-assembly, 3d-segmentation">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+  <title>Semantic Motif Segmentation of Archaeological Fresco Fragments | Unive | 3DVR2023</title>
+  <link rel="icon" type="image/x-icon" href="static/images/seg.ico">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+  rel="stylesheet">
+
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script src="static/js/bulma-carousel.min.js"></script>
+  <script src="static/js/bulma-slider.min.js"></script>
+  <script src="static/js/index.js"></script>
+</head>
+<body>
+
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">Semantic Motif Segmentation of Archaeological Fresco Fragments</h1>
+            <div class="is-size-5 publication-authors">
+              <!-- Paper authors -->
+              <span class="author-block">
+                Aref Enayati<sup>*</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://www.unive.it/data/persone/25693110" target="_blank">Luca Palmieri</a><sup>*</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://www.unive.it/data/persone/5592849" target="_blank">Marcello Pelillo</a>,
+              </span>
+              <span class="author-block">
+                <a href="https://www.unive.it/data/persone/9588235" target="_blank">Sebastiano Vascon</a>,
+              </span>
+              <span class="author-block">
+                <a href="https://www.unive.it/data/persone/18362024" target="_blank">Sinem Aslan</a><sup>*</sup>
+              </span>
+            </div>
+
+                  <div class="is-size-5 publication-authors">
+                    <span class="author-block">Ca' Foscari University of Venice, Department of Computer Science (DAIS)<br>CVPR 2023 Workshop on 3D Vision and Robotics (3DVR)</span>
+                    <span class="eql-cntrb"><small><br><sup>*</sup>Indicates Equal Contribution</small></span>
+                  </div>
+
+                  <div class="column has-text-centered">
+                    <div class="publication-links">
+                         <!-- Arxiv PDF link -->
+                      <span class="link-block">
+                        <a href="https://arxiv.org/pdf/2306.02782.pdf" target="_blank"
+                        class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon">
+                          <i class="fas fa-file-pdf"></i>
+                        </span>
+                        <span>Paper</span>
+                        </a>
+                      </span>
+
+                      <!-- Github link -->
+                      <span class="link-block">
+                        <a href="https://github.com/RePAIRProject/fragment-restoration" target="_blank"
+                        class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon">
+                          <i class="fab fa-github"></i>
+                        </span>
+                        <span>Code</span>
+                        </a>
+                      </span>
+
+                      <!-- Dataset link -->
+                      <span class="link-block">
+                        <a href="" target="_blank"
+                        class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon">
+                          <i class="far fa-image"></i>
+                        </span>
+                        <span>Dataset</span>
+                        </a>
+                      </span>
+
+                <!-- ArXiv abstract Link
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/2306.02782" target="_blank"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <br>
+              
+              <span class="link-block">
+                <a href="static/pdfs/Reassembling_3DVR_2023.pdf" target="_blank"
+                class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                  <i class="fas fa-file-pdf"></i>
+                </span>
+                <span>Slides (3 min)</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://www.youtube.com/watch?v=81_yZtaOrY0" target="_blank"
+                class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                  <i class="fas fa-video"></i>
+                </span>
+                <span>Video (3 min)</span>
+                </a>
+              </span> -->
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths mb-4">
+          <img src="static/images/cover.jpg" alt="'cover image describing pipeline" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Teaser video-->
+<!-- <section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body is-centered">
+      <video poster="" id="tree" autoplay controls muted loop height="100%">
+        <source src="static/videos/banner_video.mp4"
+        type="video/mp4">
+      </video>
+      <h2 class="subtitle has-text-centered">
+        Aliquam vitae elit ullamcorper tellus egestas pellentesque. Ut lacus tellus, maximus vel lectus at, placerat pretium mi. Maecenas dignissim tincidunt vestibulum. Sed consequat hendrerit nisl ut maximus. 
+      </h2>
+    </div>
+  </div>
+</section> -->
+<!-- End teaser video -->
+
+
+
+<!-- Paper abstract -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop" >
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p class="block content">
+            Archaeological fragment processing is crucial to support
+            the analysis of pictorial contents of broken artifacts. In this
+            paper, we focus on the unexplored task of semantic segmentation 
+            of fresco fragments. This task enables the extraction
+            of meaningful semantic information from a fragment, 
+            facilitating subsequent tasks like fragment classification or reassembly. We introduce a semantic segmentation dataset 
+            of real fresco fragments acquired at the Archeological Park of
+            Pompeii accompanied by baseline models. 
+            Additionally, we introduce a supplementary task of fragment cleaning, 
+            providing a dataset with the detection of manual annotations
+            of archaeological marks that require restoration before further analysis. 
+            Our experiments, using standard metrics and
+            state-of-the-art baselines, demonstrate that semantic segmentation 
+            of fresco fragments is feasible, paving the way
+            toward more complex activities that require a semantic understanding 
+            of fragmented artifacts.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End paper abstract -->
+
+<!-- Image carousel 
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div id="results-carousel" class="carousel results-carousel">
+       <div class="item">
+        <img src="static/images/pipeline.jpg" alt="The pipeline of the proposed method."/>
+        <h2 class="subtitle has-text-centered">
+        </h2>
+      </div>
+      <div class="item">
+        <img src="static/images/fig1.jpg" alt="Comparison with other methods."/>
+        <h2 class="subtitle has-text-centered">
+        </h2>
+      </div>
+     <div class="item">
+      <img src="static/images/results.jpg" alt="Results on different datasets."/>
+      <h2 class="subtitle has-text-centered">
+      </h2>
+    </div>
+  </div>
+</div>
+</div>
+</section>
+ End image carousel -->
+
+
+<section class="hero is-small">
+  <section class="section hero ">
+    <div class="container is-max-desktop" >
+      <div class="columns is-centered has-text-centered">
+        <h2 class="title">Datasets</h2>
+      </div>
+      <div class="block">
+        <p>
+          We released two datasets for fragment processing tasks. 
+          They consist of high-quality photorealistic renderings of scanned 3D fragments from the Pompeii National Park.
+        </p>
+      </div>
+      <div class="columns is-centered has-text-centered is-desktop">
+        <div class="column">
+          <h3 class="title is-4">BoFF Dataset</h3>
+          <div class="block">
+            <img src="static/images/boff.jpg" alt="boff dataset cover picture"/>
+          </div>
+          <p class="content has-text-justified mb-4">
+            The BoFF dataset is specifically designed for the automatic detection of manual markings in bounding boxes to
+            facilitate their removal through inpainting. It contains 243 fragment images with 778 annotations of bounding boxes
+            covering manual markings on the fragment images.
+          </p>
+        </div>
+        <div class="column">
+          <h3 class="title is-4">MoFF Dataset</h3>
+          <div class="block">
+            <img src="static/images/moff.png" alt="moff dataset cover picture"/>
+          </div>
+          <p class="content has-text-justified mb-4">
+            The MoFF dataset consists of 405 high-resolution images sourced from two distinct ceiling frescoes. 
+            Precise pixel-wise segmentation masks, denoting motifs from 12 different classes, identified by archaeologists, are provided. 
+            These pixel-wise annotations are available in two setups: a 3-class annotation, comprising
+            image background, fragment background, and motif class, and a detailed 12-class annotation, exclusively focusing on
+            distinct motif types.
+          </p>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+      
+    </div>
+  </div>
+</section>
+
+<!-- Paper poster -->
+<!-- <section class="hero is-small is-light">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title">Slides</h2>
+          <iframe src="static/pdfs/Reassembling_3DVR_2023.pdf" width="100%" height="550">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+<!--End paper poster -->
+
+
+<!--BibTex citation -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>
+@misc{enayati2023semantic,
+  title={Semantic Motif Segmentation of Archaeological Fresco Fragments},
+  author={Aref Enayati and Luca Palmieri and Marcello Pelillo and Sebastiano Vascon and Sinem Aslan},
+  year={2023}
+}
+      </code></pre>
+    </div>
+</section>
+<!--End BibTex citation -->
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">Acknowledgment</h2>
+    <p>
+      This work is part of a project that has received funding from the European Union's Horizon 2020 research and innovation programme under grant agreement No.964854.
+    </p>
+
+    <div class="columns p-6">
+      <div class="column mg-large p-6">
+        <img src="static/images/eu.jpg" alt="Results on different datasets."/>
+      </div>
+      <div class="column mg-large p-6">
+        <img src="static/images/cafoscari-logo.png" alt="Results on different datasets."/>
+      </div>
+      <div class="column mg-large p-6">
+        <img src="static/images/logo-repair.png" alt="Results on different datasets."/>
+      </div>
+    </div>
+
+
+  <footer class="footer">
+  <div class="container is-max-desktop">
+    <div class="columns is-max-desktop is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a>.
+            You are free to borrow the of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Statcounter tracking code -->
+  
+<!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
+
+    <!-- End of Statcounter Code -->
+
+  </body>
+  </html>
