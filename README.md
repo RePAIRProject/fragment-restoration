@@ -20,7 +20,9 @@ The train, validation and test split are contained in `.txt` files in the root f
 
 # Motif Segmentation
 
-Not everything is fully cleaned and polished, but it should be understandable and usable.
+For more information about the semantic classes, please refer to the [MoFF readme file](https://github.com/RePAIRProject/fragment-restoration/tree/e-heritage/Dataset/MoFF.md).
+
+For training and inference using Unet or YOLO, please see below.
 
 ## Training UNet
 
