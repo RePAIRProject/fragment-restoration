@@ -1,8 +1,39 @@
-# MoFF (Motif on Fresco Fragment )
+# Semantic Motif Segmentation for Archaelogical Fresco Fragments 
 
-prova --- For the motif segmentation and black mark detection operations, first the MoFF dataset is prepared as presented here. It basically gets the dataset generated in `Dataset_processing` folder and generates the following folders in output.  
+This repository contains the code of the work titled as Semantic Motif Segmentation for Archaeological Fresco Fragments (which presented in [E-Heritage workshop](https://www.cvl.iis.u-tokyo.ac.jp/e-Heritage2023/) of ICCV 2023) developed within the  [RePAIR European Project](https://github.com/RePAIRProject)
 
-The `MoFF` dataset is prepared by the `prepare_MoFF.py` script, it is uploaded in Teams/WP3/Files/Motif_segmentation/ and contains at the moment several folders:
+### Citation
+If you find this work useful in your research, please consider citing:
+@inproceedings{enayati2023,
+ title={Semantic Motif Segmentation for Archaelogical Fresco Fragments},
+ author={Aref Enayati, Luca Palmieri, Sebastiano Vascon, Marcello Pelillo, Sinem Aslan},
+ booktitle={},
+ pages={},
+ year={},
+ month={},
+ organization={IEEE}
+}
+
+### Contents
+1. Datasets
+2. Restoration of manual annotations
+3. Semantic segmentation of fresco fragments
+4. Semantic motif segmentation
+5. Evaluation codes
+
+
+# 1. Datasets
+We created two datasets along with their annotations for the following tasks: 
+- **Black-Annotations on the Fresco Fragments (BoFF)** for cleaning the manual annotations **(TO AREF: Introduce the dataset (images, annotations) in Datasets/BOFF file)**
+- **Motifs on Fresco Fragments (MoFF)** for semantic segmentation of the motifs present on the painted surface of the fragments.
+
+### BoFF (Black-Annotations on the Fresco Fragments) Dataset
+More information about the datasets are presented in [BoFF](https://github.com/RePAIRProject/fragment-restoration/blob/e-heritage/Dataset/BoFF.md).
+
+**[AREF, INTRODUCE BOFF DATASET]**
+
+### MoFF (Motif on Fresco Fragment) Dataset
+The `MoFF` dataset, which is formed of the following folders, is prepared by the `prepare_MoFF.py` script in Dataset_processing folder, which gets the initial unprocessed images with annotations shared in [Link to Zenodo]():
 - `RGB`: original (without any black mark removal) color images
 - `RGB_inpained`: inpainted color images
 - `segmap3c`: segmentation maps with 3 classes (background, foreground, motif)
@@ -18,7 +49,15 @@ Images are cropped, but not resized.
 
 The train, validation and test split are contained in `.txt` files in the root folder. They are list of file names, the files have always the same names inside each folder! This helps to keep consistency, and test set is the same across different trainings (unet, yolo).
 
-# Motif Segmentation
+More information about the segmentation maps can be obtained in [MoFF](https://github.com/RePAIRProject/fragment-restoration/blob/e-heritage/Dataset/MoFF.md)
+
+# 2. Restoration of Manual Annotations
+This task is performed by achieving two sub-tasks, including creating inpainting masks by detecting manual annotations in bounding boxes using YoloV5, and performing exampler-based inpainting method of Criminisi.
+
+
+# 3. Fragment segmentation
+
+# 4. Motif Segmentation
 
 For more information about the semantic classes, please refer to the [MoFF readme file](https://github.com/RePAIRProject/fragment-restoration/tree/e-heritage/Dataset/MoFF.md).
 
