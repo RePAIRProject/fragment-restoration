@@ -1,10 +1,12 @@
 # Motifs on the Fractured Fresco Fragments (MOFFF dataset)
 
-The **Motifs on the Fresco Fragments** (**MOFFF** dataset) contains 12 motif categories including semantic object classes such as _blue bird, yellow bird, red griffon, red flower, blue flower_, and structural pattern classes such as _red_circle, red spiral, thin red stripe, thick red stripe, thin floral stripe, thick floral stripe_ and _curved green stripe_. 
-Each image in this dataset has pixel-level segmentation annotations. Pixel-wise annotations are created in [Segments.ai](Segments.ai). This dataset can be used as a benchmark for semantic segmentation, and classification tasks for fractured fresco fragments.
-
-
+The **Motifs on the Fresco Fragments** (**MOFF**) dataset is used as a benchmark for semantic segmentation, and classification tasks for fractured fresco fragments.
+It contains pixel-wise annotations of 12 motif categories shown below, which were created in [Segments.ai](Segments.ai). 
 ![motif_categories2](https://github.com/RePAIRProject/fragment-restoration/assets/7011371/f2147c4d-977d-4fc8-9fe0-42ed7a0b896e)
+
+Dataset is published with two schemes of pixel annotations, i.e., for 3-class and 13-class semantic segmentation presented as Scenario 1 and 2 in the paper, respectively.
+
+
 
 ## Semantic classes
 
