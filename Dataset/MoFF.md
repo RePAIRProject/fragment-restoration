@@ -4,6 +4,7 @@ The **Motifs on the Fresco Fragments** (**MOFFF** dataset) contains 12 motif cat
 Each image in this dataset has pixel-level segmentation annotations. Pixel-wise annotations are created in [Segments.ai](Segments.ai). This dataset can be used as a benchmark for semantic segmentation, and classification tasks for fractured fresco fragments.
 
 
+![motif_categories2](https://github.com/RePAIRProject/fragment-restoration/assets/7011371/f2147c4d-977d-4fc8-9fe0-42ed7a0b896e)
 
 ## Semantic classes
 
