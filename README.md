@@ -19,7 +19,7 @@ If you find this work useful in your research, please consider citing:
 2. Restoration of manual annotations
 3. Semantic segmentation of fresco fragments
 4. Semantic motif segmentation
-5. Evaluation codes
+5. Evaluation
 
 
 # 1. Datasets
@@ -128,3 +128,6 @@ Also inside `yolo_processing` folder there is a script for preparation and the d
 
 ##### Validating Yolo
 A nice way to get results on validation set is to use `evaluate_yolo_detection.py` (changing folder name) or call the yolo CLI `yolo segment val model=path/to/best.pt  # val custom model`.
+
+
+# 5. Evaluation
