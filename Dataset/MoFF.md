@@ -4,12 +4,7 @@ The **Motifs on the Fresco Fragments** (**MOFF**) dataset is used as a benchmark
 It contains pixel-wise annotations of 12 motif categories shown below, which were created in [Segments.ai](Segments.ai). 
 ![motif_categories2](https://github.com/RePAIRProject/fragment-restoration/assets/7011371/f2147c4d-977d-4fc8-9fe0-42ed7a0b896e)
 
-Dataset is published with two schemes of pixel annotations, i.e., for 3-class and 13-class semantic segmentation presented as Scenario 1 and 2 in the paper, respectively.
-
-<img width="423" alt="gts (1)" src="https://github.com/RePAIRProject/fragment-restoration/assets/7011371/ab2c654a-7fb1-4a08-9d36-be4ec7ba6346">
-
-
-## Semantic classes
+### Semantic classes
 
 The semantic classes are also defined in the `YAML` files (in the `yolo_processing` folder, `repair_motif_boxes.yaml` for bounding box annotation and `repair_motif_seg.yaml` for polygonal shapes annotations).
 In the final mask images the class numbers correspond to the following categories:
@@ -29,50 +24,11 @@ In the final mask images the class numbers correspond to the following categorie
   - `12: thin_floral_stripe`, 
   - `13: thick_floral_stripe` 
 
+Dataset is published with two schemes of pixel annotations, i.e., for 3-class and 13-class semantic segmentation presented as Scenario 1 and 2 in the paper, respectively.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Dataset Creation
-Dataset is created following the stages below:
-
-- Three repositories were already created in [Segments.ai](Segments.ai) for pixel-wise annotations, namely, _lucap_repair_fragments_patterns_ , _sinemaslan_repair_fragments_patterns-clone_ , _UNIVE_decor2_. Segmentation masks and segmented input images are exported into Dataset/segments folder (check export_segments_ai function in dataset_processing).
-- Segmentation mask class labels of decor2 repository are changed from (1,2,3,4) to (4,13,14,12) to avoid confusion when three repositories merged.
-- Images and masks from three repositories are merged into single folders named 'images' and 'masks'
-- Fragment foreground masks are created into fg folder
-- Fragment background is included as a new category and masks are refined further by re-mapping class labels. 
-
-
+<img width="423" alt="gts (1)" src="https://github.com/RePAIRProject/fragment-restoration/assets/7011371/ab2c654a-7fb1-4a08-9d36-be4ec7ba6346">
+<p align="center">Illustration of pixel-wise semantic annotations for the MoFF dataset. The input image is on the left, followed by 3-class annotations for
+Scenario 1 in the middle, and motif-wise annotations for Scenario 2 on the right (different colors represent distinct pixel classes)
 
 
 
