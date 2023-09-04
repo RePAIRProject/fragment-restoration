@@ -1,7 +1,8 @@
-# Motifs on the Fractured Fresco Fragments (MOFFF dataset)
+# Motifs on the Fractured Fresco Fragments (MOFF) dataset
 
 The **Motifs on the Fresco Fragments** (**MOFF**) dataset is used as a benchmark for semantic segmentation, and classification tasks for fractured fresco fragments.
 It contains pixel-wise annotations of 12 motif categories shown below, which were created in [Segments.ai](Segments.ai). 
+
 ![motif_categories2](https://github.com/RePAIRProject/fragment-restoration/assets/7011371/f2147c4d-977d-4fc8-9fe0-42ed7a0b896e)
 
 ### Semantic classes
@@ -15,7 +16,7 @@ In the final mask images the class numbers correspond to the following categorie
   - `3: yellow_bird`, 
   - `4: red_griffon`,
   - `5: red_flower`, 
-  - `6: blue_flower`, ![](../../../Downloads/motif_categories2 (1).png)
+  - `6: blue_flower`, 
   - `7: red_circle`, 
   - `8: red_spiral`, 
   - `9: curved_green_stripe` 
@@ -26,7 +27,7 @@ In the final mask images the class numbers correspond to the following categorie
 
 Dataset is published with two schemes of pixel annotations, i.e., for 3-class and 13-class semantic segmentation presented as Scenario 1 and 2 in the paper, respectively.
 
-<img width="423" alt="gts (1)" src="https://github.com/RePAIRProject/fragment-restoration/assets/7011371/ab2c654a-7fb1-4a08-9d36-be4ec7ba6346">
+<p align="center"><img width="423" alt="gts (1)" src="https://github.com/RePAIRProject/fragment-restoration/assets/7011371/ab2c654a-7fb1-4a08-9d36-be4ec7ba6346">
 <p align="center">Illustration of pixel-wise semantic annotations for the MoFF dataset. The input image is on the left, followed by 3-class annotations for
 Scenario 1 in the middle, and motif-wise annotations for Scenario 2 on the right (different colors represent distinct pixel classes)
 
