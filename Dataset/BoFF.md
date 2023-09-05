@@ -6,7 +6,8 @@ The annotation of bounding boxes was created using [roboflow.com](https://app.ro
 
 
 
-The dataset contains 115 fragment images, which do not necessarily contain motifs on their intact surfaces, which contain 405 black mark annotations. Black marks locate either on the monochromatic regions or on the textured regions, which form a more challenging task compared to the former.
+The dataset contains 115 fragment images in a folder named 'images', which contain 405 black mark annotations (stored in .txt files with their corresponding names in 'labels' folder). Black marks locate either on the monochromatic regions or on the textured regions, which form a more challenging task compared to the former.
 Moreover, black marks mostly locate close to fragment boundaries, while in few images there are also black marks in the center of the fragment surface.
+In addition, there are some fragments with no black marks on their intact surface at all.
 
 ![boff](https://github.com/RePAIRProject/fragment-restoration/blob/e-heritage/web/static/images/boff.jpg)
