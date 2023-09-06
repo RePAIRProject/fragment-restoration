@@ -6,8 +6,8 @@ In this repository, you will find datasets, code, and pretrained models related 
 - [Introduction](#introduction)
 - [Citation](#citation)
 - [Datasets](#datasets)
-- [Code](#code)
 - [Pretrained Models](#pretrained-models)
+- [Code](#code)
 - [Usage](#usage)
 - [Acknowledgments](#acknowledgments)
 
