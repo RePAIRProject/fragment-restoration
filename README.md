@@ -4,13 +4,12 @@ In this repository, you will find datasets, code, and pretrained models related 
 ## Table of Contents
 
 - [Introduction](#introduction)
+- [Citation](#citation)
 - [Datasets](#datasets)
 - [Code](#code)
 - [Pretrained Models](#pretrained-models)
 - [Usage](#usage)
-- [Citation](#citation)
 - [Acknowledgments](#acknowledgments)
-- [License](#license)
 
 ### Citation
 If you find our work or resources useful in your research, please consider citing our paper:
