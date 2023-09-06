@@ -72,13 +72,11 @@ The train, validation and test split are contained in `.txt` files in the root f
 
 More information about the segmentation maps can be obtained in [MoFF](https://github.com/RePAIRProject/fragment-restoration/blob/e-heritage/Dataset/MoFF.md).
 
-# 2. Restoration of Manual Annotations
+## Restoration of Manual Annotations
 This task is performed by achieving two sub-tasks, including creating inpainting masks by detecting manual annotations in bounding boxes using YoloV5, and performing exampler-based inpainting method of Criminisi.
 
 
-# 3. Fragment segmentation
-
-# 4. Motif Segmentation
+## Semantic segmentation of fragments
 
 For more information about the semantic classes, please refer to the [MoFF readme file](https://github.com/RePAIRProject/fragment-restoration/tree/e-heritage/Dataset/MoFF.md).
 
@@ -149,3 +147,6 @@ Also inside `yolo_processing` folder there is a script for preparation and the d
 
 ##### Validating Yolo
 A nice way to get results on validation set is to use `evaluate_yolo_detection.py` (changing folder name) or call the yolo CLI `yolo segment val model=path/to/best.pt  # val custom model`.
+
+
+### Evaluation
