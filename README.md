@@ -74,7 +74,10 @@ More information about the segmentation maps can be obtained in [MoFF](https://g
 
 ## Restoration of Manual Annotations
 This task is performed by achieving two sub-tasks, including creating inpainting masks by detecting manual annotations in bounding boxes using YoloV5, and performing exampler-based inpainting method of Criminisi.
+### Detecting black marks 
+Introducing the usage, links to pretrained models 
 
+### Inpainting
 
 ## Semantic segmentation of fragments
 
