@@ -1,9 +1,19 @@
 # Semantic Motif Segmentation for Archaelogical Fresco Fragments 
+In this repository, you will find datasets, code, and pretrained models related to our work on the semantic motif segmentation of archaeological fresco fragments which will be presented in [E-Heritage workshop](https://www.cvl.iis.u-tokyo.ac.jp/e-Heritage2023/) of ICCV 2023. This work is developed within the  [RePAIR European Project](https://github.com/RePAIRProject)
 
-This repository contains the code of the work titled as Semantic Motif Segmentation for Archaeological Fresco Fragments (which presented in [E-Heritage workshop](https://www.cvl.iis.u-tokyo.ac.jp/e-Heritage2023/) of ICCV 2023) developed within the  [RePAIR European Project](https://github.com/RePAIRProject)
+## Table of Contents
+
+- [Introduction](#introduction)
+- [Datasets](#datasets)
+- [Code](#code)
+- [Pretrained Models](#pretrained-models)
+- [Usage](#usage)
+- [Citation](#citation)
+- [Acknowledgments](#acknowledgments)
+- [License](#license)
 
 ### Citation
-If you find this work useful in your research, please consider citing:
+If you find our work or resources useful in your research, please consider citing our paper:
 @inproceedings{enayati2023,
  title={Semantic Motif Segmentation for Archaelogical Fresco Fragments},
  author={Aref Enayati, Luca Palmieri, Sebastiano Vascon, Marcello Pelillo, Sinem Aslan},
@@ -14,47 +24,52 @@ If you find this work useful in your research, please consider citing:
  organization={IEEE}
 }
 
-### Contents
+
+## Introduction
+This repository contains resources related to our research on the semantic motif segmentation of archaeological fresco fragments. Our work focuses on understanding and categorizing motifs found in ancient fresco fragments, 
+serve as valuable resources for various computational tasks, such as fragment recognition, style classification and clustering, fragment reassembly.
+
+<!---### Contents
 1. Datasets
 2. Restoration of manual annotations
 3. Semantic segmentation of fresco fragments
 4. Semantic motif segmentation
-5. Evaluation
+5. Evaluation codes
+-->
 
-
-# 1. Datasets
-We created two datasets along with their annotations for the following tasks: 
-- **Black-Annotations on the Fresco Fragments (BoFF)** for cleaning the manual annotations **(TO AREF: Introduce the dataset (images, annotations) in Datasets/BOFF file)**
-- **Motifs on Fresco Fragments (MoFF)** for semantic segmentation of the motifs present on the painted surface of the fragments.
-
+## Datasets
 ### BoFF (Black-Annotations on the Fresco Fragments) Dataset
 
-The 'BoFF' dataset is created to facilitate the detection and removal of black marks through inpainting, and it contains fragments images along with bounding box annotation of black marks.
+The BoFF dataset is curated for the task of restoration of manual annotations on the fragments. **[AREF, PLEASE INTRODUCE BOFF DATASET , briefly here and in the BoFF.md file. ex: example figure of few fragments and bounding box annotations, introduce annotations, how they prepared. link to download them.]** It is composed of  xx images with bounding box annotation covering manually drawn black-marks. 
 
-The dataset contains 115 fragment images in a folder named 'images', which contain 405 black mark annotations (stored in .txt files with their corresponding names in 'labels' folder). Black marks locate either on the monochromatic regions or on the textured regions, which form a more challenging task compared to the former. Moreover, black marks mostly locate close to fragment boundaries, while in few images there are also black marks in the center of the fragment surface. In addition, there are some fragments with no black marks on their intact surface at all.
-
-More information about the datasets are presented in [BoFF](https://github.com/RePAIRProject/fragment-restoration/blob/e-heritage/Dataset/BoFF.md).
-
-**[AREF, INTRODUCE BOFF DATASET]**
+To learn more about the BoFF dataset and how to use it, please refer to the [BoFF](https://github.com/RePAIRProject/fragment-restoration/blob/e-heritage/Dataset/BoFF.md).
 
 ### MoFF (Motif on Fresco Fragment) Dataset
-The `MoFF` dataset, which is formed of the following folders, is prepared by the `prepare_MoFF.py` script in Dataset_processing folder, which gets the initial unprocessed images with annotations shared in [Link to Zenodo]():
-- `RGB`: original (without any black mark removal) color images
-- `RGB_inpained`: inpainted color images
-- `segmap3c`: segmentation maps with 3 classes (background, foreground, motif)
-- `segmap14c`: segmentation maps with 14 classes (background, foreground, motif1, motif2, ecc.. there are 12 motifs)
-- `motifs`: only motifs (all other pixels are deleted), created from ground truth
+
+MoFF dataset is curated for the task of semantic segmentation of the motifs present on the painted surface of the fragments. It contains images of real fresco fragments obtained from the Archaeological Park of Pompeii.
+
+Basically, it is generated through the [prepare_MoFF.py](https://github.com/RePAIRProject/fragment-restoration/blob/e-heritage/Dataset_processing/prepare_MoFF.py) script. 
+This script takes the original, high-resolution, unmodified images and associated annotations, accessible for download from [Link to Zenodo](). 
+It produces various data folders, listed below, utilized in the experiments described in our paper.
+
+- `RGB`: RGB color images (without any black mark removal), obtained by cropping original input images to include only the fragment region. 
+- `RGB_inpained`: inpainted RGB images (YOLOv5 model trained on the BoFF training set was employed to identify manual annotations across all images in the MoFF dataset. Subsequently, the areas identified were inpainted to generate this collection of images.
+- `segmap3c`: segmentation maps with 3 classes (image background, fragment background, motif)
+- `segmap14c`: segmentation maps with 14 classes (image background, fragment background, motif1, motif2, etc.. there are 12 motifs)
+- `motifs`: RGB images containing only motif regions against a black background, generated from the ground truth motif segmentation maps. 
 - `annotations_boxes_components`: yolo-style annotations with one box for each component of any motif 
 - `annotations_boxes_motif`: yolo-style annotations with one box for motif 
-- `annotations_shpae`: yolo-v8seg-style annotations (polygons) 
+- `annotations_shape`: yolo-v8seg-style annotations (polygons) 
+
+**(Q: ARE THE FOLLOWING TWO FOR THE BLACK MARK REMOVAL???)**
 - `yolo_dataset_boxes`: full yolo dataset (images are duplicated, yes) for training for bounding box detection
 - `yolo_dataset_shapes`: full yolo dataset (images are duplicated, yes) for training for segmentation (use yolo-v8)
 
 Images are cropped, but not resized.
 
-The train, validation and test split are contained in `.txt` files in the root folder. They are list of file names, the files have always the same names inside each folder! This helps to keep consistency, and test set is the same across different trainings (unet, yolo).
+The train, validation and test split are contained in `.txt` files in the root folder. They are list of file names, the files have always the same names inside each folder. This helps to keep consistency, and test set is the same across different trainings (unet, yolo).
 
-More information about the segmentation maps can be obtained in [MoFF](https://github.com/RePAIRProject/fragment-restoration/blob/e-heritage/Dataset/MoFF.md)
+More information about the segmentation maps can be obtained in [MoFF](https://github.com/RePAIRProject/fragment-restoration/blob/e-heritage/Dataset/MoFF.md).
 
 # 2. Restoration of Manual Annotations
 This task is performed by achieving two sub-tasks, including creating inpainting masks by detecting manual annotations in bounding boxes using YoloV5, and performing exampler-based inpainting method of Criminisi.
@@ -133,6 +148,3 @@ Also inside `yolo_processing` folder there is a script for preparation and the d
 
 ##### Validating Yolo
 A nice way to get results on validation set is to use `evaluate_yolo_detection.py` (changing folder name) or call the yolo CLI `yolo segment val model=path/to/best.pt  # val custom model`.
-
-
-# 5. Evaluation
