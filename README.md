@@ -82,7 +82,7 @@ For more information about the semantic classes, please refer to the [MoFF readm
 
 For training and inference using Unet or YOLO, please see below.
 
-## Training UNet
+### Training UNet
 
 To run the training, use the script `train_segmentation_net.py`, which needs no additional parameters and can be run as:
 ```bash
@@ -92,7 +92,7 @@ Everything is inside there, at the beginning of the `main(arg):` function there 
 
 The training saves the results in single run subfolders (created) under the `runs` folder. The name has some random number and the parameters appended and inside you find model, graphics, sample predictions and parameters. The name of the run folder is printed on the terminal and can be copied to quickly use it for running inference.
 
-## Inference with UNet
+### Inference with UNet
 
 To run inference, there is another script called `show_some_results.py`. This requires some parameters, usually the run folder is enough. It can be passed with the `-f` parameter, so an example launch would be:
 ```bash
@@ -107,7 +107,7 @@ This will run on `images_cropped` and `masks_cropped` folders and save the resul
 
 **NOTE** This does not actually save any numerical results on the test set. I started to create a `performance_unet.py` for that, but `iou` (from `iou_loss(y_true, y_pred)` in `unet.py` returns negative ious! I do not have enough time to debug it, sorry!)
 
-## Training Yolo
+### Training Yolo
 
 Please refer to the official Yolo documentation:
 - [Yolov5 for detection](https://docs.ultralytics.com/yolov5/) (of course you could update to yolov8 for detection, but the models were trained using yolov5 at the moment)
@@ -122,7 +122,7 @@ Example run for segmentation (yolov8-style, yolo CLI):
 yolo segment train data=data/repair_motif_seg.yaml epochs=200 batch=32 imgsz=512  
 ```
 
-## Detecting and converting Yolo outputs
+### Detecting and converting Yolo outputs
 
 ##### If you just want to get some results quickly, you can use the yolo commands for inference
 Example run for detection (yolov5-like):
