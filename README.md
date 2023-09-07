@@ -39,7 +39,9 @@ serve as valuable resources for various computational tasks, such as fragment re
 ## Datasets
 ### BoFF (Black-Annotations on the Fresco Fragments) Dataset
 
-The BoFF dataset is curated for the task of restoration of manual annotations on the fragments. **[AREF, PLEASE INTRODUCE BOFF DATASET , briefly here and in the BoFF.md file. ex: example figure of few fragments and bounding box annotations, introduce annotations, how they prepared. link to download them.]** It is composed of  xx images with bounding box annotation covering manually drawn black-marks. 
+The BoFF dataset is curated for the task of restoration of manual annotations on the fragments. It is composed of 115 images of fresco fragments with bounding box annotations covering manually drawn black-marks. These black-marks indicate neighboring relationship between fragmetns and they serve as a guide to archeologists during manual reconstruction of these frescoes.  
+
+**[AREF, PLEASE INTRODUCE BOFF DATASET , briefly here and in the BoFF.md file. ex: example figure of few fragments and bounding box annotations, introduce annotations, how they prepared. link to download them.]** 
 
 To learn more about the BoFF dataset and how to use it, please refer to the [BoFF](https://github.com/RePAIRProject/fragment-restoration/blob/e-heritage/Dataset/BoFF.md).
 
