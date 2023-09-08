@@ -18,11 +18,11 @@ def write_shape_to_file(path, list_of_shapes):
     f.close()
 
 def main():
-    moff_folder = '/media/lucap/big_data/datasets/repair/puzzle2D/motif_segmentation/MoFF'
-    unprocessed_data_folder = os.path.join(moff_folder, 'unprocessed_data')
+    moff_folder = '/home/sinem/PycharmProjects/fragment-restoration/Dataset/MoFF/'
+    unprocessed_data_folder = os.path.join(moff_folder, 'unprocessed')
 
     images_folder = os.path.join(unprocessed_data_folder, 'images_cropped')
-    inpainted_images_folder = os.path.join(unprocessed_data_folder, 'images_bm_inpainted_cropped')
+    inpainted_images_folder = os.path.join(unprocessed_data_folder, 'images_restored_cropped')
     seg_masks_folder = os.path.join(unprocessed_data_folder, 'masks_cropped')
 
     imgs_paths = os.listdir(images_folder)
@@ -31,14 +31,14 @@ def main():
     imgs_paths.sort()
     segs_paths.sort()
 
-    output_img = os.path.join(moff_folder, 'RGB')
-    output_inp = os.path.join(moff_folder, 'RGB_inpainted')
-    output_s3c = os.path.join(moff_folder, 'segmap3c')
-    output_s14c = os.path.join(moff_folder, 'segmap14c')
-    output_motif = os.path.join(moff_folder, 'motifs')
-    output_yolo_bc = os.path.join(moff_folder, 'annotations_boxes_components')
-    output_yolo_bm = os.path.join(moff_folder, 'annotations_boxes_motif')
-    output_yolo_shapes = os.path.join(moff_folder, 'annotations_shape')
+    output_img = os.path.join(moff_folder, 'processed', 'RGB')
+    output_inp = os.path.join(moff_folder, 'processed', 'RGB_restored')
+    output_s3c = os.path.join(moff_folder, 'processed', 'segmap3c')
+    output_s14c = os.path.join(moff_folder, 'processed', 'segmap14c')
+    output_motif = os.path.join(moff_folder, 'processed', 'motifs')
+    output_yolo_bc = os.path.join(moff_folder, 'processed', 'annotations_boxes_components')
+    output_yolo_bm = os.path.join(moff_folder, 'processed', 'annotations_boxes_motif')
+    output_yolo_shapes = os.path.join(moff_folder, 'processed', 'annotations_shape')
 
 
     os.makedirs(output_img, exist_ok=True)
@@ -142,10 +142,10 @@ def main():
         else:
             open(os.path.join(output_yolo_shapes, f'RPf_{img_id}.txt'), 'w').close()
         plt.imsave(os.path.join(output_inp, f'RPf_{img_id}.png'), inp_img)   
-        #plt.imsave(os.path.join(output_motif, f'RPf_{img_id}.png'), motif_map)
-        #plt.imsave(os.path.join(output_img, f'RPf_{img_id}.png'), img)
-        #plt.imsave(os.path.join(output_s14c, f'RPf_{img_id}.png'), seg_map)
-        #plt.imsave(os.path.join(output_s3c, f'RPf_{img_id}.png'), seg_map3c)
+        plt.imsave(os.path.join(output_motif, f'RPf_{img_id}.png'), motif_map)
+        plt.imsave(os.path.join(output_img, f'RPf_{img_id}.png'), img)
+        plt.imsave(os.path.join(output_s14c, f'RPf_{img_id}.png'), seg_map)
+        plt.imsave(os.path.join(output_s3c, f'RPf_{img_id}.png'), seg_map3c)
         #pdb.set_trace()
 
 
