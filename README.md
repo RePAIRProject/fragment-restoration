@@ -77,7 +77,25 @@ More information about the segmentation maps can be obtained in [MoFF](https://g
 ## Restoration of Manual Annotations
 This task is performed by achieving two sub-tasks, including creating inpainting masks by detecting manual annotations in bounding boxes using YoloV5, and performing exampler-based inpainting method of Criminisi.
 ### Detecting black marks 
-Introducing the usage, links to pretrained models 
+[Introducing the usage, links to pretrained models]
+
+For the purpose of training and detection of black-marks on fresco fragments using YOLOv5 on BOFF Augmented Dataset, we utilized the augmented version of the BOFF dataset. The ultimate goal was to accurately detect black-marks present on the test images.
+
+#### Google Colab Implementation
+
+For ease of reproducibility and accessibility, we've prepared a Google Colab notebook which provides a step-by-step guide for the entire process. This not only includes the training and detection steps but also covers the following:
+- Calculating and visualizing predictions
+- Identifying True Positives (TP), False Positives (FP), and False Negatives (FN)
+- Creating and verifying binary masks, which will be essential for the subsequent inpainting algorithm.
+
+**Access the Google Colab notebook:** [Google Colab File](https://drive.google.com/file/d/1hVL2hjDGKQDPecFetvK_TDC90VhHLPdR/view?usp=drive_link)
+
+#### Pretrained Weights
+
+For those interested in using the model directly or benchmarking against our results, we've also made available the pretrained weights that produced the best results during our experiments.
+
+**Download the pretrained weights:** [Best Weights](https://drive.google.com/file/d/1cnlSg_dwep9LsX2vI1BEUWVZNxG80m0Q/view?usp=drive_link)
+
 
 ### Inpainting
 
