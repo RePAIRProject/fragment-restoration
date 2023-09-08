@@ -4,25 +4,11 @@ In this repository, you will find datasets, code, and pretrained models related 
 ## Table of Contents
 
 - [Introduction](#introduction)
-- [Citation](#citation)
 - [Datasets](#datasets)
-- [Pretrained Models](#pretrained-models)
-- [Code](#code)
-- [Usage](#usage)
+- [Restoration of Manual Annotations](#restoration-of-manual-annotations)
+- [Semantic Segmentation of Fragments](#semantic-segmentation-of-fragments)
+- [Citation](#citation)
 - [Acknowledgments](#acknowledgments)
-
-### Citation
-If you find our work or resources useful in your research, please consider citing our paper:
-@inproceedings{enayati2023,
- title={Semantic Motif Segmentation for Archaelogical Fresco Fragments},
- author={Aref Enayati, Luca Palmieri, Sebastiano Vascon, Marcello Pelillo, Sinem Aslan},
- booktitle={},
- pages={},
- year={},
- month={},
- organization={IEEE}
-}
-
 
 ## Introduction
 This repository contains resources related to our research on the semantic motif segmentation of archaeological fresco fragments. Our work focuses on understanding and categorizing motifs found in ancient fresco fragments, 
@@ -63,8 +49,6 @@ It produces various data folders, listed below, utilized in the experiments desc
 - `annotations_boxes_components`: yolo-style annotations with one box for each component of any motif 
 - `annotations_boxes_motif`: yolo-style annotations with one box for motif 
 - `annotations_shape`: yolo-v8seg-style annotations (polygons) 
-
-**(Q: ARE THE FOLLOWING TWO FOR THE BLACK MARK REMOVAL???)**
 - `yolo_dataset_boxes`: full yolo dataset (images are duplicated, yes) for training for bounding box detection
 - `yolo_dataset_shapes`: full yolo dataset (images are duplicated, yes) for training for segmentation (use yolo-v8)
 
@@ -74,9 +58,9 @@ The train, validation and test split are contained in `.txt` files in the root f
 
 More information about the segmentation maps can be obtained in [MoFF](https://github.com/RePAIRProject/fragment-restoration/blob/e-heritage/Dataset/MoFF.md).
 
-## Restoration of Manual Annotations
+## Restoration of Manual Annotations 
 This task is performed by achieving two sub-tasks, including creating inpainting masks by detecting manual annotations in bounding boxes using YoloV5, and performing exampler-based inpainting method of Criminisi.
-### Detecting black marks 
+### Detecting black marks
 [Introducing the usage, links to pretrained models]
 
 For the purpose of training and detection of black-marks on fresco fragments using YOLOv5 on BOFF Augmented Dataset, we utilized the augmented version of the BOFF dataset. The ultimate goal was to accurately detect black-marks present on the test images.
@@ -99,7 +83,7 @@ For those interested in using the model directly or benchmarking against our res
 
 ### Inpainting
 
-## Semantic segmentation of fragments
+## Semantic Segmentation of Fragments
 
 For more information about the semantic classes, please refer to the [MoFF readme file](https://github.com/RePAIRProject/fragment-restoration/tree/e-heritage/Dataset/MoFF.md).
 
@@ -173,3 +157,23 @@ A nice way to get results on validation set is to use `evaluate_yolo_detection.p
 
 
 ### Evaluation
+
+
+## Citation
+If you find our work or resources useful in your research, please consider citing our paper:
+```
+@inproceedings{enayati2023,
+ title={Semantic Motif Segmentation for Archaelogical Fresco Fragments},
+ author={Aref Enayati, Luca Palmieri, Sebastiano Vascon, Marcello Pelillo, Sinem Aslan},
+ booktitle={},
+ pages={},
+ year={},
+ month={},
+ organization={IEEE}
+}
+```
+
+## Acknowledgement
+
+This work is part of a project that has received funding from the European Union's Horizon 2020 research and innovation programme under grant agreement No.964854. 
+
