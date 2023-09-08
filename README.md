@@ -85,11 +85,41 @@ For those interested in using the model directly or benchmarking against our res
 
 ## Semantic Segmentation of Fragments
 
+This section refers to the segmentation tasks. As described in the paper, we have envisioned two scenarios:
+1. ***Fragment segmentation***: here we have 3 classes (background, fragment surface and *any* motif) and the focus is detecting the fragment and the motif (without the type)
+2. ***Motif segmentation***: here we have 13 classes (12 different motif type and *anything else*) and the focus is on recognizing the *type* of the motif (the rest is treated as unimportant, background and fragment are merged).
+
 For more information about the semantic classes, please refer to the [MoFF readme file](https://github.com/RePAIRProject/fragment-restoration/tree/e-heritage/Dataset/MoFF.md).
 
-For training and inference using Unet or YOLO, please see below.
+This is an important difference conceptually, while regarding implementation, this makes a little difference. We used two different networks for the segmentation task, [UNet](#unet) and [YOLO](#yolo).
 
-### Training UNet
+### UNet
+
+UNet is a widely used framework for pixel-wise segmentation. This is a custom re-implementation using pytorch which follows the standard architecture. 
+
+Everything related should be available under the `unet` folder, with `unet.py` containing the two model (the *classic* and the *simplified* one) and other scripts for training, for showing results and for evaluating performances.
+
+#### Parameters
+
+When training, we define a set of parameters in the `train_segmentation_net.py` script which are then saved into a parameter file in the output folder (so that you know which parameters where used).
+The parameters look like this:
+```python
+## Parameters 
+IMG_SIZE = 512 # resize images to IMG_SIZE x IMG_SIZE
+EPOCHS = 200 # train max. until this number (early stopping is enabled)
+BATCH_SIZE = 8 # change batch size according to your GPU
+AUGMENT = True # whether to perform or not on-the-fly data augmentation
+aug_geometric = True # geometric augmentation (rotation, mirror)
+aug_color = False # color augmentation (use only with RGB)
+COLOR_SPACE = 'HSV' # this changes the color space for all images
+CLASSES = 13 # number of classes (scenario 1 --> 3 classes, scenario 2 --> 13 classes)
+LEARNING_RATE = 0.001 # there is a scheduler for the decay!
+MODEL = 'classic' # it can be either 'classic' or 'simplified' 
+INPAINTED = True # picking inpainted images (use False for the original ones)
+``` 
+
+
+#### Training 
 
 To run the training, use the script `train_segmentation_net.py`, which needs no additional parameters and can be run as:
 ```bash
@@ -99,7 +129,7 @@ Everything is inside there, at the beginning of the `main(arg):` function there 
 
 The training saves the results in single run subfolders (created) under the `runs` folder. The name has some random number and the parameters appended and inside you find model, graphics, sample predictions and parameters. The name of the run folder is printed on the terminal and can be copied to quickly use it for running inference.
 
-### Inference with UNet
+#### Inference
 
 To run inference, there is another script called `show_some_results.py`. This requires some parameters, usually the run folder is enough. It can be passed with the `-f` parameter, so an example launch would be:
 ```bash
@@ -112,9 +142,14 @@ python unet/show_some_results.py -f run16885392688472511_classicUNET_RGB_images5
 ```
 This will run on `images_cropped` and `masks_cropped` folders and save the results in `results_images_cropped` within the subfolder of the run of the training (the one gave with `-f`)/
 
-**NOTE** This does not actually save any numerical results on the test set. I started to create a `performance_unet.py` for that, but `iou` (from `iou_loss(y_true, y_pred)` in `unet.py` returns negative ious! I do not have enough time to debug it, sorry!)
+**NOTE:** This does not actually save any numerical results on the test set. Please check the `evaluation` folder/section for more information about numerical results. 
+#### Pretrained Models
 
-### Training Yolo
+You can find the [pretrained models here](https://drive.google.com/drive/folders/19N7pfHEJQ6LPPzzAXYLJIoKPNtKRT7aj?usp=sharing). In this folder there are the pretrained models with their parameters for scenario 1 and scenario 2 for both simplified and classic UNet architecture.
+
+### Yolo
+
+#### Training
 
 Please refer to the official Yolo documentation:
 - [Yolov5 for detection](https://docs.ultralytics.com/yolov5/) (of course you could update to yolov8 for detection, but the models were trained using yolov5 at the moment)
@@ -129,9 +164,11 @@ Example run for segmentation (yolov8-style, yolo CLI):
 yolo segment train data=data/repair_motif_seg.yaml epochs=200 batch=32 imgsz=512  
 ```
 
-### Detecting and converting Yolo outputs
+#### Inference 
 
-##### If you just want to get some results quickly, you can use the yolo commands for inference
+YOLO already provides CLI for running train and inference, but it already draws the results on the image to show them. So it is very good for quickly cheking how is working, but you may need to run custom code if you want to do something with the results. 
+
+##### YOLO commands for inference
 Example run for detection (yolov5-like):
 ```bash
 python detect.py --weights '/..path../Yolo_best_model_pretrained_best_weights.pt' --source '/..path../images_folder'
@@ -142,22 +179,25 @@ yolo segment predict model=path/to/best.pt source='image or image folder'
 ```
 
 
-##### If you want to get white bounding boxes (to use the detection for downstream tasks):
-The script `detect_black_marks.py` detect the black marks on the images (with the resolution of the input image) and saves as output binary masks (white filled boxes) and visualization (red rectangles).
-It requires the pretrained to work (please change paths).
+##### Custom code for the white bounding boxes (to use the detection for downstream tasks):
+The script `detect_bbox_motif.py` detect the motif on the images (with the resolution of the input image) and saves as output binary masks (white filled boxes) and visualization (red rectangles).
+It requires the pretrained model to work (please change paths).
 
-The same (more or less) is valid for `detect_bbox_motif.py`, it creates the white filled bboxes from the prediction of pre-trained yolo (v5) network.
-
-There is a third script `get_segm_yolo.py` which is slightly different, it converts the output of the yolo segmentation (so yolov8) and it requires other stuff (I used it inside the yolo repo actually, but I copied here in case it's needed). 
+There is another script `get_segm_yolo.py` which is slightly different, it converts the output of the yolo segmentation (so yolov8) and it requires other stuff (I used it inside the yolo repo actually, but I copied here in case it's needed). 
 
 Also inside `yolo_processing` folder there is a script for preparation and the data config file for training yolo (`prepare_dataset_yolo.py`). Not perfect, but it should help.
 
-##### Validating Yolo
-A nice way to get results on validation set is to use `evaluate_yolo_detection.py` (changing folder name) or call the yolo CLI `yolo segment val model=path/to/best.pt  # val custom model`.
+#### Validation
+A nice way to get results on the validation set is to use `evaluate_yolo_detection.py` (changing folder name) or call the yolo CLI `yolo segment val model=path/to/best.pt  # val custom model`.
+
+#### Pretrained Models
+
+You can find the [pretrained models here](https://drive.google.com/drive/folders/19jPUtnR-FvRWhXNse70guq2xXKXkXPva?usp=sharing). 
+In the folder you find the v5 trained models for detection (we trained 2 using a bounding box for each motif or for each *component* of the motifs) and the v8 trained model for segmentation (it can also do detection).
 
 
 ### Evaluation
-
+WIP
 
 ## Citation
 If you find our work or resources useful in your research, please consider citing our paper:
