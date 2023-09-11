@@ -5,6 +5,7 @@ from copy import copy
 import numpy as np 
 import cv2 
 import random 
+import argparse 
 
 def write_shape_to_file(path, list_of_shapes):
 
@@ -17,12 +18,28 @@ def write_shape_to_file(path, list_of_shapes):
         f.write("\n")
     f.close()
 
-def main():
-    moff_folder = '/home/sinem/PycharmProjects/fragment-restoration/Dataset/MoFF/'
-    unprocessed_data_folder = os.path.join(moff_folder, 'unprocessed')
+def main(args):
 
+    # Given through command line
+    if args.path == '':
+        print()
+        print("#" * 50)
+        print("\nWARNING:\nYou did not specify a path (with -path), so we use the default hardcoded")
+        moff_folder = '/home/sinem/PycharmProjects/fragment-restoration/Dataset/MoFF/'
+        print("Default:", moff_folder)
+        print("\nIf you want to run with a specific folder, rerun the script adding -path 'path_to_your_dataset' afterwards!")
+        print("Ex: `python Dataset_processing/prepare_MoFF.py -path /home/data/moff` \n")
+        print("#" * 50)
+        print()
+    else:
+        moff_folder = args.path 
+    
+    ## These are the images to start from 
+    unprocessed_data_folder = os.path.join(moff_folder, 'unprocessed_data')
+
+    # here the cropped version (change names if you want to use uncropped version)
     images_folder = os.path.join(unprocessed_data_folder, 'images_cropped')
-    inpainted_images_folder = os.path.join(unprocessed_data_folder, 'images_restored_cropped')
+    inpainted_images_folder = os.path.join(unprocessed_data_folder, 'images_bm_inpainted_cropped')
     seg_masks_folder = os.path.join(unprocessed_data_folder, 'masks_cropped')
 
     imgs_paths = os.listdir(images_folder)
@@ -31,6 +48,8 @@ def main():
     imgs_paths.sort()
     segs_paths.sort()
 
+    # these are the output folders. 
+    # some of these may not be important so you can remove (and comment out later the code)
     output_img = os.path.join(moff_folder, 'processed', 'RGB')
     output_inp = os.path.join(moff_folder, 'processed', 'RGB_restored')
     output_s3c = os.path.join(moff_folder, 'processed', 'segmap3c')
@@ -39,7 +58,6 @@ def main():
     output_yolo_bc = os.path.join(moff_folder, 'processed', 'annotations_boxes_components')
     output_yolo_bm = os.path.join(moff_folder, 'processed', 'annotations_boxes_motif')
     output_yolo_shapes = os.path.join(moff_folder, 'processed', 'annotations_shape')
-
 
     os.makedirs(output_img, exist_ok=True)
     os.makedirs(output_inp, exist_ok=True)
@@ -55,26 +73,25 @@ def main():
         seg_id = img_path[seg_path.index('RPf')+4:seg_path.index('RPf')+9]
         assert(img_id == seg_id), 'misaligned imags and masks/fg'
 
-        img = plt.imread(os.path.join(images_folder, img_path))
-        inp_img = plt.imread(os.path.join(inpainted_images_folder, img_path))
-        seg_map = plt.imread(os.path.join(seg_masks_folder, seg_path))
-        seg_map = (seg_map * 255).astype(np.uint8)
+        img = cv2.imread(os.path.join(images_folder, img_path))
+        inp_img = cv2.imread(os.path.join(inpainted_images_folder, img_path))
+        seg_map = cv2.imread(os.path.join(seg_masks_folder, seg_path))
 
+        # seg map for scenario 1
         seg_map3c = seg_map.copy()
         seg_map3c[seg_map3c > 2] = 2
 
-        motif_map = np.zeros_like(img)
-        #motif_map[:,:,3] = (seg_map > 0)[:,:]
+        motif_map = np.zeros_like(img) # motif map in an RGBA image with only the motifs
         single_annotations = []
         annotations_motif = []
         annotations_shape = []
+
         for motif_label in range(2, np.max(seg_map)+1):
             cur_motif_map = (seg_map == motif_label).astype(np.uint8)
             motif_map[:,:,:3] += img * (cur_motif_map[:,:,:3])
             cv_motif = np.zeros((seg_map.shape[0], seg_map.shape[1]), np.uint8)
             cv_motif += cur_motif_map[:,:,0]
             h,w = img.shape[:2]
-            #pdb.set_trace()
             contours = cv2.findContours(cv_motif, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
             contours = contours[0] if len(contours) == 2 else contours[1]
             
@@ -103,7 +120,6 @@ def main():
                         contour_yolo.append((cntr_pt / [w, h])[0][0])
                         contour_yolo.append((cntr_pt / [w, h])[0][1])
                     annotations_shape.append(contour_yolo)
-                    #pdb.set_trace()
                 
                 x_min = np.min(x_min_vals)
                 y_min = np.min(y_min_vals)
@@ -117,17 +133,8 @@ def main():
                 # wc /= w
                 # y /= h 
                 # hc /= h 
-            
-                # cv2.rectangle(img, (x, y), (x+wcnt, y+hcnt), (0, 0, 255), 5)
-                # plt.subplot(121)
-                # plt.title(f"x: {x}, y: {y}, w: {wcnt}, h: {hcnt}")
-                # plt.imshow(img) 
-                # plt.subplot(122)
-                # plt.title(f"x: {xc}, y: {yc}, w: {wc}, h: {hc}")
-                # plt.imshow(cv_motif)
-                # plt.show()
-                # pdb.set_trace() #np.savetxt(os.path.join(output_yolo, f'RPf_{img_id}.txt'), annotations, fmt="%d %f:3f %d %d %d")
                 annotations_motif.append([motif_label, xc, yc, wc, hc])
+
         if len(single_annotations) > 0:
             np.savetxt(os.path.join(output_yolo_bc, f'RPf_{img_id}.txt'), single_annotations, fmt="%d %.3f %.3f %.3f %.3f")
         else:
@@ -141,16 +148,13 @@ def main():
             write_shape_to_file(os.path.join(output_yolo_shapes, f'RPf_{img_id}.txt'), annotations_shape)
         else:
             open(os.path.join(output_yolo_shapes, f'RPf_{img_id}.txt'), 'w').close()
-        plt.imsave(os.path.join(output_inp, f'RPf_{img_id}.png'), inp_img)   
-        plt.imsave(os.path.join(output_motif, f'RPf_{img_id}.png'), motif_map)
-        plt.imsave(os.path.join(output_img, f'RPf_{img_id}.png'), img)
-        plt.imsave(os.path.join(output_s14c, f'RPf_{img_id}.png'), seg_map)
-        plt.imsave(os.path.join(output_s3c, f'RPf_{img_id}.png'), seg_map3c)
-        #pdb.set_trace()
-
+        cv2.imwrite(os.path.join(output_inp, f'RPf_{img_id}.png'), inp_img)   
+        cv2.imwrite(os.path.join(output_motif, f'RPf_{img_id}.png'), motif_map)
+        cv2.imwrite(os.path.join(output_img, f'RPf_{img_id}.png'), img)
+        cv2.imwrite(os.path.join(output_s14c, f'RPf_{img_id}.png'), seg_map)
+        cv2.imwrite(os.path.join(output_s3c, f'RPf_{img_id}.png'), seg_map3c)
 
         print(f'saved RPf_{img_id}.png')
-        #pdb.set_trace()
 
     print("finished creating images, now the train/test/val files!")
     list_files_moff = os.listdir(os.path.join(moff_folder, 'RGB'))
@@ -180,4 +184,9 @@ def main():
     np.savetxt(os.path.join(moff_folder, 'test.txt'), test_set_files, fmt="%s")
 
 if __name__ == '__main__':
-    main()
+
+    parser = argparse.ArgumentParser(description='Prepare the MoFF dataset given the folder of unprocessed images')
+    parser.add_argument('-path', type=str, default='', help='images folder')
+
+    args = parser.parse_args()
+    main(args)
