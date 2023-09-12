@@ -266,6 +266,25 @@ Mean Pixel Accuracy:
 #################################################################
 ```
 
+#### Evaluation of Color Space Experiments
+
+For readers and researchers interested in the evaluation presented in Table 2 of our paper — experiments conducted with various color spaces in Scenario 1 — we've provided some resources to facilitate further exploration and reproduction of our results.
+
+##### Trained Models
+
+We have made available the trained models for these experiments. These can be instrumental for direct implementation or further tweaking based on specific needs.
+
+**Access the trained models:** [Trained Models Folder](https://drive.google.com/drive/folders/11Ed831CBjengf0ZogeFeUvGustRCUa6m)
+
+##### Google Colab for Reproduction
+
+To further assist in reproducing our results or evaluating the model on your own data, we've prepared a Google Colab notebook. This notebook provides a streamlined approach to load the trained models, reproduce the results, and evaluate on custom datasets.
+
+**Access the Google Colab notebook:** [Google Colab File for Reproduction](https://colab.research.google.com/drive/1fIOgDT6X8wWssAiyO8pWILENiFaf1dHw?ouid=114722430595098931105&usp=drive_link)
+
+
+#### Pretrained models 
+
 ## Citation
 If you find our work or resources useful in your research, please consider citing our paper:
 ```
