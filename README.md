@@ -213,7 +213,7 @@ We have made available the trained models for these experiments. These can be in
 
 To further assist in reproducing our results or evaluating the model on your own data, we've prepared a Google Colab notebook. This notebook provides a streamlined approach to load the trained models, reproduce the results, and evaluate on custom datasets.
 
-**Access the Google Colab notebook:** [Google Colab File for Reproduction]([https://colab.research.google.com/drive/1fIOgDT6X](https://colab.research.google.com/drive/1fIOgDT6X8wWssAiyO8pWILENiFaf1dHw?ouid=114722430595098931105&usp=drive_link))
+**Access the Google Colab notebook:** [Google Colab File for Reproduction](https://colab.research.google.com/drive/1fIOgDT6X8wWssAiyO8pWILENiFaf1dHw?ouid=114722430595098931105&usp=drive_link)
 
 
 #### Pretrained models 
