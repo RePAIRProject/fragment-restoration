@@ -50,14 +50,15 @@ def main(args):
 
     # these are the output folders. 
     # some of these may not be important so you can remove (and comment out later the code)
-    output_img = os.path.join(moff_folder, 'processed', 'RGB')
-    output_inp = os.path.join(moff_folder, 'processed', 'RGB_restored')
-    output_s3c = os.path.join(moff_folder, 'processed', 'segmap3c')
-    output_s14c = os.path.join(moff_folder, 'processed', 'segmap14c')
-    output_motif = os.path.join(moff_folder, 'processed', 'motifs')
-    output_yolo_bc = os.path.join(moff_folder, 'processed', 'annotations_boxes_components')
-    output_yolo_bm = os.path.join(moff_folder, 'processed', 'annotations_boxes_motif')
-    output_yolo_shapes = os.path.join(moff_folder, 'processed', 'annotations_shape')
+    output_moff_folder = os.path.join(moff_folder, 'processed')
+    output_img = os.path.join(output_moff_folder, 'RGB')
+    output_inp = os.path.join(output_moff_folder, 'RGB_restored')
+    output_s3c = os.path.join(output_moff_folder, 'segmap3c')
+    output_s14c = os.path.join(output_moff_folder, 'segmap14c')
+    output_motif = os.path.join(output_moff_folder, 'motifs')
+    output_yolo_bc = os.path.join(output_moff_folder, 'annotations_boxes_components')
+    output_yolo_bm = os.path.join(output_moff_folder, 'annotations_boxes_motif')
+    output_yolo_shapes = os.path.join(output_moff_folder, 'annotations_shape')
 
     os.makedirs(output_img, exist_ok=True)
     os.makedirs(output_inp, exist_ok=True)
@@ -179,9 +180,9 @@ def main(args):
 
     print(ltr, lv, lt, "=", (ltr+lv+lt))
     print(val_set_files[-1], test_set_files[0])
-    np.savetxt(os.path.join(moff_folder, 'train.txt'), train_set_files, fmt="%s")
-    np.savetxt(os.path.join(moff_folder, 'validation.txt'), val_set_files, fmt="%s")
-    np.savetxt(os.path.join(moff_folder, 'test.txt'), test_set_files, fmt="%s")
+    np.savetxt(os.path.join(output_moff_folder, 'train.txt'), train_set_files, fmt="%s")
+    np.savetxt(os.path.join(output_moff_folder, 'validation.txt'), val_set_files, fmt="%s")
+    np.savetxt(os.path.join(output_moff_folder, 'test.txt'), test_set_files, fmt="%s")
 
 if __name__ == '__main__':
 

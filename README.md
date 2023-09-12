@@ -197,7 +197,74 @@ In the folder you find the v5 trained models for detection (we trained 2 using a
 
 
 ### Evaluation
-WIP
+We provide a script for evaluation of predictions. In this case we expect you create predictions from all the images of the test set (the `test.txt` file is a list of the files in the test set).
+Once you predicted (with your model) the masks for these files, store them in a folder. The name of the files should be the same as in the `test.txt` files so that the script reads them.
+
+For benchmarking we need your prediction folder (all predicted masks should be there), the number of classes (if you are evaluating for 3 or 13 classes), the path of the MoFF dataset (you should have it downloaded) and the output folder (optional, otherwise the script will use your current folder as output).
+We rescale the images (as default the size is `512x512`). This is done using nearest neighbour interpolation to preserve integer class values. You can change the size using the `-s img_size` parameter.
+
+To benchmark, you can run the script for example as:
+```bash
+python evaluations/benchmark.py -p 'path_to_prediction_folder' -c 3 -d 'path_to_dataset/MoFF' -o 'path_to_output_folder'
+```
+
+If you did not download the full moff, but you only have the ground truth masks and the test.txt files (at least these are needed) you can run the script explicitly setting `-t path_to_the_test.txt` and `-gt path_to_the_gt_folder`.
+
+Example Runs:
+If you run on 3 classes, it outputs the performances like:
+```bash
+##############################
+Performances on 3 classes
+IoU (avg): 0.913
+PA  (avg): 0.964
+##############################
+```
+If you run on 13 classes, it outputs the performances like:
+```bash
+##############################
+Performances on 13 classes
+IoU (avg): 0.614
+PA  (avg): 0.637
+------------------------------
+Performances on motif only
+IoU (motif): 0.405
+PA  (motif): 0.441
+##############################
+```
+
+#### Reproducing the paper results
+We also provide a script to reproduce our unet vs yolo benchmark. 
+This assumes you already have results from YOLO and UNet models in their respective folder. 
+The folder paths are hard-coded in the first lines of the file, and you can change accordingly to your local storage.
+It is not necessary and provided as a reference.
+It can be run as 
+```bash
+python evaluations/reproduce_unet_vs_yolo13c.py
+```
+And it should output (this is the result on our computer, with the prediction of the latest models on 512x512 images, Table 3 of the paper):
+```bash
+#################################################################
+AVERAGE (13 classes)
+Mean IoU:
+ UNET (simplified): 0.569
+ UNET             : 0.606
+ YOLO             : 0.538
+Mean Pixel Accuracy:
+ UNET (simplified): 0.600
+ UNET             : 0.630
+ YOLO             : 0.797
+-----------------------------------------------------------------
+MOTIF (12 classes)
+Mean IoU:
+ UNET (simplified): 0.345
+ UNET             : 0.416
+ YOLO             : 0.582
+Mean Pixel Accuracy:
+ UNET (simplified): 0.392
+ UNET             : 0.452
+ YOLO             : 0.634
+#################################################################
+```
 
 ## Citation
 If you find our work or resources useful in your research, please consider citing our paper:
