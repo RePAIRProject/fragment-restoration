@@ -55,7 +55,8 @@ MoFF dataset is curated for the task of semantic segmentation of the motifs pres
 - Scenario 2: 12-class annotation (distinct motif types).
 
 Basically, the data used n the experiments is generated through the [prepare_MoFF.py](https://github.com/RePAIRProject/fragment-restoration/blob/e-heritage/Dataset_processing/prepare_MoFF.py) script. 
-This script takes the original, high-resolution, unmodified images and associated annotations, accessible for download from [Link to Zenodo](). 
+This script takes the original, high-resolution, unmodified images and associated annotations, accessible by filling the [form](https://docs.google.com/forms/d/e/1FAIpQLSfzdvuchDQ1Y-uqiRBS8C4eMO6LY7e6blzPawmuwmEXYmRXyA/viewform).
+
 It produces various data folders, listed below, utilized in the experiments described in our paper.
 
 - `RGB`: RGB color images (without any black mark removal), obtained by cropping original input images to include only the fragment region. 
