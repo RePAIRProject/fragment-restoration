@@ -1,5 +1,25 @@
 # Semantic Motif Segmentation for Archaelogical Fresco Fragments 
-In this repository, you will find datasets, code, and pretrained models related to our work on the semantic motif segmentation of archaeological fresco fragments which will be presented in [E-Heritage workshop](https://www.cvl.iis.u-tokyo.ac.jp/e-Heritage2023/) of ICCV 2023. This work is developed within the  [RePAIR European Project](https://github.com/RePAIRProject)
+In this repository, we present datasets, code, and pretrained models related to our work on the semantic motif segmentation 
+of archaeological fresco fragments which will be presented in [E-Heritage workshop](https://www.cvl.iis.u-tokyo.ac.jp/e-Heritage2023/) 
+of [ICCV 2023](https://iccv2023.thecvf.com/). This work is developed within the  [RePAIR European Project](https://github.com/RePAIRProject).
+
+
+[![Watch the video](![](../../Desktop/eheritage_end_v2.jpg))](https://youtu.be/8c4EiMJA3wM?si=WAYn_1x44XrYaa0H)
+
+
+If you find our work or resources useful in your research, please consider citing our paper:
+```
+
+    @InProceedings{enayati_2023_ICCVW,
+    author    = {Enayati, Aref and Palmieri, Luca and Vascon, Sebastiano and Pelillo, Marcello and Aslan, Sinem},
+    title     = {Semantic Motif Segmentation of Archaeological Fresco Fragments},
+    booktitle = {Proceedings of the E-Heritage Workshop of IEEE/CVF International Conference on Computer Vision (ICCV)},
+    month     = {October},
+    year      = {2023},
+    pages     = {}
+}
+```
+
 
 ## Table of Contents
 
@@ -7,7 +27,6 @@ In this repository, you will find datasets, code, and pretrained models related 
 - [Datasets](#datasets)
 - [Restoration of Manual Annotations](#restoration-of-manual-annotations)
 - [Semantic Segmentation of Fragments](#semantic-segmentation-of-fragments)
-- [Citation](#citation)
 - [Acknowledgments](#acknowledgments)
 
 ## Introduction
@@ -285,19 +304,6 @@ To further assist in reproducing our results or evaluating the model on your own
 
 #### Pretrained models 
 
-## Citation
-If you find our work or resources useful in your research, please consider citing our paper:
-```
-@inproceedings{enayati2023,
- title={Semantic Motif Segmentation for Archaelogical Fresco Fragments},
- author={Aref Enayati, Luca Palmieri, Sebastiano Vascon, Marcello Pelillo, Sinem Aslan},
- booktitle={},
- pages={},
- year={},
- month={},
- organization={IEEE}
-}
-```
 
 ## Acknowledgement
 
