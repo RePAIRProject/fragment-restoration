@@ -1,11 +1,10 @@
 # Semantic Motif Segmentation for Archaelogical Fresco Fragments 
-In this repository, we present datasets, code, and pretrained models related to our work on the semantic motif segmentation 
-of archaeological fresco fragments which will be presented in [E-Heritage workshop](https://www.cvl.iis.u-tokyo.ac.jp/e-Heritage2023/) 
-of [ICCV 2023](https://iccv2023.thecvf.com/). This work is developed within the  [RePAIR European Project](https://github.com/RePAIRProject).
+In this repository, we provide datasets, code, and pretrained models related to our work on the semantic motif segmentation 
+of archaeological fresco fragments. This work will be presented in [E-Heritage workshop](https://www.cvl.iis.u-tokyo.ac.jp/e-Heritage2023/) 
+held as part of [ICCV 2023](https://iccv2023.thecvf.com/). To access our project page, please click [here](https://repairproject.github.io/fragment-restoration/). 
+This work has been carried out as part of the [RePAIR European Project](https://github.com/RePAIRProject).
 
 https://github.com/RePAIRProject/fragment-restoration/assets/7011371/eabef996-9a59-47ff-996a-206ab2bd2f8d
-
-
 
 If you find our work or resources useful in your research, please consider citing our paper:
 ```
