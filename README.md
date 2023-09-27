@@ -28,8 +28,10 @@ If you find our work or resources useful in your research, please consider citin
 - [Acknowledgments](#acknowledgments)
 
 ## Introduction
-This repository contains resources related to our research on the semantic motif segmentation of archaeological fresco fragments. Our work focuses on understanding and categorizing motifs found in ancient fresco fragments, 
-serve as valuable resources for various computational tasks, such as fragment recognition, style classification and clustering, fragment reassembly.
+Our work focuses on understanding and categorizing motifs found in ancient fresco fragments, 
+serve as valuable resources for various computational tasks, such as fragment recognition, style classification and clustering, fragment reassembly. 
+Additionally, we have introduced an additional task concerning fragment restoration. In particular, two datasets were curated with annotations 
+for these two specific tasks, and baseline models for them.
 
 <!---### Contents
 1. Datasets
@@ -40,11 +42,9 @@ serve as valuable resources for various computational tasks, such as fragment re
 -->
 
 ## Datasets
-### BoFF (Black-Annotations on the Fresco Fragments) Dataset
+### BoFF (**B**lack-Annotations **o**n the **F**resco **F**ragments) Dataset
 
 The BoFF dataset is curated for the task of restoration of manual annotations on the fragments. It is composed of 115 images of fresco fragments with bounding box annotations covering manually drawn black-marks. These black-marks indicate neighboring relationship between fragmetns and they serve as a guide to archeologists during manual reconstruction of these frescoes.  
-
-**[AREF, PLEASE INTRODUCE BOFF DATASET , briefly here and in the BoFF.md file. ex: example figure of few fragments and bounding box annotations, introduce annotations, how they prepared. link to download them.]** 
 
 To learn more about the BoFF dataset and how to use it, please refer to the [BoFF](https://github.com/RePAIRProject/fragment-restoration/blob/e-heritage/Dataset/BoFF.md).
 

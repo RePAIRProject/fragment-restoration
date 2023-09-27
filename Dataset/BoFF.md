@@ -17,7 +17,7 @@ There are two versions of the BOFF dataset:
 
 ### Version 1 
 - **Description:** Contains only the raw images without any form of pre-processing or augmentation.
-- **Download Link:** [Version 1](https://drive.google.com/file/d/1YZRXB1hl_OWkpJyq2Y2imLn_jl1rxN3x/view?usp=drive_link)
+- **Download Link:** [Version 1](https://docs.google.com/forms/d/e/1FAIpQLSfoCSHl5M23LeXok_iSL-yxKmK0AJShTWccjDb2Xas6F54qvw/viewform)
 
 ### Version 2 
 - **Description:** This version includes augmented images in the training set, with the validation and test sets remaining untouched.
@@ -31,7 +31,7 @@ There are two versions of the BOFF dataset:
 
         Random Rotations: Beyond the 90-degree rotations, each image may also undergo a random rotation between -30 and +30 degrees.
     
-- **Download Link:** [Version 2](https://drive.google.com/file/d/1hpuCzT2faTJ8geADgE5r1D3TeuCfx7oS/view?usp=drive_link)
+- **Download Link:** [Version 2](https://docs.google.com/forms/d/e/1FAIpQLSfoCSHl5M23LeXok_iSL-yxKmK0AJShTWccjDb2Xas6F54qvw/viewform)
 
 ## Dataset Statistics
 
