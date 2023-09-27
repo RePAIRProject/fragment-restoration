@@ -3,7 +3,9 @@ In this repository, we present datasets, code, and pretrained models related to 
 of archaeological fresco fragments which will be presented in [E-Heritage workshop](https://www.cvl.iis.u-tokyo.ac.jp/e-Heritage2023/) 
 of [ICCV 2023](https://iccv2023.thecvf.com/). This work is developed within the  [RePAIR European Project](https://github.com/RePAIRProject).
 
-[![Watch the video](https://github.com/RePAIRProject/fragment-restoration/assets/7011371/67531889-000c-4a9e-bfdd-2daae221f189)](https://youtu.be/8c4EiMJA3wM?si=WAYn_1x44XrYaa0H)
+https://github.com/RePAIRProject/fragment-restoration/assets/7011371/eabef996-9a59-47ff-996a-206ab2bd2f8d
+
+
 
 If you find our work or resources useful in your research, please consider citing our paper:
 ```
