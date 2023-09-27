@@ -48,6 +48,8 @@ The BoFF dataset is curated for the task of restoration of manual annotations on
 
 To learn more about the BoFF dataset and how to use it, please refer to the [BoFF](https://github.com/RePAIRProject/fragment-restoration/blob/e-heritage/Dataset/BoFF.md).
 
+Make a request [here](https://docs.google.com/forms/d/e/1FAIpQLSfoCSHl5M23LeXok_iSL-yxKmK0AJShTWccjDb2Xas6F54qvw/viewform) to access the dataset and pretrained models.
+
 ### MoFF (Motifs on Fresco Fragment) Dataset
 
 MoFF dataset is curated for the task of semantic segmentation of the motifs present on the painted surface of the fragments. It contains images of real fresco fragments obtained from the Archaeological Park of Pompeii. The following two annotation scenarios were employed:
