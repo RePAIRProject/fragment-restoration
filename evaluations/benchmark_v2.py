@@ -92,7 +92,7 @@ def main(args):
     imgs_names = np.loadtxt(test_path, dtype=str)
     IoU = np.zeros(len(imgs_names))
     PA = np.zeros(len(imgs_names))
-    if args.classes == 13:
+    if args.classes == 13 or args.classes == 12:
         IoU_motif = np.zeros(len(imgs_names))
         PA_motif = np.zeros(len(imgs_names))
     
