@@ -48,7 +48,7 @@ The BoFF dataset is curated for the task of restoration of manual annotations on
 
 To learn more about the BoFF dataset and how to use it, please refer to the [BoFF](https://github.com/RePAIRProject/fragment-restoration/blob/e-heritage/Dataset/BoFF.md).
 
-Make a request [here](https://docs.google.com/forms/d/e/1FAIpQLSfoCSHl5M23LeXok_iSL-yxKmK0AJShTWccjDb2Xas6F54qvw/viewform) to access the dataset and pretrained models.
+Make a request [here](https://docs.google.com/forms/d/e/1FAIpQLSfoCSHl5M23LeXok_iSL-yxKmK0AJShTWccjDb2Xas6F54qvw/viewform) to access the dataset.
 
 ### MoFF (Motifs on Fresco Fragment) Dataset
 
@@ -81,7 +81,6 @@ More information about the segmentation maps can be obtained in [MoFF](https://g
 ## Restoration of Manual Annotations 
 This task is performed by achieving two sub-tasks, including creating inpainting masks by detecting manual annotations in bounding boxes using YoloV5, and performing exampler-based inpainting method of Criminisi.
 ### Detecting black marks
-[Introducing the usage, links to pretrained models]
 
 For the purpose of training and detection of black-marks on fresco fragments using YOLOv5 on BOFF Augmented Dataset, we utilized the augmented version of the BOFF dataset. The ultimate goal was to accurately detect black-marks present on the test images.
 
@@ -102,6 +101,9 @@ For those interested in using the model directly or benchmarking against our res
 
 
 ### Inpainting
+More information about the implementation can be obtained in [Iterative_inpainting](https://github.com/RePAIRProject/fragment-restoration/blob/e-heritage/Dataset/MoFF.md).
+
+
 
 ## Semantic Segmentation of Fragments
 
@@ -111,7 +113,7 @@ This section refers to the segmentation tasks. As described in the paper, we hav
 
 For more information about the semantic classes, please refer to the [MoFF readme file](https://github.com/RePAIRProject/fragment-restoration/tree/e-heritage/Dataset/MoFF.md).
 
-This is an important difference conceptually, while regarding implementation, this makes a little difference. We used two different networks for the segmentation task, [UNet](#unet) and [YOLO](#yolo).
+Two scenarios have an important difference conceptually, while regarding implementation, this makes a little difference. We used two different networks for the segmentation task, [UNet](#unet) and [YOLO](#yolo).
 
 ### UNet
 
@@ -172,8 +174,8 @@ You can find the [pretrained models here](https://drive.google.com/drive/folders
 #### Training
 
 Please refer to the official Yolo documentation:
-- [Yolov5 for detection](https://docs.ultralytics.com/yolov5/) (of course you could update to yolov8 for detection, but the models were trained using yolov5 at the moment)
-- [Yolov8 for segmentation](https://docs.ultralytics.com/tasks/segment/)
+- [Yolov5 for motif detection](https://docs.ultralytics.com/yolov5/) (of course you could update to yolov8 for detection, but the models were trained using yolov5 at the moment)
+- [Yolov8 for motif segmentation](https://docs.ultralytics.com/tasks/segment/)
 
 Example train for detection (yolov5-like):
 ```bash
@@ -228,7 +230,7 @@ To benchmark, you can run the script for example as:
 python evaluations/benchmark.py -p 'path_to_prediction_folder' -c 3 -d 'path_to_dataset/MoFF' -o 'path_to_output_folder'
 ```
 
-If you did not download the full moff, but you only have the ground truth masks and the test.txt files (at least these are needed) you can run the script explicitly setting `-t path_to_the_test.txt` and `-gt path_to_the_gt_folder`.
+If you did not download the full MoFF, but you only have the ground truth masks and the test.txt files (at least these are needed) you can run the script explicitly setting `-t path_to_the_test.txt` and `-gt path_to_the_gt_folder`.
 
 Example Runs:
 If you run on 3 classes, it outputs the performances like:
