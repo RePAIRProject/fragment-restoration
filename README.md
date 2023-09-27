@@ -86,7 +86,7 @@ For the purpose of training and detection of black-marks on fresco fragments usi
 
 #### Google Colab Implementation
 
-For ease of reproducibility and accessibility, we've prepared a Google Colab notebook which provides a step-by-step guide for the entire process. This not only includes the training and detection steps but also covers the following:
+For those wanting a comprehensive guide, we've set up a Google Colab notebook. This interactive document provides a step-by-step walkthrough covering the entire process including:
 - Calculating and visualizing predictions
 - Identifying True Positives (TP), False Positives (FP), and False Negatives (FN)
 - Creating and verifying binary masks, which will be essential for the subsequent inpainting algorithm.
@@ -98,6 +98,12 @@ For ease of reproducibility and accessibility, we've prepared a Google Colab not
 For those interested in using the model directly or benchmarking against our results, we've also made available the pretrained weights that produced the best results during our experiments.
 
 **Download the pretrained weights:** [Best Weights](https://drive.google.com/file/d/1cnlSg_dwep9LsX2vI1BEUWVZNxG80m0Q/view?usp=drive_link)
+
+#### Quick Model Deployment and Full Reproduction
+
+- Quick Model Deployment: To swiftly load the pretrained model and obtain new results, refer to our dedicated Python file: [detect_black_marks.py](https://github.com/RePAIRProject/fragment-restoration/blob/e-heritage/black_mark_removal/detecting_blackmarks_by_yolo/detect_black_marks.py).
+
+- Full Process Reproduction: If you're interested in reproducing our entire process or aim to train your own model from scratch, the Google Colab file linked above is your go-to guide.
 
 
 ### Inpainting
@@ -221,13 +227,23 @@ In the folder you find the v5 trained models for detection (we trained 2 using a
 ### Evaluation
 We provide a script for evaluation of predictions. In this case we expect you create predictions from all the images of the test set (the `test.txt` file is a list of the files in the test set).
 Once you predicted (with your model) the masks for these files, store them in a folder. The name of the files should be the same as in the `test.txt` files so that the script reads them.
+___
+For benchmarking, the following parameters are required:
 
-For benchmarking we need your prediction folder (all predicted masks should be there), the number of classes (if you are evaluating for 3 or 13 classes), the path of the MoFF dataset (you should have it downloaded) and the output folder (optional, otherwise the script will use your current folder as output).
+- Your prediction folder (all predicted masks should be there).
+- The number of classes (valid values are 3, 12, 13, and 14).
+- The path to the MoFF dataset (you should have it downloaded).
+- Output folder (optional; if not specified, the script will use your current folder as the output location).
+
+Note: While there is only one version of the ground truth masks with 14-class annotations, other class configurations are derived using a remapping function present in the code.
+___
+*(For benchmarking we need your prediction folder (all predicted masks should be there), the number of classes (if you are evaluating for 3 or 13 classes), the path of the MoFF dataset (you should have it downloaded) and the output folder (optional, otherwise the script will use your current folder as output).)*
+
 We rescale the images (as default the size is `512x512`). This is done using nearest neighbour interpolation to preserve integer class values. You can change the size using the `-s img_size` parameter.
 
 To benchmark, you can run the script for example as:
 ```bash
-python evaluations/benchmark.py -p 'path_to_prediction_folder' -c 3 -d 'path_to_dataset/MoFF' -o 'path_to_output_folder'
+python evaluations/benchmark_v2.py -p 'path_to_prediction_folder' -c 3 -d 'path_to_dataset/MoFF' -o 'path_to_output_folder'
 ```
 
 If you did not download the full MoFF, but you only have the ground truth masks and the test.txt files (at least these are needed) you can run the script explicitly setting `-t path_to_the_test.txt` and `-gt path_to_the_gt_folder`.
