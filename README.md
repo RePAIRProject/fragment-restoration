@@ -304,10 +304,6 @@ To further assist in reproducing our results or evaluating the model on your own
 
 **Access the Google Colab notebook:** [Google Colab File for Reproduction](https://colab.research.google.com/drive/1fIOgDT6X8wWssAiyO8pWILENiFaf1dHw?ouid=114722430595098931105&usp=drive_link)
 
-
-#### Pretrained models 
-
-
 ## Acknowledgement
 
 This work is part of a project that has received funding from the European Union's Horizon 2020 research and innovation programme under grant agreement No.964854. 
