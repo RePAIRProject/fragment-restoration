@@ -92,7 +92,7 @@ def main(args):
     imgs_names = np.loadtxt(test_path, dtype=str)
     IoU = np.zeros(len(imgs_names))
     PA = np.zeros(len(imgs_names))
-    if args.classes == 13:
+    if args.classes == 13 or args.classes == 12:
         IoU_motif = np.zeros(len(imgs_names))
         PA_motif = np.zeros(len(imgs_names))
     
@@ -112,8 +112,8 @@ def main(args):
         IoU[j] = mean_iou(pred_resized, gt_resized, classes_list=classes_list)
         PA[j] = mean_pixel_accuracy(pred_resized, gt_resized, classes_list=classes_list)
         if args.classes == 13:
-            IoU_motif[j] = mean_iou(pred_resized, gt_resized, classes_list=classes_list[1:])
-            PA_motif[j] = mean_pixel_accuracy(pred_resized, gt_resized, classes_list=classes_list[1:])
+            IoU_motif[j] = mean_iou(pred_resized, gt_resized, classes_list=classes_list)
+            PA_motif[j] = mean_pixel_accuracy(pred_resized, gt_resized, classes_list=classes_list)
         elif args.classes == 12:
             IoU_motif[j] = mean_iou(pred_resized, gt_resized, classes_list=classes_list[1:])
             PA_motif[j] = mean_pixel_accuracy(pred_resized, gt_resized, classes_list=classes_list[1:])            
