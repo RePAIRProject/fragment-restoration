@@ -90,6 +90,18 @@
                         </a>
                       </span>
 
+                      <!-- Poster PDF link -->
+
+                      <span class="link-block">
+                        <a href="static/pdfs/EHeritage-poster.pdf" target="_blank"
+                        class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon">
+                          <i class="fas fa-file-pdf"></i>
+                        </span>
+                        <span>Poster</span>
+                        </a>
+                      </span>
+
                       <!-- Github link -->
                       <span class="link-block">
                         <a href="https://github.com/RePAIRProject/fragment-restoration/tree/e-heritage" target="_blank"
@@ -103,12 +115,12 @@
 
                       <!-- Dataset link -->
                       <span class="link-block">
-                        <a href="" target="_blank"
+                        <a href="#datasets" target="_blank"
                         class="external-link button is-normal is-rounded is-dark">
                         <span class="icon">
                           <i class="far fa-image"></i>
                         </span>
-                        <span>Dataset</span>
+                        <span>Datasets</span>
                         </a>
                       </span>
 
@@ -121,27 +133,27 @@
                   </span>
                   <span>arXiv</span>
                 </a>
-              </span>
+              </span> -->
               <br>
               
               <span class="link-block">
-                <a href="static/pdfs/Reassembling_3DVR_2023.pdf" target="_blank"
+                <a href="static/pdfs/EHeritage-spotlight.pdf" target="_blank"
                 class="external-link button is-normal is-rounded is-dark">
                 <span class="icon">
                   <i class="fas fa-file-pdf"></i>
                 </span>
-                <span>Slides (3 min)</span>
+                <span>Slides (2 min)</span>
                 </a>
               </span>
               <span class="link-block">
-                <a href="https://www.youtube.com/watch?v=81_yZtaOrY0" target="_blank"
+                <a href="https://www.youtube.com/watch?v=8c4EiMJA3wM" target="_blank"
                 class="external-link button is-normal is-rounded is-dark">
                 <span class="icon">
                   <i class="fas fa-video"></i>
                 </span>
-                <span>Video (3 min)</span>
+                <span>Video (2 min)</span>
                 </a>
-              </span> -->
+              </span>
 
             </div>
           </div>
@@ -162,23 +174,6 @@
   </div>
 </section>
 
-<!-- Teaser video-->
-<!-- <section class="hero teaser">
-  <div class="container is-max-desktop">
-    <div class="hero-body is-centered">
-      <video poster="" id="tree" autoplay controls muted loop height="100%">
-        <source src="static/videos/banner_video.mp4"
-        type="video/mp4">
-      </video>
-      <h2 class="subtitle has-text-centered">
-        Aliquam vitae elit ullamcorper tellus egestas pellentesque. Ut lacus tellus, maximus vel lectus at, placerat pretium mi. Maecenas dignissim tincidunt vestibulum. Sed consequat hendrerit nisl ut maximus. 
-      </h2>
-    </div>
-  </div>
-</section> -->
-<!-- End teaser video -->
-
-
 
 <!-- Paper abstract -->
 <section class="section hero is-light">
@@ -187,23 +182,16 @@
       <div class="column is-four-fifths">
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
-          <p class="block content">
-            Archaeological fragment processing is crucial to support
-            the analysis of pictorial contents of broken artifacts. In this
-            paper, we focus on the unexplored task of semantic segmentation 
-            of fresco fragments. This task enables the extraction
-            of meaningful semantic information from a fragment, 
-            facilitating subsequent tasks like fragment classification or reassembly. We introduce a semantic segmentation dataset 
-            of real fresco fragments acquired at the Archeological Park of
-            Pompeii accompanied by baseline models. 
-            Additionally, we introduce a supplementary task of fragment cleaning, 
-            providing a dataset with the detection of manual annotations
-            of archaeological marks that require restoration before further analysis. 
-            Our experiments, using standard metrics and
-            state-of-the-art baselines, demonstrate that semantic segmentation 
-            of fresco fragments is feasible, paving the way
-            toward more complex activities that require a semantic understanding 
-            of fragmented artifacts.
+          <p class="block content"> Archaeological fragment processing is crucial to support the analysis of pictorial
+            contents of broken artifacts. In this paper, we focus on the unexplored task of semantic segmentation of
+            fresco fragments. This task enables the extraction of semantic information from a fragment, facilitating
+            subsequent tasks like fragment classification or reassembly. We introduce a semantic segmentation dataset
+            of fresco fragments acquired at the Pompeii Archeological Site, accompanied by baseline models.
+            Additionally, we introduce a supplementary task of fragment cleaning, providing a dataset with the
+            detection of manual annotations of archaeological marks that require restoration before further analysis.
+            Our experiments, using standard metrics and state-of-the-art baselines, demonstrate that semantic segmentation
+            of fresco fragments is feasible, paving the way toward more complex activities that require a semantic
+            understanding of fragmented artifacts.
           </p>
         </div>
       </div>
@@ -238,17 +226,32 @@
 </section>
  End image carousel -->
 
+<!-- Teaser video-->
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body is-centered">
+      <video poster="" id="tree" autoplay controls muted loop height="100%">
+        <source src="static/videos/eheritage23_final.mp4"
+        type="video/mp4">
+      </video>
+      <h2 class="subtitle has-text-centered">
+        </h2>
+    </div>
+  </div>
+</section>
+<!-- End teaser video -->
+
 
 <section class="hero is-small">
   <section class="section hero ">
     <div class="container is-max-desktop" >
       <div class="columns is-centered has-text-centered">
-        <h2 class="title">Datasets</h2>
+        <h2 class="title" >Datasets</h2>
       </div>
       <div class="block">
-        <p>
+        <p id="datasets">
           We released two datasets for fragment processing tasks. 
-          They consist of high-quality photorealistic renderings of scanned 3D fragments from the Pompeii National Park.
+          They consist of high-quality photorealistic renderings of scanned 3D fragments from the PPompeii Archeological Site.
         </p>
       </div>
       <div class="columns is-centered has-text-centered is-desktop">
@@ -258,18 +261,29 @@
             <img src="static/images/boff.jpg" alt="boff dataset cover picture"/>
           </div>
           <p class="content has-text-justified mb-4">
+            Archaeologists make temporary markings on the intact surface of fresco fragments as reminders during the fresco
+            anastylosis task, particularly when dealing with a large number of fragments. These markings include black marks
+            on the borders, indicating neighboring relationships between fragments, and arrows showing the direction
+            of construction lines typically visible only on the backside of the fragments. While useful for
+            archaeologists, these markings can be misleading and introduce bias in computational tasks. Thus,
+            cleaning the dataset is crucial to ensure unbiased evaluations of different approaches.
+            <br>
+
             The BoFF dataset is specifically designed for the automatic detection of manual markings in bounding boxes to
-            facilitate their removal through inpainting. It contains 243 fragment images with 778 annotations of bounding boxes
-            covering manual markings on the fragment images.
+            facilitate their removal through inpainting. It contains 115 fragment images with 405 annotations of
+            bounding boxes covering manual markings on the fragment images.
+
+
+
           </p>
           <!-- Dataset link -->
           <span class="link-block">
-            <a href="" target="_blank"
+            <a href="https://forms.gle/ZVaeHCgr49vBXuiL7" target="_blank"
             class="external-link button is-normal is-rounded is-dark">
             <span class="icon">
               <i class="far fa-image"></i>
             </span>
-            <span>Go to the BoFF Dataset</span>
+            <span>Request to access BoFF dataset</span>
             </a>
           </span>
         </div>
@@ -279,20 +293,22 @@
             <img src="static/images/moff.png" alt="moff dataset cover picture"/>
           </div>
           <p class="content has-text-justified mb-4">
-            The MoFF dataset consists of 405 high-resolution images sourced from two distinct ceiling frescoes. 
-            Precise pixel-wise segmentation masks, denoting motifs from 12 different classes, identified by archaeologists, are provided. 
-            These pixel-wise annotations are available in two setups: a 3-class annotation, comprising
-            image background, fragment background, and motif class, and a detailed 12-class annotation, exclusively focusing on
-            distinct motif types.
+            The MoFF dataset is curated to support the extraction and categorization of motifs from fragmented frescoes, with a particular
+            focus on Roman wall paintings from the Pompeii archaeological site. These frescoes include recurring geometric colored patterns,
+            known as motifs. The dataset contains 405 high-resolution images extracted from two distinct fresco ceilings. The dataset
+            provides ground truth annotations with pixel-wise segmentation masks, precisely highlighting motifs from 12 different classes.
+            The annotations are available in two distinct setups: a 3-class annotation, comprising image background, fragment background,
+            and motif class, and a more detailed 12-class annotation, exclusively focusing on distinct motif types.
+
           </p>
           <!-- Dataset link -->
           <span class="link-block">
-            <a href="" target="_blank"
+            <a href="https://forms.gle/rtH8SoBxsE7o8CeL8" target="_blank"
             class="external-link button is-normal is-rounded is-dark">
             <span class="icon">
               <i class="far fa-image"></i>
             </span>
-            <span>Go to the MoFF Dataset</span>
+            <span>Request to access MoFF dataset</span>
             </a>
           </span>
         </div>
@@ -327,11 +343,16 @@
     <div class="container is-max-desktop content">
       <h2 class="title">BibTeX</h2>
       <pre><code>
-@misc{enayati2023semantic,
-  title={Semantic Motif Segmentation of Archaeological Fresco Fragments},
-  author={Aref Enayati and Luca Palmieri and Marcello Pelillo and Sebastiano Vascon and Sinem Aslan},
-  year={2023}
+    @InProceedings{enayati_2023_ICCVW,
+    author    = {Enayati, Aref and Palmieri, Luca and Vascon, Sebastiano and Pelillo, Marcello and Aslan, Sinem},
+    title     = {Semantic Motif Segmentation of Archaeological Fresco Fragments},
+    booktitle = {Proceedings of the E-Heritage Workshop of IEEE/CVF International Conference on Computer Vision (ICCV)},
+    month     = {October},
+    year      = {2023},
+    pages     = {}
 }
+
+
       </code></pre>
     </div>
 </section>
