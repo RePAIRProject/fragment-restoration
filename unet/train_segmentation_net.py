@@ -61,17 +61,17 @@ def scheduler(epoch, lr):
 def main():
 
     ## Parameters 
-    IMG_SIZE = 512 
-    EPOCHS = 200
-    BATCH_SIZE = 8
-    AUGMENT = True
-    aug_geometric = True
-    aug_color = False
-    COLOR_SPACE = 'HSV'
-    CLASSES = 13
-    LEARNING_RATE = 0.001
-    MODEL = 'classic'
-    INPAINTED = True
+    IMG_SIZE = 512 # resize images to IMG_SIZE x IMG_SIZE
+    EPOCHS = 200 # train max. until this number (early stopping is enabled)
+    BATCH_SIZE = 8 # change batch size according to your GPU
+    AUGMENT = True # whether to perform or not on-the-fly data augmentation
+    aug_geometric = True # geometric augmentation (rotation, mirror)
+    aug_color = False # color augmentation (use only with RGB)
+    COLOR_SPACE = 'HSV' # this changes the color space for all images
+    CLASSES = 13 # number of classes (scenario 1 --> 3 classes, scenario 2 --> 13 classes)
+    LEARNING_RATE = 0.001 # there is a scheduler for the decay!
+    MODEL = 'classic' # it can be either 'classic' or 'simplified' 
+    INPAINTED = True # picking inpainted images (use False for the original ones)
     # SCHEDULER_EPOCHS_STEP = 25
     par = {
         'img':IMG_SIZE,

@@ -27,7 +27,7 @@ In the final mask images the class numbers correspond to the following categorie
 
 Dataset is published with two schemes of pixel annotations, i.e., for 3-class and 13-class semantic segmentation presented as Scenario 1 and 2 in the paper, respectively.
 
-<p align="center"><img width="423" alt="gts (1)" src="https://github.com/RePAIRProject/fragment-restoration/assets/7011371/ab2c654a-7fb1-4a08-9d36-be4ec7ba6346">
+<p align="center"><img width="600" alt="gts (1)" src="https://github.com/RePAIRProject/fragment-restoration/assets/7011371/ab2c654a-7fb1-4a08-9d36-be4ec7ba6346">
 <p align="center">Illustration of pixel-wise semantic annotations for the MoFF dataset. The input image is on the left, followed by 3-class annotations for
 Scenario 1 in the middle, and motif-wise annotations for Scenario 2 on the right (different colors represent distinct pixel classes)
 

@@ -5,25 +5,10 @@ In this repository, you will find datasets, code, and pretrained models related 
 
 - [Introduction](#introduction)
 - [Datasets](#datasets)
-- [Code](#code)
-- [Pretrained Models](#pretrained-models)
-- [Usage](#usage)
+- [Restoration of Manual Annotations](#restoration-of-manual-annotations)
+- [Semantic Segmentation of Fragments](#semantic-segmentation-of-fragments)
 - [Citation](#citation)
 - [Acknowledgments](#acknowledgments)
-- [License](#license)
-
-### Citation
-If you find our work or resources useful in your research, please consider citing our paper:
-@inproceedings{enayati2023,
- title={Semantic Motif Segmentation for Archaelogical Fresco Fragments},
- author={Aref Enayati, Luca Palmieri, Sebastiano Vascon, Marcello Pelillo, Sinem Aslan},
- booktitle={},
- pages={},
- year={},
- month={},
- organization={IEEE}
-}
-
 
 ## Introduction
 This repository contains resources related to our research on the semantic motif segmentation of archaeological fresco fragments. Our work focuses on understanding and categorizing motifs found in ancient fresco fragments, 
@@ -40,15 +25,19 @@ serve as valuable resources for various computational tasks, such as fragment re
 ## Datasets
 ### BoFF (Black-Annotations on the Fresco Fragments) Dataset
 
-The BoFF dataset is curated for the task of restoration of manual annotations on the fragments. **[AREF, PLEASE INTRODUCE BOFF DATASET , briefly here and in the BoFF.md file. ex: example figure of few fragments and bounding box annotations, introduce annotations, how they prepared. link to download them.]** It is composed of  xx images with bounding box annotation covering manually drawn black-marks. 
+The BoFF dataset is curated for the task of restoration of manual annotations on the fragments. It is composed of 115 images of fresco fragments with bounding box annotations covering manually drawn black-marks. These black-marks indicate neighboring relationship between fragmetns and they serve as a guide to archeologists during manual reconstruction of these frescoes.  
+
+**[AREF, PLEASE INTRODUCE BOFF DATASET , briefly here and in the BoFF.md file. ex: example figure of few fragments and bounding box annotations, introduce annotations, how they prepared. link to download them.]** 
 
 To learn more about the BoFF dataset and how to use it, please refer to the [BoFF](https://github.com/RePAIRProject/fragment-restoration/blob/e-heritage/Dataset/BoFF.md).
 
-### MoFF (Motif on Fresco Fragment) Dataset
+### MoFF (Motifs on Fresco Fragment) Dataset
 
-MoFF dataset is curated for the task of semantic segmentation of the motifs present on the painted surface of the fragments. It contains images of real fresco fragments obtained from the Archaeological Park of Pompeii.
+MoFF dataset is curated for the task of semantic segmentation of the motifs present on the painted surface of the fragments. It contains images of real fresco fragments obtained from the Archaeological Park of Pompeii. The following two annotation scenarios were employed:
+- Scenario 1: 3-class annotation (image background, fragment background, motif class).
+- Scenario 2: 12-class annotation (distinct motif types).
 
-Basically, it is generated through the [prepare_MoFF.py](https://github.com/RePAIRProject/fragment-restoration/blob/e-heritage/Dataset_processing/prepare_MoFF.py) script. 
+Basically, the data used n the experiments is generated through the [prepare_MoFF.py](https://github.com/RePAIRProject/fragment-restoration/blob/e-heritage/Dataset_processing/prepare_MoFF.py) script. 
 This script takes the original, high-resolution, unmodified images and associated annotations, accessible for download from [Link to Zenodo](). 
 It produces various data folders, listed below, utilized in the experiments described in our paper.
 
@@ -60,8 +49,6 @@ It produces various data folders, listed below, utilized in the experiments desc
 - `annotations_boxes_components`: yolo-style annotations with one box for each component of any motif 
 - `annotations_boxes_motif`: yolo-style annotations with one box for motif 
 - `annotations_shape`: yolo-v8seg-style annotations (polygons) 
-
-**(Q: ARE THE FOLLOWING TWO FOR THE BLACK MARK REMOVAL???)**
 - `yolo_dataset_boxes`: full yolo dataset (images are duplicated, yes) for training for bounding box detection
 - `yolo_dataset_shapes`: full yolo dataset (images are duplicated, yes) for training for segmentation (use yolo-v8)
 
@@ -71,19 +58,68 @@ The train, validation and test split are contained in `.txt` files in the root f
 
 More information about the segmentation maps can be obtained in [MoFF](https://github.com/RePAIRProject/fragment-restoration/blob/e-heritage/Dataset/MoFF.md).
 
-# 2. Restoration of Manual Annotations
+## Restoration of Manual Annotations 
 This task is performed by achieving two sub-tasks, including creating inpainting masks by detecting manual annotations in bounding boxes using YoloV5, and performing exampler-based inpainting method of Criminisi.
+### Detecting black marks
+[Introducing the usage, links to pretrained models]
+
+For the purpose of training and detection of black-marks on fresco fragments using YOLOv5 on BOFF Augmented Dataset, we utilized the augmented version of the BOFF dataset. The ultimate goal was to accurately detect black-marks present on the test images.
+
+#### Google Colab Implementation
+
+For ease of reproducibility and accessibility, we've prepared a Google Colab notebook which provides a step-by-step guide for the entire process. This not only includes the training and detection steps but also covers the following:
+- Calculating and visualizing predictions
+- Identifying True Positives (TP), False Positives (FP), and False Negatives (FN)
+- Creating and verifying binary masks, which will be essential for the subsequent inpainting algorithm.
+
+**Access the Google Colab notebook:** [Google Colab File](https://drive.google.com/file/d/1hVL2hjDGKQDPecFetvK_TDC90VhHLPdR/view?usp=drive_link)
+
+#### Pretrained Weights
+
+For those interested in using the model directly or benchmarking against our results, we've also made available the pretrained weights that produced the best results during our experiments.
+
+**Download the pretrained weights:** [Best Weights](https://drive.google.com/file/d/1cnlSg_dwep9LsX2vI1BEUWVZNxG80m0Q/view?usp=drive_link)
 
 
-# 3. Fragment segmentation
+### Inpainting
 
-# 4. Motif Segmentation
+## Semantic Segmentation of Fragments
+
+This section refers to the segmentation tasks. As described in the paper, we have envisioned two scenarios:
+1. ***Fragment segmentation***: here we have 3 classes (background, fragment surface and *any* motif) and the focus is detecting the fragment and the motif (without the type)
+2. ***Motif segmentation***: here we have 13 classes (12 different motif type and *anything else*) and the focus is on recognizing the *type* of the motif (the rest is treated as unimportant, background and fragment are merged).
 
 For more information about the semantic classes, please refer to the [MoFF readme file](https://github.com/RePAIRProject/fragment-restoration/tree/e-heritage/Dataset/MoFF.md).
 
-For training and inference using Unet or YOLO, please see below.
+This is an important difference conceptually, while regarding implementation, this makes a little difference. We used two different networks for the segmentation task, [UNet](#unet) and [YOLO](#yolo).
 
-## Training UNet
+### UNet
+
+UNet is a widely used framework for pixel-wise segmentation. This is a custom re-implementation using pytorch which follows the standard architecture. 
+
+Everything related should be available under the `unet` folder, with `unet.py` containing the two model (the *classic* and the *simplified* one) and other scripts for training, for showing results and for evaluating performances.
+
+#### Parameters
+
+When training, we define a set of parameters in the `train_segmentation_net.py` script which are then saved into a parameter file in the output folder (so that you know which parameters where used).
+The parameters look like this:
+```python
+## Parameters 
+IMG_SIZE = 512 # resize images to IMG_SIZE x IMG_SIZE
+EPOCHS = 200 # train max. until this number (early stopping is enabled)
+BATCH_SIZE = 8 # change batch size according to your GPU
+AUGMENT = True # whether to perform or not on-the-fly data augmentation
+aug_geometric = True # geometric augmentation (rotation, mirror)
+aug_color = False # color augmentation (use only with RGB)
+COLOR_SPACE = 'HSV' # this changes the color space for all images
+CLASSES = 13 # number of classes (scenario 1 --> 3 classes, scenario 2 --> 13 classes)
+LEARNING_RATE = 0.001 # there is a scheduler for the decay!
+MODEL = 'classic' # it can be either 'classic' or 'simplified' 
+INPAINTED = True # picking inpainted images (use False for the original ones)
+``` 
+
+
+#### Training 
 
 To run the training, use the script `train_segmentation_net.py`, which needs no additional parameters and can be run as:
 ```bash
@@ -93,7 +129,7 @@ Everything is inside there, at the beginning of the `main(arg):` function there 
 
 The training saves the results in single run subfolders (created) under the `runs` folder. The name has some random number and the parameters appended and inside you find model, graphics, sample predictions and parameters. The name of the run folder is printed on the terminal and can be copied to quickly use it for running inference.
 
-## Inference with UNet
+#### Inference
 
 To run inference, there is another script called `show_some_results.py`. This requires some parameters, usually the run folder is enough. It can be passed with the `-f` parameter, so an example launch would be:
 ```bash
@@ -106,9 +142,14 @@ python unet/show_some_results.py -f run16885392688472511_classicUNET_RGB_images5
 ```
 This will run on `images_cropped` and `masks_cropped` folders and save the results in `results_images_cropped` within the subfolder of the run of the training (the one gave with `-f`)/
 
-**NOTE** This does not actually save any numerical results on the test set. I started to create a `performance_unet.py` for that, but `iou` (from `iou_loss(y_true, y_pred)` in `unet.py` returns negative ious! I do not have enough time to debug it, sorry!)
+**NOTE:** This does not actually save any numerical results on the test set. Please check the `evaluation` folder/section for more information about numerical results. 
+#### Pretrained Models
 
-## Training Yolo
+You can find the [pretrained models here](https://drive.google.com/drive/folders/19N7pfHEJQ6LPPzzAXYLJIoKPNtKRT7aj?usp=sharing). In this folder there are the pretrained models with their parameters for scenario 1 and scenario 2 for both simplified and classic UNet architecture.
+
+### Yolo
+
+#### Training
 
 Please refer to the official Yolo documentation:
 - [Yolov5 for detection](https://docs.ultralytics.com/yolov5/) (of course you could update to yolov8 for detection, but the models were trained using yolov5 at the moment)
@@ -123,9 +164,11 @@ Example run for segmentation (yolov8-style, yolo CLI):
 yolo segment train data=data/repair_motif_seg.yaml epochs=200 batch=32 imgsz=512  
 ```
 
-## Detecting and converting Yolo outputs
+#### Inference 
 
-##### If you just want to get some results quickly, you can use the yolo commands for inference
+YOLO already provides CLI for running train and inference, but it already draws the results on the image to show them. So it is very good for quickly cheking how is working, but you may need to run custom code if you want to do something with the results. 
+
+##### YOLO commands for inference
 Example run for detection (yolov5-like):
 ```bash
 python detect.py --weights '/..path../Yolo_best_model_pretrained_best_weights.pt' --source '/..path../images_folder'
@@ -136,15 +179,127 @@ yolo segment predict model=path/to/best.pt source='image or image folder'
 ```
 
 
-##### If you want to get white bounding boxes (to use the detection for downstream tasks):
-The script `detect_black_marks.py` detect the black marks on the images (with the resolution of the input image) and saves as output binary masks (white filled boxes) and visualization (red rectangles).
-It requires the pretrained to work (please change paths).
+##### Custom code for the white bounding boxes (to use the detection for downstream tasks):
+The script `detect_bbox_motif.py` detect the motif on the images (with the resolution of the input image) and saves as output binary masks (white filled boxes) and visualization (red rectangles).
+It requires the pretrained model to work (please change paths).
 
-The same (more or less) is valid for `detect_bbox_motif.py`, it creates the white filled bboxes from the prediction of pre-trained yolo (v5) network.
-
-There is a third script `get_segm_yolo.py` which is slightly different, it converts the output of the yolo segmentation (so yolov8) and it requires other stuff (I used it inside the yolo repo actually, but I copied here in case it's needed). 
+There is another script `get_segm_yolo.py` which is slightly different, it converts the output of the yolo segmentation (so yolov8) and it requires other stuff (I used it inside the yolo repo actually, but I copied here in case it's needed). 
 
 Also inside `yolo_processing` folder there is a script for preparation and the data config file for training yolo (`prepare_dataset_yolo.py`). Not perfect, but it should help.
 
-##### Validating Yolo
-A nice way to get results on validation set is to use `evaluate_yolo_detection.py` (changing folder name) or call the yolo CLI `yolo segment val model=path/to/best.pt  # val custom model`.
+#### Validation
+A nice way to get results on the validation set is to use `evaluate_yolo_detection.py` (changing folder name) or call the yolo CLI `yolo segment val model=path/to/best.pt  # val custom model`.
+
+#### Pretrained Models
+
+You can find the [pretrained models here](https://drive.google.com/drive/folders/19jPUtnR-FvRWhXNse70guq2xXKXkXPva?usp=sharing). 
+In the folder you find the v5 trained models for detection (we trained 2 using a bounding box for each motif or for each *component* of the motifs) and the v8 trained model for segmentation (it can also do detection).
+
+
+### Evaluation
+We provide a script for evaluation of predictions. In this case we expect you create predictions from all the images of the test set (the `test.txt` file is a list of the files in the test set).
+Once you predicted (with your model) the masks for these files, store them in a folder. The name of the files should be the same as in the `test.txt` files so that the script reads them.
+
+For benchmarking we need your prediction folder (all predicted masks should be there), the number of classes (if you are evaluating for 3 or 13 classes), the path of the MoFF dataset (you should have it downloaded) and the output folder (optional, otherwise the script will use your current folder as output).
+We rescale the images (as default the size is `512x512`). This is done using nearest neighbour interpolation to preserve integer class values. You can change the size using the `-s img_size` parameter.
+
+To benchmark, you can run the script for example as:
+```bash
+python evaluations/benchmark.py -p 'path_to_prediction_folder' -c 3 -d 'path_to_dataset/MoFF' -o 'path_to_output_folder'
+```
+
+If you did not download the full moff, but you only have the ground truth masks and the test.txt files (at least these are needed) you can run the script explicitly setting `-t path_to_the_test.txt` and `-gt path_to_the_gt_folder`.
+
+Example Runs:
+If you run on 3 classes, it outputs the performances like:
+```bash
+##############################
+Performances on 3 classes
+IoU (avg): 0.913
+PA  (avg): 0.964
+##############################
+```
+If you run on 13 classes, it outputs the performances like:
+```bash
+##############################
+Performances on 13 classes
+IoU (avg): 0.614
+PA  (avg): 0.637
+------------------------------
+Performances on motif only
+IoU (motif): 0.405
+PA  (motif): 0.441
+##############################
+```
+
+#### Reproducing the paper results
+We also provide a script to reproduce our unet vs yolo benchmark. 
+This assumes you already have results from YOLO and UNet models in their respective folder. 
+The folder paths are hard-coded in the first lines of the file, and you can change accordingly to your local storage.
+It is not necessary and provided as a reference.
+It can be run as 
+```bash
+python evaluations/reproduce_unet_vs_yolo13c.py
+```
+And it should output (this is the result on our computer, with the prediction of the latest models on 512x512 images, Table 3 of the paper):
+```bash
+#################################################################
+AVERAGE (13 classes)
+Mean IoU:
+ UNET (simplified): 0.569
+ UNET             : 0.606
+ YOLO             : 0.538
+Mean Pixel Accuracy:
+ UNET (simplified): 0.600
+ UNET             : 0.630
+ YOLO             : 0.797
+-----------------------------------------------------------------
+MOTIF (12 classes)
+Mean IoU:
+ UNET (simplified): 0.345
+ UNET             : 0.416
+ YOLO             : 0.582
+Mean Pixel Accuracy:
+ UNET (simplified): 0.392
+ UNET             : 0.452
+ YOLO             : 0.634
+#################################################################
+```
+
+#### Evaluation of Color Space Experiments
+
+For readers and researchers interested in the evaluation presented in Table 2 of our paper — experiments conducted with various color spaces in Scenario 1 — we've provided some resources to facilitate further exploration and reproduction of our results.
+
+##### Trained Models
+
+We have made available the trained models for these experiments. These can be instrumental for direct implementation or further tweaking based on specific needs.
+
+**Access the trained models:** [Trained Models Folder](https://drive.google.com/drive/folders/11Ed831CBjengf0ZogeFeUvGustRCUa6m)
+
+##### Google Colab for Reproduction
+
+To further assist in reproducing our results or evaluating the model on your own data, we've prepared a Google Colab notebook. This notebook provides a streamlined approach to load the trained models, reproduce the results, and evaluate on custom datasets.
+
+**Access the Google Colab notebook:** [Google Colab File for Reproduction](https://colab.research.google.com/drive/1fIOgDT6X8wWssAiyO8pWILENiFaf1dHw?ouid=114722430595098931105&usp=drive_link)
+
+
+#### Pretrained models 
+
+## Citation
+If you find our work or resources useful in your research, please consider citing our paper:
+```
+@inproceedings{enayati2023,
+ title={Semantic Motif Segmentation for Archaelogical Fresco Fragments},
+ author={Aref Enayati, Luca Palmieri, Sebastiano Vascon, Marcello Pelillo, Sinem Aslan},
+ booktitle={},
+ pages={},
+ year={},
+ month={},
+ organization={IEEE}
+}
+```
+
+## Acknowledgement
+
+This work is part of a project that has received funding from the European Union's Horizon 2020 research and innovation programme under grant agreement No.964854. 
+

@@ -65,7 +65,7 @@ def crop_image(img, mask, fg, image_name):
 
 def export_segments_ai(v_release):
     # Initialize a SegmentsDataset from the release file
-    client = SegmentsClient('9dfbd86d1236dcc33e99909b304919f5b1580698')
+    client = SegmentsClient('')
     release = client.get_release('sinemaslan/repair_fragments_patterns-clone',
                                  v_release)  # Alternatively: release = 'flowers-v1.0.json'
     dataset = SegmentsDataset(release, labelset='ground-truth', filter_by=['labeled', 'reviewed'])
@@ -74,7 +74,7 @@ def export_segments_ai(v_release):
     export_dataset(dataset, export_format='semantic')
 
     # Initialize a SegmentsDataset from the release file
-    client = SegmentsClient('9dfbd86d1236dcc33e99909b304919f5b1580698')
+    client = SegmentsClient('')
     release = client.get_release('lucap/repair_fragments_patterns',
                                  v_release)  # Alternatively: release = 'flowers-v1.0.json'
     dataset = SegmentsDataset(release, labelset='ground-truth', filter_by=['labeled', 'reviewed'])
@@ -83,7 +83,7 @@ def export_segments_ai(v_release):
     export_dataset(dataset, export_format='semantic')
 
     # Initialize a SegmentsDataset from the release file
-    client = SegmentsClient('9dfbd86d1236dcc33e99909b304919f5b1580698')
+    client = SegmentsClient('')
     release = client.get_release('UNIVE/decor2', v_release)  # Alternatively: release = 'flowers-v1.0.json'
     dataset = SegmentsDataset(release, labelset='ground-truth', filter_by=['labeled', 'reviewed'])
 
@@ -94,12 +94,12 @@ def export_segments_ai(v_release):
 def merge_segments_folders(images_output_path, masks_output_path, v_release):
     # Merge all masks from 3 different folders into the same folder
     folder_paths = [
-        os.path.join('/Dataset/segments/UNIVE_decor2/', v_release),
+        os.path.join('/home/sinem/PycharmProjects/fragment-restoration/Dataset/segments/UNIVE_decor2/', v_release),
         os.path.join(
-            '/Dataset/segments/lucap_repair_fragments_patterns/',
+            '/home/sinem/PycharmProjects/fragment-restoration/Dataset/segments/lucap_repair_fragments_patterns/',
             v_release),
         os.path.join(
-            '/Dataset/segments/sinemaslan_repair_fragments_patterns-clone/',
+            '/home/sinem/PycharmProjects/fragment-restoration/Dataset/segments/sinemaslan_repair_fragments_patterns-clone/',
             v_release)]
 
     os.makedirs(images_output_path, exist_ok=True)
@@ -198,7 +198,8 @@ def create_fg(input_images, output_images, fg_folder):
         masked_image = mask * img2
 
         plt.imsave(os.path.join(output_images, f"{file[:-4]}.png"), masked_image)
-        plt.imsave(os.path.join(fg_folder, f"{file[:-4]}_fg.png"), fg, cmap='gray')
+        #plt.imsave(os.path.join(fg_folder, f"{file[:-4]}_fg.png"), fg, cmap='gray')
+        cv2.imwrite(os.path.join(fg_folder, f"{file[:-4]}_fg.png"), fg)
 
         """
         img = Image.open(file_path)
