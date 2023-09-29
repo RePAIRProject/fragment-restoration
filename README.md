@@ -48,7 +48,7 @@ The BoFF dataset is curated for the task of restoration of manual annotations on
 
 To learn more about the BoFF dataset and how to use it, please refer to the [BoFF](https://github.com/RePAIRProject/fragment-restoration/blob/e-heritage/Dataset/BoFF.md).
 
-Make a request [here](https://docs.google.com/forms/d/e/1FAIpQLSfoCSHl5M23LeXok_iSL-yxKmK0AJShTWccjDb2Xas6F54qvw/viewform) to access the dataset.
+Make a request [here](https://docs.google.com/forms/d/e/1FAIpQLSfoCSHl5M23LeXok_iSL-yxKmK0AJShTWccjDb2Xas6F54qvw/viewform) to access the dataset and annotations.
 
 ### MoFF (Motifs on Fresco Fragment) Dataset
 
@@ -57,7 +57,7 @@ MoFF dataset is curated for the task of semantic segmentation of the motifs pres
 - Scenario 2: 12-class annotation (distinct motif types).
 
 Basically, the data used n the experiments is generated through the [prepare_MoFF.py](https://github.com/RePAIRProject/fragment-restoration/blob/e-heritage/Dataset_processing/prepare_MoFF.py) script. 
-This script takes the original, high-resolution, unmodified images and associated annotations, accessible by filling the [form](https://docs.google.com/forms/d/e/1FAIpQLSfzdvuchDQ1Y-uqiRBS8C4eMO6LY7e6blzPawmuwmEXYmRXyA/viewform).
+This script takes the original, high-resolution, unmodified images and associated annotations. 
 
 It produces various data folders, listed below, utilized in the experiments described in our paper.
 
@@ -77,6 +77,9 @@ Images are cropped, but not resized.
 The train, validation and test split are contained in `.txt` files in the root folder. They are list of file names, the files have always the same names inside each folder. This helps to keep consistency, and test set is the same across different trainings (unet, yolo).
 
 More information about the segmentation maps can be obtained in [MoFF](https://github.com/RePAIRProject/fragment-restoration/blob/e-heritage/Dataset/MoFF.md).
+
+Make a request [here](https://docs.google.com/forms/d/e/1FAIpQLSfzdvuchDQ1Y-uqiRBS8C4eMO6LY7e6blzPawmuwmEXYmRXyA/viewform)) to access the dataset and annotations.
+
 
 ## Restoration of Manual Annotations 
 This task is performed by achieving two sub-tasks, including creating inpainting masks by detecting manual annotations in bounding boxes using YoloV5, and performing exampler-based inpainting method of Criminisi.
