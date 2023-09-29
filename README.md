@@ -78,7 +78,7 @@ The train, validation and test split are contained in `.txt` files in the root f
 
 More information about the segmentation maps can be obtained in [MoFF](https://github.com/RePAIRProject/fragment-restoration/blob/e-heritage/Dataset/MoFF.md).
 
-Make a request [here](https://docs.google.com/forms/d/e/1FAIpQLSfzdvuchDQ1Y-uqiRBS8C4eMO6LY7e6blzPawmuwmEXYmRXyA/viewform)) to access the dataset and annotations.
+Make a request [here](https://docs.google.com/forms/d/e/1FAIpQLSfzdvuchDQ1Y-uqiRBS8C4eMO6LY7e6blzPawmuwmEXYmRXyA/viewform) to access the dataset and annotations.
 
 
 ## Restoration of Manual Annotations 
