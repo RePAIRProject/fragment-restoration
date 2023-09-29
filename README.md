@@ -237,7 +237,7 @@ For benchmarking, the following parameters are required:
 
 Note: While there is only one version of the ground truth masks with 14-class annotations, other class configurations are derived using a remapping function present in the code.
 ___
-*(For benchmarking we need your prediction folder (all predicted masks should be there), the number of classes (if you are evaluating for 3 or 13 classes), the path of the MoFF dataset (you should have it downloaded) and the output folder (optional, otherwise the script will use your current folder as output).)*
+<!---*(For benchmarking we need your prediction folder (all predicted masks should be there), the number of classes (if you are evaluating for 3 or 13 classes), the path of the MoFF dataset (you should have it downloaded) and the output folder (optional, otherwise the script will use your current folder as output).)*-->
 
 We rescale the images (as default the size is `512x512`). This is done using nearest neighbour interpolation to preserve integer class values. You can change the size using the `-s img_size` parameter.
 
