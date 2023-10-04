@@ -9,13 +9,13 @@ https://github.com/RePAIRProject/fragment-restoration/assets/7011371/eabef996-9a
 If you find our work or resources useful in your research, please consider citing our paper:
 ```
 
-    @InProceedings{enayati_2023_ICCVW,
+    @InProceedings{Enayati_2023_ICCV,
     author    = {Enayati, Aref and Palmieri, Luca and Vascon, Sebastiano and Pelillo, Marcello and Aslan, Sinem},
     title     = {Semantic Motif Segmentation of Archaeological Fresco Fragments},
-    booktitle = {Proceedings of the E-Heritage Workshop of IEEE/CVF International Conference on Computer Vision (ICCV)},
+    booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) Workshops},
     month     = {October},
     year      = {2023},
-    pages     = {}
+    pages     = {1717-1725}
 }
 ```
 
