@@ -15,8 +15,7 @@ If you find our work or resources useful in your research, please consider citin
     booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) Workshops},
     month     = {October},
     year      = {2023},
-    pages     = {1717-1725}
-}
+    pages     = {1717-1725}}
 ```
 
 ## Table of Contents
