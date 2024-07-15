@@ -1,0 +1,89 @@
+import os
+import cv2
+import numpy as np
+
+# Define colors and class names for each class
+COLORS = [
+    (0, 0, 0),  # Class 0 (Image Background - Black)
+    (255, 255, 240),  # Class 1 (Fragment Background - Light Beige)
+    (0, 0, 255),  # Class 2 (Bluebird )
+    (204, 204, 0),  # Class 3 (Yellow Bird)
+    (255, 0, 0),  # Class 4 (Red Griffon)
+    (255, 179, 179),  # Class 5 (Red Flower )
+    (0, 128, 255),  # Class 6 (Blue Flower)
+    (255, 77, 77),  # Class 7 (Red Circle )
+    (192, 0, 0),  # Class 8 (Red Spiral )
+    (0, 255, 0),  # Class 9 (Curved Green Stripe )
+    (255, 204, 229),  # Class 10 (Thin Red Stripe)
+    (255, 0, 255),  # Class 11 (Thick Red Stripe )
+    (128, 128, 255),  # Class 12 (Thin Floral Stripe)
+    (0, 255, 255)  # Class 13 (Thick Floral Stripe )
+]
+
+CLASS_NAMES = [
+    "Image Background",  # Class 0
+    "Fragment Background",  # Class 1
+    "Bluebird",  # Class 2
+    "Yellow Bird",  # Class 3
+    "Red Griffon",  # Class 4
+    "Red Flower",  # Class 5
+    "Blue Flower",  # Class 6
+    "Red Circle",  # Class 7
+    "Red Spiral",  # Class 8
+    "Curved Green Stripe",  # Class 9
+    "Thin Red Stripe",  # Class 10
+    "Thick Red Stripe",  # Class 11
+    "Thin Floral Stripe",  # Class 12
+    "Thick Floral Stripe"  # Class 13
+]
+
+images_folder = os.path.join('/home/sinem/PycharmProjects/YOLO/yolov10', 'dataset', 'yolo-decor1',
+                             'yolo_inpainted_dataset_boxes', 'train', 'images')
+labels_folder = os.path.join('/home/sinem/PycharmProjects/YOLO/yolov10', 'dataset', 'yolo-decor1',
+                             'yolo_inpainted_dataset_boxes', 'train', 'labels')
+output_folder = os.path.join('/home/sinem/PycharmProjects/YOLO/yolov10', 'GT_boxes_train_displayed')  # specify your output folder
+os.makedirs(output_folder, exist_ok=True)
+
+for img in os.listdir(images_folder):
+    if img.endswith('.jpg') or img.endswith('.png'):  # Ensure we're processing images only
+        full_path = os.path.join(images_folder, img)
+        imgcv = cv2.imread(full_path)
+        height, width, _ = imgcv.shape
+
+        # Load corresponding label file
+        label_file = os.path.splitext(img)[0] + '.txt'
+        label_path = os.path.join(labels_folder, label_file)
+
+        if os.path.exists(label_path):
+            with open(label_path, 'r') as file:
+                lines = file.readlines()
+
+            for line in lines:
+                class_id, x_center, y_center, bbox_width, bbox_height = map(float, line.strip().split())
+
+                # Convert YOLO format to pixel coordinates
+                x_center *= width
+                y_center *= height
+                bbox_width *= width
+                bbox_height *= height
+
+                xmin = int(x_center - bbox_width / 2)
+                ymin = int(y_center - bbox_height / 2)
+                xmax = int(x_center + bbox_width / 2)
+                ymax = int(y_center + bbox_height / 2)
+
+                # Select color for this class
+                color = COLORS[int(class_id) % len(COLORS)]
+
+                # Draw bounding box
+                cv2.rectangle(imgcv, (xmin, ymin), (xmax, ymax), color, 2)
+
+                # Draw class label name
+                class_name = CLASS_NAMES[int(class_id)]
+                cv2.putText(imgcv, class_name, (xmin, ymin - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+
+        # Save the image with bounding boxes
+        output_path = os.path.join(output_folder, img)
+        cv2.imwrite(output_path, imgcv)
+
+print("Images with bounding boxes have been saved.")
